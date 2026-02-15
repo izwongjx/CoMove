@@ -2,8 +2,6 @@
    ECORIDE - Global Styles
    Pure Custom CSS - No Frameworks
    ============================================ */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
-
 *,
 *::before,
 *::after {
@@ -1239,6 +1237,40 @@ table {
   width: 4px;
   height: 4px;
   border-radius: 50%;
+}
+
+.icon-img {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.top-nav .icon-img,
+.bottom-nav .icon-img {
+  /* Default nav icon color: slightly gray */
+  filter: brightness(0) saturate(100%) invert(72%);
+}
+
+.top-nav .nav-item:hover .icon-img,
+.bottom-nav a:hover .icon-img {
+  /* Hover nav icon color: white */
+  filter: brightness(0) saturate(100%) invert(100%);
+}
+
+.top-nav .nav-item.active .icon-img,
+.bottom-nav a.active .icon-img {
+  /* Active (clicked) nav icon color: lime (#c4f547) */
+  filter: brightness(0) saturate(100%) invert(86%) sepia(73%) saturate(555%) hue-rotate(25deg) brightness(103%) contrast(92%);
+}
+
+.nav-item .nav-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.bottom-nav .nav-icon {
+  width: 24px;
+  height: 24px;
 }
 
 .icon {

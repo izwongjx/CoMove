@@ -1,4 +1,4 @@
-// ... existing code from auth/auth.js but with updated paths ...
+﻿// ... existing code from auth/auth.js but with updated paths ...
 /* ============================================
    ECORIDE - Auth Pages Logic
    ============================================ */
@@ -85,12 +85,11 @@ function initRegisterPage() {
     driverSteps.forEach(function (s, i) {s.classList.toggle('active', i === step - 1);});
     progressSteps.forEach(function (s, i) {s.classList.toggle('active', i < step);});
     var stepCounter = document.getElementById('driverStepCounter');
-    if (stepCounter) stepCounter.textContent = 'Step ' + step + ' of 4 — ' + stepLabels[step - 1];
+    if (stepCounter) stepCounter.textContent = 'Step ' + step + ' of 4 鈥?' + stepLabels[step - 1];
     if (backBtn) backBtn.style.display = step > 1 ? '' : 'none';
     if (driverBackToRoleBtn) driverBackToRoleBtn.style.display = step === 1 ? '' : 'none';
-    if (step === 4) {nextBtn.innerHTML = 'COMPLETE REGISTRATION <span data-icon="arrow-right" data-icon-size="20"></span>';} else
-    {nextBtn.innerHTML = 'NEXT STEP <span data-icon="arrow-right" data-icon-size="20"></span>';}
-    if (typeof initIcons === 'function') initIcons();
+    if (step === 4) {nextBtn.innerHTML = 'COMPLETE REGISTRATION <img src="../public-assets/images/icons/arrow-right.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">';} else
+    {nextBtn.innerHTML = 'NEXT STEP <img src="../public-assets/images/icons/arrow-right.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">';}
   }
 
   backBtn.addEventListener('click', function () {if (driverStep > 1) showDriverStep(driverStep - 1);});
@@ -110,9 +109,8 @@ function initRegisterPage() {
     {
       var formData = new FormData(this);
       console.log('Driver Signup Complete:', Object.fromEntries(formData));
-      nextBtn.innerHTML = '<span data-icon="refresh" data-icon-size="20"></span> SUBMITTING...';
+      nextBtn.innerHTML = '<img src="../public-assets/images/icons/refresh.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"> SUBMITTING...';
       nextBtn.disabled = true;
-      if (typeof initIcons === 'function') initIcons();
       setTimeout(function () {nextBtn.disabled = false;showStep('step-otp');startOtpTimer();}, 800);
     }
   });
@@ -139,7 +137,7 @@ function initRegisterPage() {
     e.preventDefault();
     var otp = '';otpInputs.forEach(function (inp) {otp += inp.value;});
     console.log('OTP Verified:', otp);
-    verifyBtn.innerHTML = '<span data-icon="refresh" data-icon-size="20"></span> VERIFYING...';
+    verifyBtn.innerHTML = '<img src="../public-assets/images/icons/refresh.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"> VERIFYING...';
     verifyBtn.disabled = true;
     setTimeout(function () {
       if (selectedRole === 'driver') {window.location.href = '../roles/driver/dashboard.html';} else
