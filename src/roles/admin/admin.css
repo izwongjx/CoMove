@@ -30,17 +30,6 @@
 .admin-bottom-nav a.active { color: var(--lime); }
 .admin-bottom-nav a.active::before { background: var(--lime); }
 
-@media (min-width: 768px) {
-  .admin-stats-grid { grid-template-columns: repeat(2, 1fr); }
-  .approval-grid { grid-template-columns: repeat(2, 1fr); }
-  .rewards-admin-grid { grid-template-columns: repeat(3, 1fr); }
-  .analytics-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
-  .preset-grid { grid-template-columns: repeat(6, 1fr); }
-}
-@media (min-width: 1024px) {
-  .admin-stats-grid { grid-template-columns: repeat(4, 1fr); }
-}
-
 /* --- Dashboard Shared (used by admin) --- */
 .dashboard-main {
   padding: 24px 16px 96px;
