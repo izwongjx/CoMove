@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoRide - Rider Dashboard</title>
+  <link rel="stylesheet" href="../../public-assets/css/style.css">
+  <link rel="stylesheet" href="rider.css">
+</head>
+
+<body>
+  <!-- TOP NAV -->
+  <nav class="top-nav rider-nav-bg">
+    <div class="nav-inner">
+      <a href="../../../index.html" class="logo">ECO<span class="text-lime">RIDE</span></a>
+      <div class="nav-items">
+        <a href="dashboard.html" class="nav-item active"><span data-icon="home" data-icon-size="16"></span>
+          Dashboard</a>
+        <a href="find-rides.html" class="nav-item"><span data-icon="search" data-icon-size="16"></span> Find Rides</a>
+        <a href="my-trips.html" class="nav-item"><span data-icon="map" data-icon-size="16"></span> My Trips</a>
+        <a href="friends.html" class="nav-item"><span data-icon="users" data-icon-size="16"></span> Friends</a>
+        <a href="rewards.html" class="nav-item"><span data-icon="gift" data-icon-size="16"></span> Rewards</a>
+        <a href="profile.html" class="nav-item"><span data-icon="user" data-icon-size="16"></span> Profile</a>
+      </div>
+      <div class="nav-actions">
+        <a href="../../../index.html" class="nav-logout" title="Log out"><span data-icon="log-out"
+            data-icon-size="20"></span></a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="dashboard-main">
+    <div class="dash-container">
+      <div class="dash-welcome">
+        <div>
+          <h1 class="dash-title">Ready to <span class="text-forest">Ride?</span></h1>
+          <p class="dash-subtitle">Find a sustainable ride for your next journey.</p>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="rider-stats-grid">
+        <div class="rider-stat-card stat-dark">
+          <div class="stat-bg-icon"><span data-icon="wallet" data-icon-size="80"></span></div>
+          <p class="stat-small-label">Money Saved</p>
+          <div class="stat-big-value text-lime">$84.50</div>
+          <p class="stat-note">Compared to solo driving</p>
+        </div>
+        <div class="rider-stat-card stat-light">
+          <div class="stat-bg-icon"><span data-icon="car" data-icon-size="80"></span></div>
+          <p class="stat-small-label">Total Rides</p>
+          <div class="stat-big-value">18</div>
+          <p class="stat-note">342 miles shared</p>
+        </div>
+      </div>
+
+      <!-- Ongoing Trip -->
+      <div class="section-block">
+        <div class="section-header">
+          <div class="section-icon yellow-bg"><span data-icon="navigation" data-icon-size="18"></span></div>
+          <h2>Ongoing Trip</h2>
+          <span class="badge badge-yellow animate-pulse">Live</span>
+        </div>
+
+        <div class="ongoing-card">
+          <div class="status-bar">
+            <div class="flex items-center gap-2">
+              <div class="pulse-dot"></div> On the way
+            </div>
+            <span>ETA 2:55 PM</span>
+          </div>
+          <div class="ongoing-body">
+            <div class="ongoing-route">
+              <strong>University Campus</strong>
+              <span data-icon="arrow-right" data-icon-size="18"></span>
+              <strong>Tech Park</strong>
+            </div>
+            <div class="ongoing-info">
+              <span><span data-icon="clock" data-icon-size="14"></span> Started 2:15 PM</span>
+              <span><strong>$5.50</strong></span>
+            </div>
+            <div class="ongoing-details" id="ongoingDetails" style="display:none;">
+              <div class="detail-card">
+                <div class="detail-label">Your Driver</div>
+                <div class="detail-row">
+                  <div class="avatar avatar-md" style="background:var(--forest);color:var(--lime);">JW</div>
+                  <div>
+                    <div class="font-bold">James Wilson</div>
+                    <div class="text-xs text-gray-500"><span data-icon="star-filled" data-icon-size="12"
+                        style="color:var(--yellow-400);"></span> <strong>4.8</strong></div>
+                  </div>
+                </div>
+              </div>
+              <div class="detail-card">
+                <div class="detail-row">
+                  <span data-icon="car" data-icon-size="18"></span>
+                  <div>
+                    <div class="detail-label">Vehicle</div>
+                    <div class="font-bold text-sm">Toyota Camry &bull; SGX-1234</div>
+                  </div>
+                </div>
+              </div>
+              <div class="detail-card">
+                <div class="progress-track">
+                  <div>
+                    <div class="detail-label">Departed</div>
+                    <div class="font-bold">2:15 PM</div>
+                  </div>
+                  <div class="progress-bar-line">
+                    <div class="progress-fill" style="width:65%;"></div>
+                  </div>
+                  <div class="text-right">
+                    <div class="detail-label">ETA</div>
+                    <div class="font-bold">2:55 PM</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-primary btn-full btn-sm" id="toggleOngoing">View Trip Details</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Available Rides -->
+      <div class="section-block">
+        <div class="section-header">
+          <h2>Available Rides</h2>
+          <a href="find-rides.html" class="text-sm text-forest font-bold" style="margin-left:auto;">View All</a>
+        </div>
+        <div class="search-bar-card">
+          <div class="search-row">
+            <div class="input-wrapper"><span data-icon="map-pin" data-icon-size="18" class="input-icon"></span><input
+                type="text" class="form-input form-input-icon" placeholder="From" id="searchFrom"></div>
+            <div class="input-wrapper"><span data-icon="map-pin" data-icon-size="18" class="input-icon"
+                style="color:var(--lime);"></span><input type="text" class="form-input form-input-icon" placeholder="To"
+                id="searchTo"></div>
+          </div>
+          <button class="btn btn-primary"><span data-icon="search" data-icon-size="18"></span> Search Rides</button>
+        </div>
+        <div class="rides-grid" id="availableRidesGrid"></div>
+      </div>
+
+      <!-- Upcoming Rides -->
+      <div class="section-block">
+        <div class="section-header">
+          <h2>Your Upcoming Rides</h2>
+          <span class="text-sm text-gray-500 font-bold">2 rides booked</span>
+        </div>
+        <div class="rides-grid" id="upcomingRidesGrid"></div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="section-block">
+        <h2 class="section-title">Recent Activity</h2>
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="avatar avatar-sm" style="background:rgba(196,245,71,0.2);color:var(--forest);">JD</div>
+            <div class="flex-1">
+              <div class="font-bold text-sm">Ride with John Doe</div>
+              <div class="text-xs text-gray-500">Campus to Downtown &bull; 2 days ago</div>
+            </div>
+            <div class="font-bold text-sm text-forest">-$4.50</div>
+          </div>
+          <div class="activity-item">
+            <div class="avatar avatar-sm" style="background:rgba(196,245,71,0.2);color:var(--forest);">SC</div>
+            <div class="flex-1">
+              <div class="font-bold text-sm">Ride with Sarah Chen</div>
+              <div class="text-xs text-gray-500">Mall to Campus &bull; 4 days ago</div>
+            </div>
+            <div class="font-bold text-sm text-forest">-$3.00</div>
+          </div>
+          <div class="activity-item">
+            <div class="avatar avatar-sm" style="background:rgba(196,245,71,0.2);color:var(--forest);">MJ</div>
+            <div class="flex-1">
+              <div class="font-bold text-sm">Ride with Mike Johnson</div>
+              <div class="text-xs text-gray-500">Station to Park &bull; 1 week ago</div>
+            </div>
+            <div class="font-bold text-sm text-forest">-$5.00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- BOTTOM NAV (Mobile) -->
+  <nav class="bottom-nav rider-nav-bg" style="border-color:rgba(255,255,255,0.1);">
+    <a href="dashboard.html" class="active"><span data-icon="home" data-icon-size="24"></span></a>
+    <a href="find-rides.html"><span data-icon="search" data-icon-size="24"></span></a>
+    <a href="my-trips.html"><span data-icon="map" data-icon-size="24"></span></a>
+    <a href="friends.html"><span data-icon="users" data-icon-size="24"></span></a>
+    <a href="rewards.html"><span data-icon="gift" data-icon-size="24"></span></a>
+    <a href="profile.html"><span data-icon="user" data-icon-size="24"></span></a>
+  </nav>
+
+  <!-- Ride Request Modal -->
+  <div class="modal-overlay" id="rideRequestModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="font-bold text-lg">Request Ride</h3>
+        <button class="modal-close" data-close-modal="rideRequestModal"><span data-icon="x"
+            data-icon-size="20"></span></button>
+      </div>
+      <div class="modal-body" id="rideModalBody"></div>
+    </div>
+  </div>
+
+  <!-- View Ride Modal -->
+  <div class="modal-overlay" id="viewRideModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="font-bold text-lg">Ride Details</h3>
+        <button class="modal-close" data-close-modal="viewRideModal"><span data-icon="x"
+            data-icon-size="20"></span></button>
+      </div>
+      <div class="modal-body" id="viewRideModalBody"></div>
+    </div>
+  </div>
+
+  <script src="../../public-assets/js/script.js"></script>
+  <script src="rider.js"></script>
+</body>
+
+</html>

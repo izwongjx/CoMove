@@ -1,0 +1,74 @@
+/* ============================================
+   ECORIDE - Auth Pages Styles
+   (Copied to src/ - identical content)
+   ============================================ */
+
+.auth-layout { min-height: 100vh; width: 100%; display: flex; flex-direction: column; background: var(--white); }
+.auth-visual { display: none; width: 50%; position: relative; overflow: hidden; align-items: center; justify-content: center; padding: 48px; }
+.auth-visual-bg { position: absolute; inset: 0; }
+.auth-visual-bg img { width: 100%; height: 100%; object-fit: cover; opacity: 0.4; mix-blend-mode: overlay; }
+.auth-visual-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(15,42,29,0.6), rgba(0,0,0,0.4)); }
+.auth-visual-content { position: relative; z-index: 10; max-width: 480px; }
+.auth-visual-content h2 { font-size: 48px; font-weight: 900; color: var(--white); font-family: var(--font-display); line-height: 1; margin-bottom: 24px; }
+.auth-visual-content h2 span { color: var(--lime); }
+.auth-visual-content p { font-size: 20px; color: rgba(255,255,255,0.8); line-height: 1.6; }
+.auth-form-panel { width: 100%; display: flex; flex-direction: column; padding: 24px 24px 16px; background: var(--white); position: relative; }
+.back-link { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--gray-500); transition: color 0.2s; flex-shrink: 0; margin-bottom: 24px; }
+.back-link:hover { color: var(--black); }
+.back-step-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--gray-500); background: none; border: none; cursor: pointer; padding: 0; margin-bottom: 16px; transition: color 0.2s; }
+.back-step-link:hover { color: var(--black); }
+.auth-form-wrapper { flex: 1; display: flex; flex-direction: column; justify-content: center; max-width: 448px; margin: 0 auto; width: 100%; }
+.auth-header { margin-bottom: 32px; }
+.auth-header h1 { font-size: 30px; font-weight: 900; color: var(--black); font-family: var(--font-display); text-transform: uppercase; letter-spacing: -0.025em; margin-bottom: 8px; }
+.auth-header p { color: var(--gray-500); font-size: 16px; }
+.role-toggle { display: flex; background: var(--gray-100); padding: 4px; border-radius: 8px; margin-bottom: 32px; }
+.role-btn { flex: 1; padding: 8px; font-size: 13px; font-weight: 700; border-radius: 6px; transition: all 0.2s; color: var(--gray-500); background: transparent; border: none; cursor: pointer; }
+.role-btn:hover { color: var(--gray-700); }
+.role-btn.active[data-role="rider"] { background: var(--white); color: var(--black); box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+.role-btn.active[data-role="driver"] { background: var(--black); color: var(--white); box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+.form-label-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.form-label-row .form-label { margin-bottom: 0; }
+.forgot-link { font-size: 12px; font-weight: 700; color: var(--forest); }
+.forgot-link:hover { text-decoration: underline; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.auth-footer-text { text-align: center; margin-top: 24px; }
+.auth-footer-text p { color: var(--gray-500); }
+.auth-footer-text a { color: var(--black); }
+.auth-footer-text a:hover { text-decoration: underline; }
+.role-cards { display: flex; flex-direction: column; gap: 12px; }
+.role-card { display: flex; align-items: center; gap: 16px; padding: 16px 20px; border: 2px solid var(--gray-100); border-radius: 12px; background: var(--white); cursor: pointer; transition: all 0.2s; width: 100%; text-align: left; }
+.role-card:hover { transform: scale(1.02); }
+.role-card-icon { width: 48px; height: 48px; border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+.rider-icon { background: rgba(196,245,71,0.2); color: var(--forest); }
+.role-card:hover .rider-icon { background: var(--lime); color: var(--black); }
+.driver-icon { background: rgba(0,0,0,0.05); color: var(--black); }
+.role-card:hover .driver-icon { background: var(--black); color: var(--white); }
+.role-card-label { flex: 1; font-size: 18px; font-weight: 900; color: var(--black); }
+.role-card-arrow { color: var(--gray-300); transition: color 0.2s; }
+.role-card:hover .role-card-arrow { color: var(--black); }
+.driver-step-counter { font-size: 12px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
+.register-step { display: none; }
+.register-step.active { display: block; animation: fadeIn 0.3s ease; }
+.driver-step { display: none; min-height: 360px; }
+.driver-step.active { display: block; animation: slideInRight 0.3s ease; }
+.step-title { font-size: 20px; font-weight: 700; margin-bottom: 24px; }
+.driver-nav-buttons { display: flex; gap: 12px; padding-top: 16px; border-top: 1px solid var(--gray-100); margin-top: 16px; }
+.otp-inputs { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 32px; }
+.otp-input { width: 48px; height: 56px; text-align: center; font-size: 24px; font-weight: 700; background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 8px; transition: all 0.2s; }
+.otp-input:focus { outline: none; box-shadow: 0 0 0 2px var(--lime); border-color: transparent; }
+.otp-resend { text-align: center; margin-bottom: 32px; }
+.otp-resend p { font-size: 14px; color: var(--gray-500); margin-bottom: 8px; }
+.resend-link { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: var(--forest); background: none; border: none; cursor: pointer; }
+.resend-link:disabled { color: var(--gray-400); cursor: not-allowed; }
+.file-upload.uploaded .file-upload-text { color: var(--forest); }
+@media (min-width: 768px) {
+  .auth-layout { flex-direction: row; }
+  .auth-visual { display: flex; }
+  .auth-form-panel { width: 50%; padding: 48px; }
+  .back-link { position: absolute; top: 32px; left: 32px; margin-bottom: 0; }
+  .auth-header h1 { font-size: 36px; }
+  .auth-header p { font-size: 18px; }
+}
+@media (min-width: 1024px) {
+  .auth-form-panel { padding: 96px; }
+}

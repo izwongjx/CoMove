@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoRide - Friends</title>
+  <link rel="stylesheet" href="../../public-assets/css/style.css">
+  <link rel="stylesheet" href="rider.css">
+</head>
+
+<body>
+  <!-- TOP NAV -->
+  <nav class="top-nav rider-nav-bg">
+    <div class="nav-inner">
+      <a href="../../../index.html" class="logo">ECO<span class="text-lime">RIDE</span></a>
+      <div class="nav-items">
+        <a href="dashboard.html" class="nav-item"><span data-icon="home" data-icon-size="16"></span> Dashboard</a>
+        <a href="find-rides.html" class="nav-item"><span data-icon="search" data-icon-size="16"></span> Find Rides</a>
+        <a href="my-trips.html" class="nav-item"><span data-icon="map" data-icon-size="16"></span> My Trips</a>
+        <a href="friends.html" class="nav-item active"><span data-icon="users" data-icon-size="16"></span> Friends</a>
+        <a href="rewards.html" class="nav-item"><span data-icon="gift" data-icon-size="16"></span> Rewards</a>
+        <a href="profile.html" class="nav-item"><span data-icon="user" data-icon-size="16"></span> Profile</a>
+      </div>
+      <div class="nav-actions">
+        <a href="../../../index.html" class="nav-logout" title="Log out"><span data-icon="log-out"
+            data-icon-size="20"></span></a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="dashboard-main">
+    <div class="dash-container">
+      <h1 class="page-title">Friends</h1>
+      <p class="page-subtitle">Connect with other riders</p>
+
+      <div class="friends-tabs">
+        <button class="friends-tab active" data-ftab="myFriends">My Friends</button>
+        <button class="friends-tab" data-ftab="requests">Requests <span class="badge badge-red"
+            style="margin-left:4px;">2</span></button>
+      </div>
+      <div class="friends-content">
+        <div id="myFriends" class="friends-panel active">
+          <div class="friends-grid" id="friendsGrid"></div>
+        </div>
+        <div id="requests" class="friends-panel">
+          <div id="requestsList"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- BOTTOM NAV (Mobile) -->
+  <nav class="bottom-nav rider-nav-bg" style="border-color:rgba(255,255,255,0.1);">
+    <a href="dashboard.html"><span data-icon="home" data-icon-size="24"></span></a>
+    <a href="find-rides.html"><span data-icon="search" data-icon-size="24"></span></a>
+    <a href="my-trips.html"><span data-icon="map" data-icon-size="24"></span></a>
+    <a href="friends.html" class="active"><span data-icon="users" data-icon-size="24"></span></a>
+    <a href="rewards.html"><span data-icon="gift" data-icon-size="24"></span></a>
+    <a href="profile.html"><span data-icon="user" data-icon-size="24"></span></a>
+  </nav>
+
+  <script src="../../public-assets/js/script.js"></script>
+  <script src="rider.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoRide - Admin Profile</title>
+  <link rel="stylesheet" href="../../public-assets/css/style.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+  <nav class="top-nav admin-nav-bg">
+    <div class="nav-inner">
+      <a href="../../../index.html" class="logo">ECO<span class="text-lime">RIDE</span> <span
+          class="admin-badge">Admin</span></a>
+      <div class="nav-items">
+        <a href="dashboard.html" class="nav-item"><span data-icon="layout-dashboard" data-icon-size="16"></span>
+          Overview</a>
+        <a href="users.html" class="nav-item"><span data-icon="users" data-icon-size="16"></span> Users</a>
+        <a href="rewards.html" class="nav-item"><span data-icon="gift" data-icon-size="16"></span> Rewards</a>
+        <a href="logs.html" class="nav-item"><span data-icon="activity" data-icon-size="16"></span> Logs</a>
+        <a href="analytics.html" class="nav-item"><span data-icon="bar-chart" data-icon-size="16"></span> Analytics</a>
+        <a href="settings.html" class="nav-item"><span data-icon="settings" data-icon-size="16"></span> Settings</a>
+        <a href="profile.html" class="nav-item active"><span data-icon="user" data-icon-size="16"></span> Profile</a>
+      </div>
+      <a href="../../../index.html" class="nav-logout"><span data-icon="log-out" data-icon-size="20"></span></a>
+    </div>
+  </nav>
+  <main class="dashboard-main">
+    <div class="dash-container">
+      <h1 class="page-title">Admin Profile</h1>
+      <p class="page-subtitle">Manage your account and preferences</p>
+      <div class="grid md-grid-2 gap-6">
+        <div>
+          <div class="card p-6 mb-6 text-center">
+            <div class="avatar avatar-xl" style="background:var(--black);color:var(--white);margin:0 auto 16px;">SA
+            </div>
+            <h2 class="text-xl font-black">System Admin</h2>
+            <p class="text-gray-500 text-sm mb-4">admin@ecoride.com</p>
+            <div class="flex justify-center gap-2"><span class="badge badge-black">Super Admin</span><span
+                class="badge badge-green">Active</span></div>
+          </div>
+          <div class="admin-stats-grid" style="grid-template-columns:repeat(3,1fr);" id="adminProfileStats"></div>
+        </div>
+        <div class="card" id="adminRecentActivity"></div>
+        <div class="card p-6" style="grid-column:1/-1;">
+          <div id="notifPrefs"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <nav class="bottom-nav admin-bottom-nav">
+    <a href="dashboard.html"><span data-icon="layout-dashboard" data-icon-size="24"></span></a>
+    <a href="users.html"><span data-icon="users" data-icon-size="24"></span></a>
+    <a href="rewards.html"><span data-icon="gift" data-icon-size="24"></span></a>
+    <a href="logs.html"><span data-icon="activity" data-icon-size="24"></span></a>
+    <a href="analytics.html"><span data-icon="bar-chart" data-icon-size="24"></span></a>
+    <a href="settings.html"><span data-icon="settings" data-icon-size="24"></span></a>
+    <a href="profile.html" class="active"><span data-icon="user" data-icon-size="24"></span></a>
+  </nav>
+  <script src="../../public-assets/js/script.js"></script>
+  <script src="admin.js"></script>
+</body>
+
+</html>

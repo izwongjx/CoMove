@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoRide - Vehicle Info</title>
+  <link rel="stylesheet" href="../../public-assets/css/style.css">
+  <link rel="stylesheet" href="driver.css">
+</head>
+
+<body>
+  <nav class="top-nav driver-nav-bg">
+    <div class="nav-inner">
+      <a href="../../../index.html" class="logo">ECO<span class="text-lime">RIDE</span></a>
+      <div class="nav-items">
+        <a href="dashboard.html" class="nav-item"><span data-icon="home" data-icon-size="16"></span> Dashboard</a>
+        <a href="my-rides.html" class="nav-item"><span data-icon="car" data-icon-size="16"></span> My Rides</a>
+        <a href="earnings.html" class="nav-item"><span data-icon="dollar-sign" data-icon-size="16"></span> Earnings</a>
+        <a href="vehicle.html" class="nav-item active"><span data-icon="file-text" data-icon-size="16"></span>
+          Vehicle</a>
+        <a href="profile.html" class="nav-item"><span data-icon="user" data-icon-size="16"></span> Profile</a>
+      </div>
+      <div class="nav-actions"><a href="../../../index.html" class="nav-logout" title="Log out"><span
+            data-icon="log-out" data-icon-size="20"></span></a></div>
+    </div>
+  </nav>
+
+  <main class="dashboard-main">
+    <div class="dash-container">
+      <h1 class="page-title">Vehicle Information</h1>
+      <p class="page-subtitle">Manage your vehicle details and documents</p>
+
+      <div class="card p-6 mb-6">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="section-title mb-0">Vehicle Details</h2><span class="badge badge-lime">Verified</span>
+        </div>
+        <div class="grid grid-2 gap-6">
+          <div class="form-group"><label class="form-label">Vehicle Make</label>
+            <div class="font-bold text-lg">Toyota</div>
+          </div>
+          <div class="form-group"><label class="form-label">Vehicle Model</label>
+            <div class="font-bold text-lg">Prius</div>
+          </div>
+          <div class="form-group"><label class="form-label">Year</label>
+            <div class="font-bold text-lg">2022</div>
+          </div>
+          <div class="form-group"><label class="form-label">Color</label>
+            <div class="font-bold text-lg">Silver</div>
+          </div>
+          <div class="form-group"><label class="form-label">License Plate</label>
+            <div class="font-bold text-lg font-mono">ABC-1234</div>
+          </div>
+          <div class="form-group"><label class="form-label">Capacity</label>
+            <div class="font-bold text-lg">4 Passengers</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card p-6">
+        <h2 class="section-title">Documents</h2>
+        <div class="grid grid-2 gap-4">
+          <div class="p-4 border border-gray-200 rounded-lg flex items-center justify-between">
+            <div class="flex items-center gap-3"><span data-icon="file-text" class="text-gray-400"></span>
+              <div>
+                <div class="font-bold text-sm">Driver's License</div>
+                <div class="text-xs text-green-600">Expires Dec 2025</div>
+              </div>
+            </div>
+            <span class="badge badge-green">Valid</span>
+          </div>
+          <div class="p-4 border border-gray-200 rounded-lg flex items-center justify-between">
+            <div class="flex items-center gap-3"><span data-icon="shield" class="text-gray-400"></span>
+              <div>
+                <div class="font-bold text-sm">Insurance Policy</div>
+                <div class="text-xs text-green-600">Expires Aug 2024</div>
+              </div>
+            </div>
+            <span class="badge badge-green">Valid</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <nav class="bottom-nav driver-bottom-nav">
+    <a href="dashboard.html"><span data-icon="home" data-icon-size="24"></span></a>
+    <a href="my-rides.html"><span data-icon="car" data-icon-size="24"></span></a>
+    <a href="earnings.html"><span data-icon="dollar-sign" data-icon-size="24"></span></a>
+    <a href="vehicle.html" class="active"><span data-icon="file-text" data-icon-size="24"></span></a>
+    <a href="profile.html"><span data-icon="user" data-icon-size="24"></span></a>
+  </nav>
+
+  <script src="../../public-assets/js/script.js"></script>
+  <script src="driver.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoRide - Rider Profile</title>
+  <link rel="stylesheet" href="../../public-assets/css/style.css">
+  <link rel="stylesheet" href="rider.css">
+</head>
+
+<body>
+  <nav class="top-nav rider-nav-bg">
+    <div class="nav-inner">
+      <a href="../../../index.html" class="logo">ECO<span class="text-lime">RIDE</span></a>
+      <div class="nav-items">
+        <a href="dashboard.html" class="nav-item"><span data-icon="home" data-icon-size="16"></span> Dashboard</a>
+        <a href="find-rides.html" class="nav-item"><span data-icon="search" data-icon-size="16"></span> Find Rides</a>
+        <a href="my-trips.html" class="nav-item"><span data-icon="map" data-icon-size="16"></span> My Trips</a>
+        <a href="friends.html" class="nav-item"><span data-icon="users" data-icon-size="16"></span> Friends</a>
+        <a href="rewards.html" class="nav-item"><span data-icon="gift" data-icon-size="16"></span> Rewards</a>
+        <a href="profile.html" class="nav-item active"><span data-icon="user" data-icon-size="16"></span> Profile</a>
+      </div>
+      <div class="nav-actions"><a href="../../../index.html" class="nav-logout" title="Log out"><span
+            data-icon="log-out" data-icon-size="20"></span></a></div>
+    </div>
+  </nav>
+
+  <main class="dashboard-main">
+    <div class="dash-container">
+      <h1 class="page-title">My Profile</h1>
+      <p class="page-subtitle">Manage your account and view your impact</p>
+
+      <div class="profile-layout">
+        <div class="profile-card-col">
+          <div class="profile-card">
+            <div class="avatar avatar-xl" style="background:var(--gray-200);color:var(--gray-400);margin:0 auto 16px;">
+              <span data-icon="user" data-icon-size="32"></span>
+            </div>
+            <h2 class="text-xl font-black text-center">Alex Thompson</h2>
+            <p class="text-gray-500 text-center text-sm mb-4">Student &bull; University of Arts</p>
+            <div class="profile-info">
+              <div class="profile-info-row"><span data-icon="mail" data-icon-size="16"></span> alex.t@university.edu
+              </div>
+              <div class="profile-info-row"><span data-icon="phone" data-icon-size="16"></span> +1 (555) 123-4567</div>
+              <div class="profile-info-row"><span data-icon="map-pin" data-icon-size="16"></span> Campus Dorm A, Room
+                302</div>
+            </div>
+            <div class="social-links">
+              <a href="#" class="social-tag">Instagram</a>
+              <a href="#" class="social-tag">Twitter</a>
+              <button class="social-tag social-add">+ Add</button>
+            </div>
+            <button class="btn btn-outline btn-full mt-4">Edit Profile</button>
+          </div>
+        </div>
+        <div class="profile-points-col">
+          <div class="green-points-card">
+            <div class="gp-bg"><span data-icon="leaf" data-icon-size="160"></span></div>
+            <div class="gp-content">
+              <div class="gp-label"><span data-icon="leaf" data-icon-size="20"></span> Green Points Balance</div>
+              <div class="gp-value">1,250</div>
+              <div class="gp-buttons">
+                <a href="rewards.html" class="btn btn-lime">Redeem Rewards</a>
+                <button class="btn"
+                  style="background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.1);">How to
+                  Earn</button>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="padding:24px;">
+            <div class="flex items-center gap-2 mb-4"><span data-icon="history" data-icon-size="18"
+                style="color:var(--gray-400);"></span>
+              <h3 class="font-bold text-lg uppercase">Earning History</h3>
+            </div>
+            <div class="earning-list">
+              <div class="earning-item">
+                <div class="earning-icon"><span data-icon="trending-up" data-icon-size="18"></span></div>
+                <div class="flex-1">
+                  <div class="font-bold">Shared Ride to Downtown</div>
+                  <div class="text-xs text-gray-500">Today, 9:30 AM</div>
+                </div>
+                <div class="font-black text-forest text-lg">+50</div>
+              </div>
+              <div class="earning-item">
+                <div class="earning-icon"><span data-icon="trending-up" data-icon-size="18"></span></div>
+                <div class="flex-1">
+                  <div class="font-bold">Referral Bonus</div>
+                  <div class="text-xs text-gray-500">Yesterday</div>
+                </div>
+                <div class="font-black text-forest text-lg">+100</div>
+              </div>
+              <div class="earning-item">
+                <div class="earning-icon"><span data-icon="trending-up" data-icon-size="18"></span></div>
+                <div class="flex-1">
+                  <div class="font-bold">Shared Ride to Campus</div>
+                  <div class="text-xs text-gray-500">Dec 12</div>
+                </div>
+                <div class="font-black text-forest text-lg">+45</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <nav class="bottom-nav rider-nav-bg" style="border-color:rgba(255,255,255,0.1);">
+    <a href="dashboard.html"><span data-icon="home" data-icon-size="24"></span></a>
+    <a href="find-rides.html"><span data-icon="search" data-icon-size="24"></span></a>
+    <a href="my-trips.html"><span data-icon="map" data-icon-size="24"></span></a>
+    <a href="friends.html"><span data-icon="users" data-icon-size="24"></span></a>
+    <a href="rewards.html"><span data-icon="gift" data-icon-size="24"></span></a>
+    <a href="profile.html" class="active"><span data-icon="user" data-icon-size="24"></span></a>
+  </nav>
+
+  <script src="../../public-assets/js/script.js"></script>
+  <script src="rider.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoRide - Driver Dashboard</title>
+  <link rel="stylesheet" href="../../public-assets/css/style.css">
+  <link rel="stylesheet" href="driver.css">
+</head>
+
+<body>
+  <nav class="top-nav driver-nav-bg">
+    <div class="nav-inner">
+      <a href="../../../index.html" class="logo">ECO<span class="text-lime">RIDE</span></a>
+      <div class="nav-items">
+        <a href="dashboard.html" class="nav-item active"><span data-icon="home" data-icon-size="16"></span>
+          Dashboard</a>
+        <a href="my-rides.html" class="nav-item"><span data-icon="car" data-icon-size="16"></span> My Rides</a>
+        <a href="earnings.html" class="nav-item"><span data-icon="dollar-sign" data-icon-size="16"></span> Earnings</a>
+        <a href="vehicle.html" class="nav-item"><span data-icon="file-text" data-icon-size="16"></span> Vehicle</a>
+        <a href="profile.html" class="nav-item"><span data-icon="user" data-icon-size="16"></span> Profile</a>
+      </div>
+      <div class="nav-actions"><a href="../../../index.html" class="nav-logout" title="Log out"><span
+            data-icon="log-out" data-icon-size="20"></span></a></div>
+    </div>
+  </nav>
+
+  <main class="dashboard-main">
+    <div class="dash-container">
+      <div class="flex justify-between items-start flex-wrap gap-4 mb-6">
+        <div>
+          <h1 class="dash-title">Driver <span class="lime-box">Dashboard</span></h1>
+          <p class="dash-subtitle">Manage your rides and track your earnings.</p>
+        </div>
+        <button class="btn btn-primary btn-round btn-lg" onclick="openModal('createTripModal')"><span data-icon="plus"
+            data-icon-size="18"></span> OFFER A RIDE</button>
+      </div>
+
+      <div class="driver-stats-grid">
+        <div class="driver-stat lime-stat">
+          <p class="stat-small-label" style="color:var(--forest);">Passengers Helped</p>
+          <div class="stat-big-value">42</div>
+          <p class="stat-note" style="color:rgba(15,42,29,0.7);">Community members transported</p>
+        </div>
+        <div class="driver-stat white-stat">
+          <p class="stat-small-label">Total Earnings</p>
+          <div class="stat-big-value">$320.50</div>
+          <p class="stat-note">Fuel costs shared</p>
+        </div>
+      </div>
+
+      <div class="section-block" id="ongoingTripsSection">
+        <div class="section-header">
+          <div class="section-icon yellow-bg"><span data-icon="activity" data-icon-size="18"></span></div>
+          <h2>Ongoing Trips</h2><span class="badge badge-yellow">2 Active</span>
+        </div>
+        <div id="ongoingTripsContainer"></div>
+      </div>
+
+      <div class="section-block" id="requestsSection">
+        <div class="section-header">
+          <div class="section-icon" style="background:var(--red-100);color:var(--red-600);"><span data-icon="bell"
+              data-icon-size="18"></span></div>
+          <h2>Incoming Requests</h2><span class="badge badge-red" id="requestCount">2</span>
+        </div>
+        <div class="requests-grid" id="requestsGrid"></div>
+      </div>
+
+      <div class="section-block">
+        <h2 class="section-title">Your Offered Rides</h2>
+        <div id="offeredRidesContainer"></div>
+      </div>
+
+      <div class="vehicle-status-card">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-bold text-lg" style="color:white;">My Vehicle</h3><span
+            class="badge badge-lime">VERIFIED</span>
+        </div>
+        <div class="vehicle-info">
+          <div>
+            <p class="vehicle-label">Model</p>
+            <p class="vehicle-value">Toyota Prius 2022</p>
+          </div>
+          <div>
+            <p class="vehicle-label">License Plate</p>
+            <p class="vehicle-value font-mono" style="letter-spacing:0.1em;">ABC-1234</p>
+          </div>
+          <div>
+            <p class="vehicle-label">Documents</p>
+            <div class="flex items-center gap-2 mt-1" style="color:var(--lime);font-size:13px;font-weight:500;">
+              <div class="pulse-dot" style="background:var(--lime);width:8px;height:8px;"></div> All documents up to
+              date
+            </div>
+          </div>
+        </div>
+        <a href="vehicle.html" class="btn btn-full"
+          style="background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.1);padding:10px;text-align:center;">Update
+          Vehicle Info</a>
+      </div>
+    </div>
+  </main>
+
+  <nav class="bottom-nav driver-bottom-nav">
+    <a href="dashboard.html" class="active"><span data-icon="home" data-icon-size="24"></span></a>
+    <a href="my-rides.html"><span data-icon="car" data-icon-size="24"></span></a>
+    <a href="earnings.html"><span data-icon="dollar-sign" data-icon-size="24"></span></a>
+    <a href="vehicle.html"><span data-icon="file-text" data-icon-size="24"></span></a>
+    <a href="profile.html"><span data-icon="user" data-icon-size="24"></span></a>
+  </nav>
+
+  <div class="modal-overlay" id="createTripModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="font-bold text-lg">Create New Ride</h3><button class="modal-close"
+          data-close-modal="createTripModal"><span data-icon="x" data-icon-size="20"></span></button>
+      </div>
+      <div class="modal-body">
+        <form id="createTripForm">
+          <div class="form-group"><label class="form-label">From</label><input type="text" class="form-input"
+              name="from" placeholder="University Campus" required></div>
+          <div class="form-group"><label class="form-label">To</label><input type="text" class="form-input" name="to"
+              placeholder="Downtown Mall" required></div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-input"
+                name="date" required></div>
+            <div class="form-group"><label class="form-label">Time</label><input type="time" class="form-input"
+                name="time" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Available Seats</label><input type="number"
+                class="form-input" name="seats" min="1" max="6" value="4" required></div>
+            <div class="form-group"><label class="form-label">Price ($)</label><input type="number" class="form-input"
+                name="price" step="0.50" min="1" value="20" required></div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full btn-lg" style="margin-top:8px;">Create Ride</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../public-assets/js/script.js"></script>
+  <script src="driver.js"></script>
+</body>
+
+</html>
