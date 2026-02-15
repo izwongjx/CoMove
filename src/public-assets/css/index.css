@@ -1,6 +1,5 @@
 /* ============================================
    ECORIDE - Landing Page Styles
-   (Moved to src/public-assets/css/)
    ============================================ */
 .hero {
    position: relative;
@@ -433,7 +432,7 @@
    content: '';
    position: absolute;
    inset: 0;
-   background: url('https://www.transparenttextures.com/patterns/cubes.png');
+   background: url('../images/landing-bg.avif');
    opacity: 0.1;
    mix-blend-mode: multiply;
 }

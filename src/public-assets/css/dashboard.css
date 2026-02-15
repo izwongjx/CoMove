@@ -1,0 +1,129 @@
+/* --- Admin Nav Colors --- */
+.admin-nav-bg {
+  background: var(--black);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.admin-badge {
+  display: inline-block;
+  background: var(--lime);
+  color: var(--black);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+.admin-nav-bg .logo { color: var(--white); }
+.admin-nav-bg .nav-item { color: var(--gray-400); }
+.admin-nav-bg .nav-item:hover { color: var(--white); }
+.admin-nav-bg .nav-item.active { color: var(--lime); background: rgba(255,255,255,0.1); }
+.admin-nav-bg .nav-logout { color: var(--gray-400); }
+.admin-nav-bg .nav-logout:hover { color: var(--white); }
+.admin-bottom-nav { background: var(--black); border-top: 1px solid rgba(255,255,255,0.1); }
+.admin-bottom-nav a { color: var(--gray-400); }
+.admin-bottom-nav a.active { color: var(--lime); }
+.admin-bottom-nav a.active::before { background: var(--lime); }
+
+/* --- Driver Nav Colors --- */
+.driver-nav-bg {
+  background: var(--black);
+  border-color: rgba(255,255,255,0.1);
+}
+.driver-nav-bg .logo { color: var(--white); }
+.driver-nav-bg .nav-item { color: var(--gray-400); }
+.driver-nav-bg .nav-item:hover { color: var(--white); }
+.driver-nav-bg .nav-item.active { color: var(--lime); background: rgba(255,255,255,0.1); }
+.driver-nav-bg .nav-logout { color: var(--gray-400); }
+.driver-nav-bg .nav-logout:hover { color: var(--white); }
+.driver-bottom-nav { background: var(--black); border-color: rgba(255,255,255,0.1); }
+.driver-bottom-nav a { color: var(--gray-400); }
+.driver-bottom-nav a.active { color: var(--lime); }
+.driver-bottom-nav a.active::before { background: var(--lime); }
+/* --- Driver-specific --- */
+.lime-box { color: var(--lime); background: var(--black); padding: 0 8px; }
+.driver-stats-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 24px; }
+.driver-stat { padding: 16px; border-radius: 16px; position: relative; overflow: hidden; }
+.lime-stat { background: var(--lime); color: var(--black); }
+.white-stat { background: var(--white); border: 1px solid var(--gray-200); color: var(--black); }
+.white-stat .stat-small-label { color: var(--gray-500); }
+.white-stat .stat-note { color: var(--gray-500); }
+
+
+/* --- Rider Nav Colors --- */
+.rider-nav-bg {
+  background: var(--black);
+  border-color: rgba(255,255,255,0.1);
+}
+.rider-nav-bg .logo { color: var(--white); }
+.rider-nav-bg .nav-item { color: var(--gray-400); }
+.rider-nav-bg .nav-item:hover { color: var(--white); }
+.rider-nav-bg .nav-item.active { color: var(--lime); background: rgba(255,255,255,0.1); }
+.rider-nav-bg .nav-logout { color: var(--gray-400); }
+.rider-nav-bg .nav-logout:hover { color: var(--white); }
+.bottom-nav.rider-nav-bg { background: var(--black); }
+.bottom-nav.rider-nav-bg a { color: var(--gray-400); }
+.bottom-nav.rider-nav-bg a.active { color: var(--lime); }
+.bottom-nav.rider-nav-bg a.active::before { background: var(--lime); }
+
+
+/* --- Dashboard Layout --- */
+.dashboard-main {
+  padding: 24px 16px 96px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.dash-container { max-width: 1200px; }
+.dash-welcome { margin-bottom: 24px; }
+.dash-title {
+  font-size: 24px;
+  font-weight: 900;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+  margin-bottom: 4px;
+}
+.dash-subtitle { color: var(--gray-500); font-size: 14px; }
+.page-title {
+  font-size: 24px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+  margin-bottom: 4px;
+}
+.page-subtitle { color: var(--gray-500); font-size: 14px; margin-bottom: 24px; }
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+  margin-bottom: 12px;
+}
+.section-block { margin-bottom: 32px; }
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.section-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+}
+.section-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .dashboard-main { padding: 32px 24px 48px; }
+  .dash-title { font-size: 36px; }
+  .page-title { font-size: 30px; }
+}

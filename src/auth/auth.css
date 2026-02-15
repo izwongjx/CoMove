@@ -61,6 +61,11 @@
 .resend-link { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: var(--forest); background: none; border: none; cursor: pointer; }
 .resend-link:disabled { color: var(--gray-400); cursor: not-allowed; }
 .file-upload.uploaded .file-upload-text { color: var(--forest); }
+@media (max-width: 767px) {
+  .auth-visual { display: flex; width: 100%; min-height: 240px; padding: 24px; }
+  .auth-visual-content h2 { font-size: 34px; margin-bottom: 12px; }
+  .auth-visual-content p { font-size: 16px; }
+}
 @media (min-width: 768px) {
   .auth-layout { flex-direction: row; }
   .auth-visual { display: flex; }

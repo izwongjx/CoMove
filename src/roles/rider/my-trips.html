@@ -28,15 +28,12 @@
 
   <main class="dashboard-main">
     <div class="dash-container">
-      <h1 class="page-title">My Trips</h1>
-      <p class="page-subtitle">Your ride history and upcoming trips</p>
-      <div class="rides-grid" id="myTripsGrid"></div>
-      <h2 class="section-title" style="margin-top:32px;">Past Trips</h2>
-      <div id="pastTripsGrid"></div>
+      <h1 class="page-title">Page Title</h1>
+      <p class="page-subtitle">Page Subtitle</p>
     </div>
   </main>
 
-  <nav class="bottom-nav rider-nav-bg" style="border-color:rgba(255,255,255,0.1);">
+  <nav class="bottom-nav rider-nav-bg">
     <a href="dashboard.html"><span data-icon="home" data-icon-size="24"></span></a>
     <a href="find-rides.html"><span data-icon="search" data-icon-size="24"></span></a>
     <a href="my-trips.html" class="active"><span data-icon="map" data-icon-size="24"></span></a>
@@ -44,30 +41,6 @@
     <a href="rewards.html"><span data-icon="gift" data-icon-size="24"></span></a>
     <a href="profile.html"><span data-icon="user" data-icon-size="24"></span></a>
   </nav>
-
-  <div class="modal-overlay" id="viewRideModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="font-bold text-lg">Ride Details</h3><button class="modal-close"
-          data-close-modal="viewRideModal"><span data-icon="x" data-icon-size="20"></span></button>
-      </div>
-      <div class="modal-body" id="viewRideModalBody"></div>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="reviewModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="font-bold text-lg">Rate Your Driver</h3><button class="modal-close"
-          data-close-modal="reviewModal"><span data-icon="x" data-icon-size="20"></span></button>
-      </div>
-      <div class="modal-body">
-        <div class="flex justify-center gap-2 mb-4" id="reviewStars"></div>
-        <textarea id="reviewText" class="form-input mb-4" rows="4" placeholder="How was your ride?"></textarea>
-        <button class="btn btn-primary btn-full" onclick="submitReview()">Submit Review</button>
-      </div>
-    </div>
-  </div>
 
   <script src="../../public-assets/js/script.js"></script>
   <script src="rider.js"></script>

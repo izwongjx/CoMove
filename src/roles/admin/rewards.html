@@ -27,20 +27,14 @@
       <a href="../../../index.html" class="nav-logout"><span data-icon="log-out" data-icon-size="20"></span></a>
     </div>
   </nav>
+  
   <main class="dashboard-main">
     <div class="dash-container">
-      <div class="flex justify-between items-center flex-wrap gap-4 mb-6">
-        <div>
-          <h1 class="page-title">Rewards Management</h1>
-          <p class="page-subtitle">Manage reward catalog and inventory</p>
-        </div>
-        <button class="btn btn-primary" onclick="openModal('rewardModal')"><span data-icon="plus"
-            data-icon-size="18"></span> Add New Reward</button>
-      </div>
-      <div class="admin-stats-grid" style="margin-bottom:24px;" id="rewardStats"></div>
-      <div class="rewards-admin-grid" id="adminRewardsGrid"></div>
+      <h1 class="page-title">Page Title</h1>
+      <p class="page-subtitle">Page Subtitle</p>
     </div>
   </main>
+
   <nav class="bottom-nav admin-bottom-nav">
     <a href="dashboard.html"><span data-icon="layout-dashboard" data-icon-size="24"></span></a>
     <a href="users.html"><span data-icon="users" data-icon-size="24"></span></a>
@@ -50,29 +44,6 @@
     <a href="settings.html"><span data-icon="settings" data-icon-size="24"></span></a>
     <a href="profile.html"><span data-icon="user" data-icon-size="24"></span></a>
   </nav>
-  <div class="modal-overlay" id="rewardModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="font-bold text-lg">Add New Reward</h3><button class="modal-close"
-          data-close-modal="rewardModal"><span data-icon="x" data-icon-size="20"></span></button>
-      </div>
-      <div class="modal-body">
-        <form id="rewardForm">
-          <div class="form-group"><label class="form-label">Reward Name</label><input type="text" class="form-input"
-              name="name" required></div>
-          <div class="form-group"><label class="form-label">Points Required</label><input type="number"
-              class="form-input" name="points" required></div>
-          <div class="form-group"><label class="form-label">Category</label><input type="text" class="form-input"
-              name="category" required></div>
-          <div class="form-group"><label class="form-label">Stock</label><input type="number" class="form-input"
-              name="stock" required></div>
-          <div class="form-group"><label class="form-label">Description</label><input type="text" class="form-input"
-              name="description"></div>
-          <button type="submit" class="btn btn-primary btn-full btn-lg">Save Reward</button>
-        </form>
-      </div>
-    </div>
-  </div>
   <script src="../../public-assets/js/script.js"></script>
   <script src="admin.js"></script>
 </body>

@@ -29,40 +29,15 @@
     </div>
   </nav>
 
+  <!-- MAIN CONTENT -->
   <main class="dashboard-main">
     <div class="dash-container">
-      <h1 class="page-title">Find a Ride</h1>
-      <p class="page-subtitle">Search available rides and travel sustainably</p>
-
-      <div class="search-bar-card">
-        <div class="search-row search-row-3">
-          <div class="input-wrapper"><span data-icon="map-pin" data-icon-size="18" class="input-icon"></span><input
-              type="text" class="form-input form-input-icon" placeholder="From (e.g. Campus)" id="findFrom"></div>
-          <div class="input-wrapper"><span data-icon="map-pin" data-icon-size="18" class="input-icon"
-              style="color:var(--lime);"></span><input type="text" class="form-input form-input-icon"
-              placeholder="To (e.g. Downtown)" id="findTo"></div>
-          <div class="flex gap-2">
-            <button class="btn btn-outline flex-1" id="priceSortBtn"><span data-icon="sliders"
-                data-icon-size="16"></span> Price</button>
-            <button class="btn btn-primary flex-1"><span data-icon="search" data-icon-size="16"></span> Search</button>
-          </div>
-        </div>
-        <div class="date-tabs" id="dateTabs">
-          <button class="date-tab active" data-date="All">All</button>
-          <button class="date-tab" data-date="Today">Today</button>
-          <button class="date-tab" data-date="Tomorrow">Tomorrow</button>
-          <button class="date-tab" data-date="This Week">This Week</button>
-        </div>
-      </div>
-
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-lg font-bold uppercase" id="ridesCount">5 Rides Available</h2>
-      </div>
-      <div class="rides-grid" id="findRidesGrid"></div>
+      <h1 class="page-title">Page Title</h1>
+      <p class="page-subtitle">Page Subtitle</p>
     </div>
   </main>
 
-  <nav class="bottom-nav rider-nav-bg" style="border-color:rgba(255,255,255,0.1);">
+  <nav class="bottom-nav rider-nav-bg">
     <a href="dashboard.html"><span data-icon="home" data-icon-size="24"></span></a>
     <a href="find-rides.html" class="active"><span data-icon="search" data-icon-size="24"></span></a>
     <a href="my-trips.html"><span data-icon="map" data-icon-size="24"></span></a>
@@ -70,26 +45,6 @@
     <a href="rewards.html"><span data-icon="gift" data-icon-size="24"></span></a>
     <a href="profile.html"><span data-icon="user" data-icon-size="24"></span></a>
   </nav>
-
-  <div class="modal-overlay" id="rideRequestModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="font-bold text-lg">Request Ride</h3><button class="modal-close"
-          data-close-modal="rideRequestModal"><span data-icon="x" data-icon-size="20"></span></button>
-      </div>
-      <div class="modal-body" id="rideModalBody"></div>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="viewRideModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="font-bold text-lg">Ride Details</h3><button class="modal-close"
-          data-close-modal="viewRideModal"><span data-icon="x" data-icon-size="20"></span></button>
-      </div>
-      <div class="modal-body" id="viewRideModalBody"></div>
-    </div>
-  </div>
 
   <script src="../../public-assets/js/script.js"></script>
   <script src="rider.js"></script>
