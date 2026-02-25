@@ -85,7 +85,7 @@ function initRegisterPage() {
     driverSteps.forEach(function (s, i) {s.classList.toggle('active', i === step - 1);});
     progressSteps.forEach(function (s, i) {s.classList.toggle('active', i < step);});
     var stepCounter = document.getElementById('driverStepCounter');
-    if (stepCounter) stepCounter.textContent = 'Step ' + step + ' of 4 鈥?' + stepLabels[step - 1];
+    if (stepCounter) stepCounter.textContent = 'Step ' + step + ' of 4 ?' + stepLabels[step - 1];
     if (backBtn) backBtn.style.display = step > 1 ? '' : 'none';
     if (driverBackToRoleBtn) driverBackToRoleBtn.style.display = step === 1 ? '' : 'none';
     if (step === 4) {nextBtn.innerHTML = 'COMPLETE REGISTRATION <img src="../public-assets/images/icons/arrow-right.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">';} else
