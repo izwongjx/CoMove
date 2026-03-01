@@ -88,8 +88,8 @@ function initRegisterPage() {
     if (stepCounter) stepCounter.textContent = 'Step ' + step + ' of 4 ?' + stepLabels[step - 1];
     if (backBtn) backBtn.style.display = step > 1 ? '' : 'none';
     if (driverBackToRoleBtn) driverBackToRoleBtn.style.display = step === 1 ? '' : 'none';
-    if (step === 4) {nextBtn.innerHTML = 'COMPLETE REGISTRATION <img src="../public-assets/images/icons/arrow-right.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">';} else
-    {nextBtn.innerHTML = 'NEXT STEP <img src="../public-assets/images/icons/arrow-right.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">';}
+    if (step === 4) {nextBtn.innerHTML = 'COMPLETE REGISTRATION <img src="../public-assets/icons/arrow-right.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">';} else
+    {nextBtn.innerHTML = 'NEXT STEP <img src="../public-assets/icons/arrow-right.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">';}
   }
 
   backBtn.addEventListener('click', function () {if (driverStep > 1) showDriverStep(driverStep - 1);});
@@ -109,7 +109,7 @@ function initRegisterPage() {
     {
       var formData = new FormData(this);
       console.log('Driver Signup Complete:', Object.fromEntries(formData));
-      nextBtn.innerHTML = '<img src="../public-assets/images/icons/refresh.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"> SUBMITTING...';
+      nextBtn.innerHTML = '<img src="../public-assets/icons/refresh.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"> SUBMITTING...';
       nextBtn.disabled = true;
       setTimeout(function () {nextBtn.disabled = false;showStep('step-otp');startOtpTimer();}, 800);
     }
@@ -137,7 +137,7 @@ function initRegisterPage() {
     e.preventDefault();
     var otp = '';otpInputs.forEach(function (inp) {otp += inp.value;});
     console.log('OTP Verified:', otp);
-    verifyBtn.innerHTML = '<img src="../public-assets/images/icons/refresh.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"> VERIFYING...';
+    verifyBtn.innerHTML = '<img src="../public-assets/icons/refresh.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"> VERIFYING...';
     verifyBtn.disabled = true;
     setTimeout(function () {
       if (selectedRole === 'driver') {window.location.href = '../roles/driver/dashboard.html';} else
@@ -159,3 +159,4 @@ function initRegisterPage() {
     resendBtn.addEventListener('click', function () {if (!this.disabled) {console.log('Resending OTP...');startOtpTimer();}});
   }
 }
+
