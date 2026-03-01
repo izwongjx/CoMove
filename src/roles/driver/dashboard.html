@@ -12,7 +12,7 @@
 <body>
   <nav class="top-nav driver-nav-bg">
     <div class="nav-inner">
-      <a href="../../../index.html" class="logo">ECO<span class="text-lime">RIDE</span></a>
+      <a href="../../../index.html" class="logo">ECO<span>RIDE</span></a>
       <div class="nav-items">
         <a href="dashboard.html" class="nav-item active"><img src="../../public-assets/images/icons/home.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true">
           Dashboard</a>
@@ -27,7 +27,7 @@
 
   <main class="dashboard-main">
     <div class="dash-container">
-      <div class="flex justify-between items-start flex-wrap gap-4 mb-6">
+      <div class="dash-head">
         <div>
           <h1 class="dash-title">Dashboard <span class="lime-box">Title</span></h1>
           <p class="dash-subtitle">Dashboard Subtitle Nigga bro</p>
@@ -44,41 +44,12 @@
     <a href="profile.html"><img src="../../public-assets/images/icons/user.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
   </nav>
 
-  <div class="modal-overlay" id="createTripModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="font-bold text-lg">Create New Ride</h3><button class="modal-close"
-          data-close-modal="createTripModal"><img src="../../public-assets/images/icons/x.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"></button>
-      </div>
-      <div class="modal-body">
-        <form id="createTripForm">
-          <div class="form-group"><label class="form-label">From</label><input type="text" class="form-input"
-              name="from" placeholder="University Campus" required></div>
-          <div class="form-group"><label class="form-label">To</label><input type="text" class="form-input" name="to"
-              placeholder="Downtown Mall" required></div>
-          <div class="form-row">
-            <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-input"
-                name="date" required></div>
-            <div class="form-group"><label class="form-label">Time</label><input type="time" class="form-input"
-                name="time" required></div>
-          </div>
-          <div class="form-row">
-            <div class="form-group"><label class="form-label">Available Seats</label><input type="number"
-                class="form-input" name="seats" min="1" max="6" value="4" required></div>
-            <div class="form-group"><label class="form-label">Price ($)</label><input type="number" class="form-input"
-                name="price" step="0.50" min="1" value="20" required></div>
-          </div>
-          <button type="submit" class="btn btn-primary btn-full btn-lg" style="margin-top:8px;">Create Ride</button>
-        </form>
-      </div>
-    </div>
-  </div>
-
   <script src="../../public-assets/js/script.js"></script>
   <script src="driver.js"></script>
 </body>
 
 </html>
+
 
 
 

@@ -100,6 +100,7 @@
 .hero-text {
    max-width: 960px;
    margin-bottom: 32px;
+   animation: fadeInUp 0.8s ease forwards;
 }
 
 .hero-text h1 {
@@ -113,7 +114,7 @@
    margin-bottom: 24px;
 }
 
-.hero-text h1 .text-lime {
+.hero-text h1 span {
    color: var(--lime);
 }
 
@@ -232,6 +233,10 @@
    letter-spacing: -0.025em;
    font-family: var(--font-display);
    margin-bottom: 24px;
+}
+
+.features-header h2 span {
+   color: var(--lime);
 }
 
 .features-bar {

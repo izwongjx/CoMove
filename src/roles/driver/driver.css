@@ -8,6 +8,7 @@
   border-color: rgba(255,255,255,0.1);
 }
 .driver-nav-bg .logo { color: var(--white); }
+.driver-nav-bg .logo span { color: var(--lime); }
 .driver-nav-bg .nav-item { color: var(--gray-400); }
 .driver-nav-bg .nav-item:hover { color: var(--white); }
 .driver-nav-bg .nav-item.active { color: var(--lime); background: rgba(255,255,255,0.1); }
@@ -33,6 +34,14 @@
   margin: 0 auto;
 }
 .dash-container { max-width: 1200px; }
+.dash-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
 .dash-title {
   font-size: 24px;
   font-weight: 900;
@@ -77,6 +86,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.modal-title {
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 700;
 }
 @media (min-width: 768px) {
   .dashboard-main { padding: 32px 24px 48px; }

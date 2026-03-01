@@ -7,10 +7,10 @@
   background: var(--black);
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
-.admin-badge {
+.admin-badge{
   display: inline-block;
-  background: var(--lime);
   color: var(--black);
+  background: var(--lime);
   padding: 2px 6px;
   border-radius: 4px;
   font-size: 10px;
@@ -20,6 +20,7 @@
   margin-left: 4px;
 }
 .admin-nav-bg .logo { color: var(--white); }
+.admin-nav-bg .logo span { color: var(--lime); }
 .admin-nav-bg .nav-item { color: var(--gray-400); }
 .admin-nav-bg .nav-item:hover { color: var(--white); }
 .admin-nav-bg .nav-item.active { color: var(--lime); background: rgba(255,255,255,0.1); }
