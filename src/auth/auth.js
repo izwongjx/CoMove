@@ -28,11 +28,11 @@ function initLoginPage() {
     driverBtn.classList.toggle('active', role === 'driver');
 
     if (role === 'rider') {
-      emailLabel.textContent = 'Student/Lecturer Email';
-      emailInput.placeholder = 'your.name@university.edu';
+      emailLabel.textContent = 'APU Email Address';
+      emailInput.placeholder = 'example@apu.edu.my';
     } else {
-      emailLabel.textContent = 'Email Address';
-      emailInput.placeholder = 'name@example.com';
+      emailLabel.textContent = 'APU Email Address';
+      emailInput.placeholder = 'example@apu.edu.my';
     }
 
     roleText.textContent = role.toUpperCase();
