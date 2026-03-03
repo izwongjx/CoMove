@@ -1,6 +1,42 @@
 /* ============================================
    ECORIDE - Landing Page Styles
    ============================================ */
+
+@keyframes fadeIn {
+   from {
+      opacity: 0;
+      transform: translateY(20px);
+   }
+
+   to {
+      opacity: 1;
+      transform: translateY(0);
+   }
+}
+
+@keyframes fadeInUp {
+   from {
+      opacity: 0;
+      transform: translateY(30px);
+   }
+
+   to {
+      opacity: 1;
+      transform: translateY(0);
+   }
+}
+
+@keyframes bounce {
+   0%,
+   100% {
+      transform: translateY(0);
+   }
+
+   50% {
+      transform: translateY(8px);
+   }
+}
+
 .hero {
    position: relative;
    min-height: 100vh;
@@ -30,10 +66,6 @@
    font-weight: 900;
    color: var(--white);
    letter-spacing: -0.05em;
-}
-
-.hero-logo span {
-   color: var(--lime);
 }
 
 .hero-nav-links {
@@ -253,14 +285,10 @@
 
 .feature-card {
    position: relative;
-   border: 1px solid rgba(255, 255, 255, 0.1);
+   border-color: rgba(196, 245, 71, 0.5);
    padding: 32px;
    background: rgba(255, 255, 255, 0.05);
    transition: border-color 0.3s;
-}
-
-.feature-card:hover {
-   border-color: rgba(196, 245, 71, 0.5);
 }
 
 .feature-top-bar {
@@ -282,16 +310,11 @@
 .feature-icon {
    display: inline-flex;
    padding: 16px;
-   background: var(--forest);
+   background: var(--lime);
    border-radius: 50%;
    color: var(--lime);
    margin-bottom: 32px;
    transition: all 0.3s;
-}
-
-.feature-card:hover .feature-icon {
-   background: var(--lime);
-   color: var(--forest);
 }
 
 .feature-card h3 {
@@ -437,7 +460,7 @@
    content: '';
    position: absolute;
    inset: 0;
-   background: url('../images/landing-bg.avif');
+   background: url('../images/background_pic.avif');
    opacity: 0.1;
    mix-blend-mode: multiply;
 }
