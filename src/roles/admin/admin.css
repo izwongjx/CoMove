@@ -7,18 +7,7 @@
   background: var(--black);
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
-.admin-badge{
-  display: inline-block;
-  color: var(--black);
-  background: var(--lime);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  vertical-align: middle;
-  margin-left: 4px;
-}
+ 
 .admin-nav-bg .logo { color: var(--white); }
 .admin-nav-bg .logo span { color: var(--lime); }
 .admin-nav-bg .nav-item { color: var(--gray-400); }

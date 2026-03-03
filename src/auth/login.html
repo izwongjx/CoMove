@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -32,17 +32,16 @@
         </div>
 
         <form id="loginForm">
-          <div class="role-toggle">
-            <button type="button" class="role-btn active" data-role="rider" id="riderToggle">RIDER LOGIN</button>
-            <button type="button" class="role-btn" data-role="driver" id="driverToggle">DRIVER LOGIN</button>
+          <div class="login-role-switch">
+            <button type="button" class="login-role-switch-button active" data-role="rider" id="riderToggle">RIDER LOGIN</button>
+            <button type="button" class="login-role-switch-button" data-role="driver" id="driverToggle">DRIVER LOGIN</button>
           </div>
 
           <div class="form-group">
             <label class="form-label" id="emailLabel">APU Email Address</label>
             <div class="input-wrapper">
               <img src="../public-assets/icons/mail.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
-              <input type="email" class="form-input form-input-icon" id="loginEmail"
-                placeholder="example@apu.edu.my" required>
+              <input type="email" class="form-input form-input-icon" id="loginEmail" placeholder="example@apu.edu.my" required>
             </div>
           </div>
 
@@ -52,12 +51,11 @@
             </div>
             <div class="input-wrapper">
               <img src="../public-assets/icons/lock.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
-              <input type="password" class="form-input form-input-icon" id="loginPassword" placeholder="••••••••"
-                required>
+              <input type="password" class="form-input form-input-icon" id="loginPassword" placeholder="********" required>
             </div>
           </div>
 
-          <button type="submit" class="btn btn-primary btn-full btn-lg" id="loginBtn">
+          <button type="submit" class="login-submit-button" id="loginBtn">
             LOG IN AS <span id="roleText">RIDER</span>
             <img src="../public-assets/icons/arrow-right.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">
           </button>
@@ -75,10 +73,3 @@
 </body>
 
 </html>
-
-
-
-
-
-
-

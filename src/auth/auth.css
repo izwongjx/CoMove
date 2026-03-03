@@ -27,7 +27,11 @@
   }
 }
 
-.btn {
+.login-submit-button,
+.rider-submit-button,
+.driver-back-button,
+.driver-next-button,
+.verify-submit-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -40,61 +44,78 @@
   white-space: nowrap;
 }
 
-.btn:active {
+.login-submit-button:active,
+.rider-submit-button:active,
+.driver-back-button:active,
+.driver-next-button:active,
+.verify-submit-button:active {
   transform: scale(0.98);
 }
 
-.btn-primary {
+.login-submit-button,
+.driver-next-button,
+.verify-submit-button {
   background: var(--black);
   color: var(--white);
-  padding: 12px 24px;
-  font-size: 14px;
+  padding: 16px 32px;
+  font-size: 16px;
 }
 
-.btn-primary:hover {
+.login-submit-button:hover,
+.driver-next-button:hover,
+.verify-submit-button:hover {
   background: var(--forest);
 }
 
-.btn-lime {
+.rider-submit-button {
   background: var(--lime);
   color: var(--black);
-  padding: 12px 24px;
-  font-size: 14px;
+  padding: 16px 32px;
+  font-size: 16px;
+  width: 100%;
 }
 
-.btn-lime:hover {
+.rider-submit-button:hover {
   background: #b8e93e;
 }
 
-.btn-outline {
+.driver-back-button {
   background: transparent;
   color: var(--gray-600);
   border: 1px solid var(--gray-200);
   padding: 12px 24px;
   font-size: 14px;
+  display: none;
 }
 
-.btn-outline:hover {
+.driver-back-button:hover {
   background: var(--gray-50);
   border-color: var(--gray-300);
 }
 
-.btn-lg {
-  padding: 16px 32px;
-  font-size: 16px;
+.driver-next-button {
+  flex: 1;
 }
 
-.btn-full {
+.login-submit-button,
+.verify-submit-button {
   width: 100%;
 }
 
-.btn:disabled,
-.btn[disabled] {
+.login-submit-button:disabled,
+.login-submit-button[disabled],
+.rider-submit-button:disabled,
+.rider-submit-button[disabled],
+.driver-back-button:disabled,
+.driver-back-button[disabled],
+.driver-next-button:disabled,
+.driver-next-button[disabled],
+.verify-submit-button:disabled,
+.verify-submit-button[disabled] {
   opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;
 }
-
 .form-group {
   margin-bottom: 16px;
 }
@@ -289,14 +310,14 @@
   color: var(--gray-500);
   font-size: 16px;
 }
-.role-toggle {
+.login-role-switch {
   display: flex;
   background: var(--gray-100);
   padding: 4px;
   border-radius: 8px;
   margin-bottom: 32px;
 }
-.role-btn {
+.login-role-switch-button {
   flex: 1;
   padding: 8px;
   font-size: 13px;
@@ -308,15 +329,15 @@
   border: none;
   cursor: pointer;
 }
-.role-btn:hover {
+.login-role-switch-button:hover {
   color: var(--gray-700);
 }
-.role-btn.active[data-role="rider"] {
+.login-role-switch-button.active[data-role="rider"] {
   background: var(--white);
   color: var(--black);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
-.role-btn.active[data-role="driver"] {
+.login-role-switch-button.active[data-role="driver"] {
   background: var(--black);
   color: var(--white);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -356,12 +377,12 @@
 .auth-footer-text a:hover {
   text-decoration: underline;
 }
-.role-cards {
+.register-role-options {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
-.role-card {
+.register-role-option {
   display: flex;
   align-items: center;
   gap: 16px;
@@ -374,10 +395,10 @@
   width: 100%;
   text-align: left;
 }
-.role-card:hover {
+.register-role-option:hover {
   transform: scale(1.02);
 }
-.role-card-icon {
+.register-role-option-icon {
   width: 48px;
   height: 48px;
   border-radius: 8px;
@@ -386,33 +407,33 @@
   justify-content: center;
   transition: all 0.2s;
 }
-.rider-icon {
+.register-role-option-icon-rider {
   background: rgba(196, 245, 71, 0.2);
   color: var(--forest);
 }
-.role-card:hover .rider-icon {
+.register-role-option:hover .register-role-option-icon-rider {
   background: var(--lime);
   color: var(--black);
 }
-.driver-icon {
+.register-role-option-icon-driver {
   background: rgba(0, 0, 0, 0.05);
   color: var(--black);
 }
-.role-card:hover .driver-icon {
+.register-role-option:hover .register-role-option-icon-driver {
   background: var(--black);
   color: var(--white);
 }
-.role-card-label {
+.register-role-option-label {
   flex: 1;
   font-size: 18px;
   font-weight: 900;
   color: var(--black);
 }
-.role-card-arrow {
+.register-role-option-arrow {
   color: var(--gray-300);
   transition: color 0.2s;
 }
-.role-card:hover .role-card-arrow {
+.register-role-option:hover .register-role-option-arrow {
   color: var(--black);
 }
 .driver-step-counter {
@@ -517,9 +538,14 @@
   }
   .auth-visual {
     display: flex;
+    align-self: flex-start;
+    position: sticky;
+    top: 0;
+    height: 100vh;
   }
   .auth-form-panel {
     width: 50%;
+    min-height: 100vh;
     padding: 48px;
   }
   .back-link {
