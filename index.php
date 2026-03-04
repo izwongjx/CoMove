@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -16,8 +16,8 @@
         <nav class="hero-nav">
             <div class="hero-logo"><img src="" alt=""></div>
             <div class="hero-nav-links">
-                <a href="src/auth/login.html" class="nav-link-login">Log In</a>
-                <a href="src/auth/register.html" class="nav-link-signup">Sign Up</a>
+                <a href="src/auth/login.php" class="nav-link-login">Log In</a>
+                <a href="src/auth/register.php" class="nav-link-signup">Sign Up</a>
             </div>
         </nav>
 
@@ -48,7 +48,7 @@
             </div>
 
             <div class="hero-cta">
-                <a href="src/auth/register.html" class="hero-cta-btn">
+                <a href="src/auth/register.php" class="hero-cta-btn">
                     START RIDING NOW
                     <img src="src/public-assets/icons/arrow-right.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true">
                 </a>
@@ -142,7 +142,7 @@
             <p>Every empty seat is a missed opportunity to save our planet. Take action today and turn your commute into
                 a movement.</p>
             <div class="cta-buttons">
-                <a href="src/auth/register.html" class="cta-main-btn">JOIN THE MOVEMENT <img src="src/public-assets/icons/arrow-right.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
+                <a href="src/auth/register.php" class="cta-main-btn">JOIN THE MOVEMENT <img src="src/public-assets/icons/arrow-right.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
             </div>
         </div>
     </section>

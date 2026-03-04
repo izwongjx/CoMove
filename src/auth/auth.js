@@ -70,6 +70,70 @@ function initRegisterPage() {
   var driverStep = 1;
   var resendTimer = 30;
   var resendInterval;
+  var pendingOtpEmail = '';
+  var otpSubtitle = document.getElementById('otpSubtitle');
+
+  function setButtonLoading(buttonEl, isLoading, loadingText) {
+    if (!buttonEl) return;
+
+    if (isLoading) {
+      if (!buttonEl.dataset.originalHtml) {
+        buttonEl.dataset.originalHtml = buttonEl.innerHTML;
+      }
+      buttonEl.disabled = true;
+      buttonEl.textContent = loadingText;
+      return;
+    }
+
+    buttonEl.disabled = false;
+    if (buttonEl.dataset.originalHtml) {
+      buttonEl.innerHTML = buttonEl.dataset.originalHtml;
+    }
+  }
+
+  async function sendOtpToEmail(email) {
+    var normalizedEmail = (email || '').trim();
+    if (!normalizedEmail) {
+      return { success: false, message: 'Email is required.' };
+    }
+
+    try {
+      var response = await fetch('../config/send-otp.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email: normalizedEmail, role: selectedRole })
+      });
+
+      var result = {};
+      try {
+        result = await response.json();
+      } catch (jsonError) {
+        result = {};
+      }
+
+      if (!response.ok || !result.success) {
+        return {
+          success: false,
+          message: result.message || 'Unable to send OTP now. Please try again.'
+        };
+      }
+
+      pendingOtpEmail = normalizedEmail;
+      if (otpSubtitle) {
+        otpSubtitle.textContent = "We've sent a verification code to " + normalizedEmail;
+      }
+
+      return { success: true, message: result.message || 'OTP sent.' };
+    } catch (error) {
+      console.error('Send OTP error:', error);
+      return {
+        success: false,
+        message: 'Cannot reach OTP service. Make sure you run this page through a PHP server.'
+      };
+    }
+  }
 
   function showStep(stepId) {
     var steps = document.querySelectorAll('.register-step');
@@ -183,9 +247,23 @@ function initRegisterPage() {
   /* -------- Rider Form -------- */
   var riderForm = document.getElementById('riderForm');
   if (riderForm) {
-    riderForm.addEventListener('submit', function(e) {
+    riderForm.addEventListener('submit', async function(e) {
       e.preventDefault();
-      console.log('Rider Signup:', Object.fromEntries(new FormData(this)));
+
+      var formData = new FormData(this);
+      var email = (formData.get('email') || '').trim();
+      var submitBtn = this.querySelector('button[type="submit"]');
+      console.log('Rider Signup:', Object.fromEntries(formData));
+
+      setButtonLoading(submitBtn, true, 'SENDING OTP...');
+      var otpResult = await sendOtpToEmail(email);
+      setButtonLoading(submitBtn, false);
+
+      if (!otpResult.success) {
+        alert(otpResult.message);
+        return;
+      }
+
       showStep('step-otp');
       startOtpTimer();
     });
@@ -280,7 +358,7 @@ function initRegisterPage() {
 
   var driverForm = document.getElementById('driverForm');
   if (driverForm) {
-    driverForm.addEventListener('submit', function(e) {
+    driverForm.addEventListener('submit', async function(e) {
       e.preventDefault();
 
       if (!validateDriverStep(driverStep)) return;
@@ -308,6 +386,16 @@ function initRegisterPage() {
         var formData = new FormData(this);
         var driverPayload = getDriverPayload(formData);
         console.log('Driver Signup Payload:', driverPayload);
+
+        setButtonLoading(nextBtn, true, 'SENDING OTP...');
+        var otpResult = await sendOtpToEmail(driverPayload.email);
+        setButtonLoading(nextBtn, false);
+
+        if (!otpResult.success) {
+          alert(otpResult.message);
+          return;
+        }
+
         showStep('step-otp');
         startOtpTimer();
       }
@@ -401,8 +489,24 @@ function initRegisterPage() {
 
     resendBtn.onclick = function() {
       if (!resendBtn.disabled) {
-        console.log('Resending OTP...');
-        startOtpTimer();
+        if (!pendingOtpEmail) {
+          alert('No email found for OTP resend.');
+          return;
+        }
+
+        resendBtn.disabled = true;
+        resendText.textContent = 'Sending...';
+
+        sendOtpToEmail(pendingOtpEmail).then(function(otpResult) {
+          if (!otpResult.success) {
+            alert(otpResult.message);
+            resendText.textContent = 'Resend Code';
+            resendBtn.disabled = false;
+            return;
+          }
+
+          startOtpTimer();
+        });
       }
     };
   }

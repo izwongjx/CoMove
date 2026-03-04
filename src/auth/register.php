@@ -20,7 +20,7 @@
     </div>
 
     <div class="auth-form-panel">
-      <a href="../../index.html" class="back-link">
+      <a href="../../index.php" class="back-link">
         <img src="../public-assets/icons/arrow-left.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> BACK TO HOME
       </a>
 
@@ -45,7 +45,7 @@
           </div>
 
           <div class="auth-footer-text">
-            <p>Already have an account? <a href="login.html"><strong>Log in</strong></a></p>
+            <p>Already have an account? <a href="login.php"><strong>Log in</strong></a></p>
           </div>
         </div>
 
