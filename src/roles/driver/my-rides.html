@@ -1,49 +1,356 @@
-﻿<!DOCTYPE html>
+﻿<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EcoRide - My Offered Rides</title>
-  <link rel="stylesheet" href="../../public-assets/style.css">
-  <link rel="stylesheet" href="driver.css">
-</head>
-<body>
-  <nav class="top-nav driver-nav-bg">
-    <div class="nav-inner">
-      <a href="../../index.html" class="logo">ECO<span>RIDE</span></a>
-      <div class="nav-items">
-        <a href="dashboard.html" class="nav-item"><img src="../../public-assets/icons/home.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Dashboard</a>
-        <a href="my-rides.html" class="nav-item active"><img src="../../public-assets/icons/car.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> My Rides</a>
-        <a href="earnings.html" class="nav-item"><img src="../../public-assets/icons/dollar-sign.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Earnings</a>
-        <a href="vehicle.html" class="nav-item"><img src="../../public-assets/icons/file-text.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Vehicle</a>
-        <a href="profile.html" class="nav-item"><img src="../../public-assets/icons/user.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Profile</a>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EcoRide - My Offered Rides</title>
+    <link rel="stylesheet" href="../../public-assets/style.css" />
+    <link rel="stylesheet" href="driver.css" />
+  </head>
+
+  <body>
+    <nav class="top-nav driver-nav-bg">
+      <div class="nav-inner">
+        <a href="../../../index.html" class="logo">ECO<span>RIDE</span></a>
+        <div class="nav-items">
+          <a href="dashboard.html" class="nav-item"
+            ><img
+              src="../../public-assets/icons/home.svg"
+              width="16"
+              height="16"
+              class="icon-img"
+              alt=""
+              aria-hidden="true"
+            />
+            Dashboard</a
+          >
+          <a href="my-rides.html" class="nav-item active"
+            ><img
+              src="../../public-assets/icons/car.svg"
+              width="16"
+              height="16"
+              class="icon-img"
+              alt=""
+              aria-hidden="true"
+            />
+            My Rides</a
+          >
+          <a href="earnings.html" class="nav-item"
+            ><img
+              src="../../public-assets/icons/dollar-sign.svg"
+              width="16"
+              height="16"
+              class="icon-img"
+              alt=""
+              aria-hidden="true"
+            />
+            Earnings</a
+          >
+          <a href="vehicle.html" class="nav-item"
+            ><img
+              src="../../public-assets/icons/file-text.svg"
+              width="16"
+              height="16"
+              class="icon-img"
+              alt=""
+              aria-hidden="true"
+            />
+            Vehicle</a
+          >
+          <a href="profile.html" class="nav-item"
+            ><img
+              src="../../public-assets/icons/user.svg"
+              width="16"
+              height="16"
+              class="icon-img"
+              alt=""
+              aria-hidden="true"
+            />
+            Profile</a
+          >
+        </div>
+        <div class="nav-actions">
+          <a href="../../../index.html" class="nav-logout" title="Log out"
+            ><img
+              src="../../public-assets/icons/log-out.svg"
+              width="20"
+              height="20"
+              class="icon-img"
+              alt=""
+              aria-hidden="true"
+          /></a>
+        </div>
       </div>
-      <div class="nav-actions"><a href="../../index.html" class="nav-logout" title="Log out"><img src="../../public-assets/icons/log-out.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"></a></div>
+    </nav>
+
+    <main class="dashboard-main" id="myRidesPage">
+      <h1 class="page-title">My Offered Rides</h1>
+      <p class="page-subtitle">
+        Manage your published rides and passenger bookings.
+      </p>
+
+      <section class="my-rides-panel" aria-live="polite">
+        <div class="my-rides-list" id="myRidesList"></div>
+        <div class="my-rides-empty" id="myRidesEmptyState" hidden>
+          <img
+            src="../../public-assets/icons/car.svg"
+            width="32"
+            height="32"
+            class="my-rides-empty-icon"
+            alt=""
+            aria-hidden="true"
+          />
+          <h2 class="my-rides-empty-title">No rides published yet</h2>
+          <p class="my-rides-empty-text">
+            Your upcoming and completed offered rides will appear here.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <div class="manage-ride-modal" id="manageRideModal" aria-hidden="true">
+      <div class="manage-ride-backdrop" data-close-manage-modal></div>
+      <section
+        class="manage-ride-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="manageRideTitle"
+      >
+        <header class="manage-ride-header">
+          <div class="manage-ride-header-copy">
+            <h2 class="manage-ride-title" id="manageRideTitle">Manage Ride</h2>
+            <p class="manage-ride-subtitle">
+              View bookings and passenger details
+            </p>
+          </div>
+          <button
+            class="icon-btn"
+            id="manageRideCloseButton"
+            type="button"
+            aria-label="Close manage ride window"
+            data-close-manage-modal
+          >
+            <img
+              src="../../public-assets/icons/x.svg"
+              width="18"
+              height="18"
+              alt=""
+              aria-hidden="true"
+            />
+          </button>
+        </header>
+
+        <div class="manage-ride-body">
+          <section class="manage-ride-summary">
+            <div class="manage-ride-summary-meta">
+              <p class="manage-ride-time">
+                <img
+                  src="../../public-assets/icons/calendar.svg"
+                  width="16"
+                  height="16"
+                  alt=""
+                  aria-hidden="true"
+                />
+                <span id="manageRideTime"></span>
+              </p>
+              <div class="manage-ride-status-group">
+                <span class="ride-status-badge" id="manageRideStatus"></span>
+                <span class="manage-ride-vehicle" id="manageRideVehicle"></span>
+              </div>
+            </div>
+
+            <p class="manage-ride-route">
+              <span id="manageRideFrom"></span>
+              <span class="manage-ride-route-separator"></span>
+              <span id="manageRideTo"></span>
+            </p>
+
+            <div class="manage-ride-stat-row">
+              <p class="manage-ride-stat">
+                <img
+                  src="../../public-assets/icons/users.svg"
+                  width="16"
+                  height="16"
+                  alt=""
+                  aria-hidden="true"
+                />
+                <span id="manageRideSeats"></span>
+              </p>
+              <p class="manage-ride-stat">
+                <img
+                  src="../../public-assets/icons/dollar-sign.svg"
+                  width="16"
+                  height="16"
+                  alt=""
+                  aria-hidden="true"
+                />
+                <span id="manageRidePrice"></span>
+              </p>
+            </div>
+          </section>
+
+          <section class="manage-riders-section">
+            <h3 class="manage-riders-title" id="manageRidePassengersTitle">
+              Passenger List (0)
+            </h3>
+            <div class="manage-riders-list" id="manageRideRiders"></div>
+            <div class="manage-riders-empty" id="manageRideRidersEmpty" hidden>
+              <img
+                src="../../public-assets/icons/users.svg"
+                width="36"
+                height="36"
+                alt=""
+                aria-hidden="true"
+              />
+              <p class="manage-riders-empty-title">No passengers yet.</p>
+              <p class="manage-riders-empty-text">
+                Bookings will appear here once accepted.
+              </p>
+            </div>
+          </section>
+
+          <section class="manage-cancel-section">
+            <button
+              class="driver-btn driver-btn-danger-outline"
+              id="cancelRideTrigger"
+              type="button"
+            >
+              <img
+                src="../../public-assets/icons/alert-triangle.svg"
+                width="16"
+                height="16"
+                alt=""
+                aria-hidden="true"
+              />
+              Cancel Entire Ride
+            </button>
+            <div class="manage-cancel-confirm" id="cancelRideConfirm" hidden>
+              <div class="manage-cancel-copy">
+                <div class="manage-cancel-icon-wrap">
+                  <img
+                    src="../../public-assets/icons/alert-triangle.svg"
+                    width="20"
+                    height="20"
+                    alt=""
+                    aria-hidden="true"
+                  />
+                </div>
+                <div>
+                  <h4 class="manage-cancel-title">Cancel this ride?</h4>
+                  <p class="manage-cancel-text" id="cancelRideConfirmText"></p>
+                </div>
+              </div>
+              <div class="manage-cancel-actions">
+                <button
+                  class="driver-btn driver-btn-muted"
+                  id="cancelRideKeep"
+                  type="button"
+                >
+                  Keep Ride
+                </button>
+                <button
+                  class="driver-btn driver-btn-danger"
+                  id="cancelRideConfirmButton"
+                  type="button"
+                >
+                  Yes, Cancel Ride
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
     </div>
-  </nav>
 
-  <!-- MAIN CONTENT -->
-  <main class="dashboard-main">
-    <h1 class="page-title">Page Title</h1>
-    <p class="page-subtitle">This page should allow the </p>
-  </main>
+    <nav class="bottom-nav driver-bottom-nav">
+      <a href="dashboard.html"
+        ><img
+          src="../../public-assets/icons/home.svg"
+          width="24"
+          height="24"
+          class="icon-img"
+          alt=""
+          aria-hidden="true"
+      /></a>
+      <a href="my-rides.html" class="active"
+        ><img
+          src="../../public-assets/icons/car.svg"
+          width="24"
+          height="24"
+          class="icon-img"
+          alt=""
+          aria-hidden="true"
+      /></a>
+      <a href="earnings.html"
+        ><img
+          src="../../public-assets/icons/dollar-sign.svg"
+          width="24"
+          height="24"
+          class="icon-img"
+          alt=""
+          aria-hidden="true"
+      /></a>
+      <a href="vehicle.html"
+        ><img
+          src="../../public-assets/icons/file-text.svg"
+          width="24"
+          height="24"
+          class="icon-img"
+          alt=""
+          aria-hidden="true"
+      /></a>
+      <a href="profile.html"
+        ><img
+          src="../../public-assets/icons/user.svg"
+          width="24"
+          height="24"
+          class="icon-img"
+          alt=""
+          aria-hidden="true"
+      /></a>
+    </nav>
 
-  <nav class="bottom-nav driver-bottom-nav">
-    <a href="dashboard.html"><img src="../../public-assets/icons/home.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
-    <a href="my-rides.html" class="active"><img src="../../public-assets/icons/car.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
-    <a href="earnings.html"><img src="../../public-assets/icons/dollar-sign.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
-    <a href="vehicle.html"><img src="../../public-assets/icons/file-text.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
-    <a href="profile.html"><img src="../../public-assets/icons/user.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
-  </nav>
-
-  <script src="../../public-assets/script.js"></script>
-  <script src="driver.js"></script>
-</body>
+    <script src="../../public-assets/script.js"></script>
+    <script>
+      /* Replace this block with PHP output from database */
+      window.driverRideData = window.driverRideData || {
+        rides: [
+          {
+            id: 101,
+            from: "University Campus",
+            to: "Downtown Mall",
+            time: "2026-03-04 14:52:37",
+            price: 22,
+            seats: 4,
+            booked: 2,
+            vehicle: "Toyota Vios",
+            status: "Scheduled",
+          },
+        ],
+        ridersByRide: {
+          101: [
+            {
+              id: "R-2001",
+              name: "Alicia Tan",
+              rating: 4.8,
+              seats: 1,
+              paymentMethod: "card",
+              phone: "+65 9123 4567",
+              email: "alicia.tan@mail.com",
+            },
+            {
+              id: "R-2002",
+              name: "Marcus Lim",
+              rating: 4.6,
+              seats: 1,
+              paymentMethod: "cash",
+              phone: "+65 9345 6789",
+              email: "marcus.lim@mail.com",
+            },
+          ],
+        },
+      };
+    </script>
+    <script src="driver.js"></script>
+  </body>
 </html>
-
-
-
-
-
-
-
