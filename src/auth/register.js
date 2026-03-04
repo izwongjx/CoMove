@@ -13,6 +13,10 @@
   var pendingOtpEmail = '';
   var otpSubtitle = document.getElementById('otpSubtitle');
 
+  function isApuEmail(email) {
+    return /^[A-Za-z0-9._%+-]+@mail\.apu\.edu\.my$/i.test(email || '');
+  }
+
   function setButtonLoading(buttonEl, isLoading, loadingText) {
     if (!buttonEl) return;
 
@@ -31,8 +35,23 @@
     }
   }
 
+  async function parseApiResponse(response) {
+    var result = {};
+    try {
+      result = await response.json();
+    } catch (error) {
+      result = {};
+    }
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || 'Request failed.');
+    }
+
+    return result;
+  }
+
   async function sendOtpToEmail(email) {
-    var normalizedEmail = (email || '').trim();
+    var normalizedEmail = (email || '').trim().toLowerCase();
     if (!normalizedEmail) {
       return { success: false, message: 'Email is required.' };
     }
@@ -46,33 +65,62 @@
         body: JSON.stringify({ email: normalizedEmail, role: selectedRole })
       });
 
-      var result = {};
-      try {
-        result = await response.json();
-      } catch (jsonError) {
-        result = {};
-      }
-
-      if (!response.ok || !result.success) {
-        return {
-          success: false,
-          message: result.message || 'Unable to send OTP now. Please try again.'
-        };
-      }
-
+      var result = await parseApiResponse(response);
       pendingOtpEmail = normalizedEmail;
       if (otpSubtitle) {
         otpSubtitle.textContent = "We've sent a verification code to " + normalizedEmail;
       }
 
-      return { success: true, message: result.message || 'OTP sent.' };
+      return {
+        success: true,
+        message: result.message || 'OTP sent.'
+      };
     } catch (error) {
-      console.error('Send OTP error:', error);
       return {
         success: false,
-        message: 'Cannot reach OTP service. Make sure you run this page through a PHP server.'
+        message: error.message || 'Unable to resend OTP now.'
       };
     }
+  }
+
+  async function startRegistration(formEl, role) {
+    var formData = new FormData(formEl);
+    var email = (formData.get('email') || '').trim().toLowerCase();
+    if (!isApuEmail(email)) {
+      throw new Error('Use APU email format: xxx@mail.apu.edu.my');
+    }
+
+    formData.set('email', email);
+    formData.set('role', role);
+
+    var response = await fetch('register-init.php', {
+      method: 'POST',
+      body: formData
+    });
+
+    var result = await parseApiResponse(response);
+    pendingOtpEmail = result.email || email;
+    selectedRole = role;
+
+    if (otpSubtitle) {
+      otpSubtitle.textContent = "We've sent a verification code to " + pendingOtpEmail;
+    }
+  }
+
+  async function verifyRegistrationOtp(role, email, otp) {
+    var response = await fetch('register-verify.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        role: role,
+        email: email,
+        otp: otp
+      })
+    });
+
+    return parseApiResponse(response);
   }
 
   function showStep(stepId) {
@@ -80,8 +128,9 @@
     for (var i = 0; i < steps.length; i++) {
       steps[i].classList.remove('active');
     }
-    var el = document.getElementById(stepId);
-    if (el) el.classList.add('active');
+
+    var activeStep = document.getElementById(stepId);
+    if (activeStep) activeStep.classList.add('active');
   }
 
   function setupFileUploadFeedback() {
@@ -187,22 +236,39 @@
     riderForm.addEventListener('submit', async function(e) {
       e.preventDefault();
 
-      var formData = new FormData(this);
-      var email = (formData.get('email') || '').trim();
       var submitBtn = this.querySelector('button[type="submit"]');
-      console.log('Rider Signup:', Object.fromEntries(formData));
+      var email = (this.elements.email && this.elements.email.value || '').trim();
+      var password = this.elements.password ? this.elements.password.value : '';
+      var confirmPassword = this.elements.confirmPassword ? this.elements.confirmPassword.value : '';
 
-      setButtonLoading(submitBtn, true, 'SENDING OTP...');
-      var otpResult = await sendOtpToEmail(email);
-      setButtonLoading(submitBtn, false);
-
-      if (!otpResult.success) {
-        alert(otpResult.message);
+      if (!isApuEmail(email)) {
+        alert('Use APU email format: xxx@mail.apu.edu.my');
+        this.elements.email.focus();
         return;
       }
 
-      showStep('step-otp');
-      startOtpTimer();
+      if (password.length < 8) {
+        alert('Password must be at least 8 characters.');
+        this.elements.password.focus();
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        alert('Password and confirm password do not match.');
+        this.elements.confirmPassword.focus();
+        return;
+      }
+
+      try {
+        setButtonLoading(submitBtn, true, 'SENDING OTP...');
+        await startRegistration(this, 'rider');
+        showStep('step-otp');
+        startOtpTimer();
+      } catch (error) {
+        alert(error.message || 'Unable to start registration.');
+      } finally {
+        setButtonLoading(submitBtn, false);
+      }
     });
   }
 
@@ -231,10 +297,11 @@
     }
 
     var counter = document.getElementById('driverStepCounter');
-    if (counter) counter.textContent = 'Step ' + step + ' of 4 - ' + stepLabels[step - 1];
+    if (counter) {
+      counter.textContent = 'Step ' + step + ' of 4 - ' + stepLabels[step - 1];
+    }
 
     if (backBtn) backBtn.style.display = step > 1 ? '' : 'none';
-
     if (nextBtn) {
       nextBtn.innerHTML = step === 4 ? 'COMPLETE REGISTRATION' : 'NEXT STEP';
     }
@@ -245,10 +312,10 @@
     if (!stepEl) return true;
 
     var inputs = stepEl.querySelectorAll('input[required], select[required], textarea[required]');
-
     for (var i = 0; i < inputs.length; i++) {
       var input = inputs[i];
       var value = input.type === 'file' ? input.value : input.value.trim();
+
       if (!value) {
         if (input.type === 'file' && input.parentElement) {
           input.parentElement.style.borderColor = 'var(--red-500)';
@@ -261,36 +328,11 @@
       if (input.type === 'file' && input.parentElement) {
         input.parentElement.style.borderColor = '';
       } else {
-        inputs[i].style.borderColor = '';
+        input.style.borderColor = '';
       }
     }
 
     return true;
-  }
-
-  function getOptionalFile(formData, fieldName) {
-    var fileValue = formData.get(fieldName);
-    if (!fileValue || !fileValue.name) return null;
-    return fileValue;
-  }
-
-  function getDriverPayload(formData) {
-    return {
-      name: (formData.get('name') || '').trim(),
-      email: (formData.get('email') || '').trim(),
-      password: (formData.get('password') || '').trim(),
-      phone_number: (formData.get('phone_number') || '').trim(),
-      profile_photo: getOptionalFile(formData, 'profile_photo'),
-      nric_number: (formData.get('nric_number') || '').trim().toUpperCase(),
-      nric_front_image: formData.get('nric_front_image'),
-      nric_back_image: formData.get('nric_back_image'),
-      lisence_front_image: formData.get('lisence_front_image'),
-      lisence_back_image: formData.get('lisence_back_image'),
-      lisence_expiry_date: formData.get('lisence_expiry_date'),
-      vehicle_type: ((formData.get('vehicle_type') || '').trim() || null),
-      plate_number: (formData.get('plate_number') || '').trim().toUpperCase(),
-      color: ((formData.get('color') || '').trim() || null)
-    };
   }
 
   var driverForm = document.getElementById('driverForm');
@@ -301,40 +343,45 @@
       if (!validateDriverStep(driverStep)) return;
 
       if (driverStep === 1) {
+        var driverEmail = this.elements.email ? this.elements.email.value.trim() : '';
         var passwordInput = this.elements.password;
         var confirmPasswordInput = this.elements.confirmPassword;
         var password = passwordInput ? passwordInput.value : '';
         var confirmPassword = confirmPasswordInput ? confirmPasswordInput.value : '';
 
-        if (password !== confirmPassword) {
-          if (confirmPasswordInput) {
-            confirmPasswordInput.style.borderColor = 'var(--red-500)';
-            confirmPasswordInput.focus();
-          }
+        if (!isApuEmail(driverEmail)) {
+          alert('Use APU email format: xxx@mail.apu.edu.my');
+          if (this.elements.email) this.elements.email.focus();
           return;
         }
 
-        if (confirmPasswordInput) confirmPasswordInput.style.borderColor = '';
+        if (password.length < 8) {
+          alert('Password must be at least 8 characters.');
+          if (passwordInput) passwordInput.focus();
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          alert('Password and confirm password do not match.');
+          if (confirmPasswordInput) confirmPasswordInput.focus();
+          return;
+        }
       }
 
       if (driverStep < 4) {
         showDriverStep(driverStep + 1);
-      } else {
-        var formData = new FormData(this);
-        var driverPayload = getDriverPayload(formData);
-        console.log('Driver Signup Payload:', driverPayload);
+        return;
+      }
 
+      try {
         setButtonLoading(nextBtn, true, 'SENDING OTP...');
-        var otpResult = await sendOtpToEmail(driverPayload.email);
-        setButtonLoading(nextBtn, false);
-
-        if (!otpResult.success) {
-          alert(otpResult.message);
-          return;
-        }
-
+        await startRegistration(this, 'driver');
         showStep('step-otp');
         startOtpTimer();
+      } catch (error) {
+        alert(error.message || 'Unable to start registration.');
+      } finally {
+        setButtonLoading(nextBtn, false);
       }
     });
   }
@@ -354,6 +401,7 @@
     for (var i = 0; i < otpInputs.length; i++) {
       if (!otpInputs[i].value) complete = false;
     }
+
     if (verifyBtn) verifyBtn.disabled = !complete;
   }
 
@@ -382,20 +430,35 @@
 
   var otpForm = document.getElementById('otpForm');
   if (otpForm) {
-    otpForm.addEventListener('submit', function(e) {
+    otpForm.addEventListener('submit', async function(e) {
       e.preventDefault();
+
+      if (!pendingOtpEmail || !selectedRole) {
+        alert('No pending registration found. Please register again.');
+        return;
+      }
 
       var otp = '';
       for (var i = 0; i < otpInputs.length; i++) {
         otp += otpInputs[i].value;
       }
 
-      console.log('OTP Verified:', otp);
+      if (!/^\d{6}$/.test(otp)) {
+        alert('Please enter a valid 6-digit OTP.');
+        return;
+      }
 
-      if (selectedRole === 'driver') {
-        window.location.href = '../roles/driver/dashboard.html';
-      } else {
-        window.location.href = '../roles/rider/dashboard.html';
+      try {
+        setButtonLoading(verifyBtn, true, 'VERIFYING...');
+        var result = await verifyRegistrationOtp(selectedRole, pendingOtpEmail, otp);
+        alert((result.message || 'Registration completed.') + ' ID: ' + (result.user_id || ''));
+        window.location.href = result.redirect_url || (selectedRole === 'driver'
+          ? '../roles/driver/dashboard.html'
+          : '../roles/rider/dashboard.html');
+      } catch (error) {
+        alert(error.message || 'OTP verification failed.');
+      } finally {
+        setButtonLoading(verifyBtn, false);
       }
     });
   }
@@ -425,26 +488,25 @@
     }, 1000);
 
     resendBtn.onclick = function() {
-      if (!resendBtn.disabled) {
-        if (!pendingOtpEmail) {
-          alert('No email found for OTP resend.');
+      if (resendBtn.disabled) return;
+      if (!pendingOtpEmail) {
+        alert('No email found for OTP resend.');
+        return;
+      }
+
+      resendBtn.disabled = true;
+      resendText.textContent = 'Sending...';
+
+      sendOtpToEmail(pendingOtpEmail).then(function(otpResult) {
+        if (!otpResult.success) {
+          alert(otpResult.message);
+          resendText.textContent = 'Resend Code';
+          resendBtn.disabled = false;
           return;
         }
 
-        resendBtn.disabled = true;
-        resendText.textContent = 'Sending...';
-
-        sendOtpToEmail(pendingOtpEmail).then(function(otpResult) {
-          if (!otpResult.success) {
-            alert(otpResult.message);
-            resendText.textContent = 'Resend Code';
-            resendBtn.disabled = false;
-            return;
-          }
-
-          startOtpTimer();
-        });
-      }
+        startOtpTimer();
+      });
     };
   }
 })();

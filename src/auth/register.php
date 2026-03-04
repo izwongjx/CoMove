@@ -61,7 +61,7 @@
               <div class="input-wrapper"><img src="../public-assets/icons/user.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="text" class="form-input form-input-icon" name="fullName" placeholder="John Doe" required></div>
             </div>
             <div class="form-group"><label class="form-label">University Email</label>
-              <div class="input-wrapper"><img src="../public-assets/icons/mail.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="email" class="form-input form-input-icon" name="email" placeholder="student@university.edu" required></div>
+              <div class="input-wrapper"><img src="../public-assets/icons/mail.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="email" class="form-input form-input-icon" name="email" placeholder="xxx@mail.apu.edu.my" required></div>
             </div>
             <div class="form-group"><label class="form-label">Phone Number</label>
               <div class="input-wrapper"><img src="../public-assets/icons/phone.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="tel" class="form-input form-input-icon" name="phone" placeholder="+1 (555) 000-0000" required></div>
@@ -100,7 +100,7 @@
                 <div class="input-wrapper"><img src="../public-assets/icons/user.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="text" class="form-input form-input-icon" name="name" maxlength="50" placeholder="John Doe" required></div>
               </div>
               <div class="form-group"><label class="form-label">Email Address</label>
-                <div class="input-wrapper"><img src="../public-assets/icons/mail.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="email" class="form-input form-input-icon" name="email" maxlength="100" placeholder="name@example.com" required></div>
+                <div class="input-wrapper"><img src="../public-assets/icons/mail.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="email" class="form-input form-input-icon" name="email" maxlength="100" placeholder="xxx@mail.apu.edu.my" required></div>
               </div>
               <div class="form-group"><label class="form-label">Phone Number</label>
                 <div class="input-wrapper"><img src="../public-assets/icons/phone.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="tel" class="form-input form-input-icon" name="phone_number" maxlength="20" placeholder="+1 (555) 000-0000" required></div>

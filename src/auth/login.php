@@ -41,7 +41,7 @@
             <label class="form-label" id="emailLabel">APU Email Address</label>
             <div class="input-wrapper">
               <img src="../public-assets/icons/mail.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
-              <input type="email" class="form-input form-input-icon" id="loginEmail" placeholder="example@apu.edu.my" required>
+              <input type="email" class="form-input form-input-icon" id="loginEmail" placeholder="xxx@mail.apu.edu.my" required>
             </div>
           </div>
 
