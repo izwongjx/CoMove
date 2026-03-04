@@ -3,13 +3,52 @@
    My Rides data-driven rendering and modal behavior
    ============================================ */
 
-(function () {
-  'use strict';
+function initDriverMyRidesPage() {
+  
 
   var pageRoot = document.getElementById('myRidesPage');
   if (!pageRoot) {
     return;
   }
+
+  /* Replace this default data with PHP output from database. */
+  window.driverRideData = window.driverRideData || {
+    rides: [
+      {
+        id: 101,
+        from: 'University Campus',
+        to: 'Downtown Mall',
+        time: '2026-03-04 14:52:37',
+        price: 22,
+        seats: 4,
+        booked: 2,
+        vehicle: 'Toyota Vios',
+        status: 'Scheduled',
+      },
+    ],
+    ridersByRide: {
+      101: [
+        {
+          id: 'R-2001',
+          name: 'Alicia Tan',
+          rating: 4.8,
+          seats: 1,
+          paymentMethod: 'card',
+          phone: '+65 9123 4567',
+          email: 'alicia.tan@mail.com',
+        },
+        {
+          id: 'R-2002',
+          name: 'Marcus Lim',
+          rating: 4.6,
+          seats: 1,
+          paymentMethod: 'cash',
+          phone: '+65 9345 6789',
+          email: 'marcus.lim@mail.com',
+        },
+      ],
+    },
+  };
 
   var iconBasePath = '../../public-assets/icons';
 
@@ -561,4 +600,7 @@
   window.openDriverManageRideModal = openManageRideModal;
 
   renderRideCards();
-})();
+}
+
+initDriverMyRidesPage();
+

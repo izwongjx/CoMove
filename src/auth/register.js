@@ -1,71 +1,11 @@
-﻿/* ============================================
-   ECORIDE - Auth Pages Logic (Clean Version)
+/* ============================================
+   ECORIDE - Register Page Logic
    ============================================ */
 
-var loginForm = document.getElementById('loginForm');
-var registerRoleStep = document.getElementById('step-role');
+(function initRegisterPage() {
+  var registerRoleStep = document.getElementById('step-role');
+  if (!registerRoleStep) return;
 
-if (loginForm) initLoginPage();
-if (registerRoleStep) initRegisterPage();
- 
-/* ============================================
-   LOGIN PAGE
-============================================ */
-function initLoginPage() {
-  var currentRole = 'rider';
-
-  var riderBtn = document.getElementById('riderToggle');
-  var driverBtn = document.getElementById('driverToggle');
-  var emailLabel = document.getElementById('emailLabel');
-  var emailInput = document.getElementById('loginEmail');
-  var roleText = document.getElementById('roleText');
-  var passwordInput = document.getElementById('loginPassword');
-
-  function setRole(role) {
-    currentRole = role;
-
-    riderBtn.classList.toggle('active', role === 'rider');
-    driverBtn.classList.toggle('active', role === 'driver');
-
-    emailLabel.textContent = 'APU Email Address';
-    emailInput.placeholder = 'example@apu.edu.my';
-
-    roleText.textContent = role.toUpperCase();
-  }
-
-  setRole(currentRole);
-
-  riderBtn.addEventListener('click', function() {
-    setRole('rider');
-  });
-
-  driverBtn.addEventListener('click', function() {
-    setRole('driver');
-  });
-
-  loginForm.addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    var email = emailInput.value.trim();
-    var password = passwordInput.value.trim();
-
-    //this part should check the database for the email and password, 
-    // but since we don't have a backend, we'll just log it and redirect
-
-    console.log('Login:', { role: currentRole, email: email, password: password });
-
-    if (currentRole === 'driver') {
-      window.location.href = '../roles/driver/dashboard.html';
-    } else {
-      window.location.href = '../roles/rider/dashboard.html';
-    }
-  });
-}
-
-/* ============================================
-   REGISTER PAGE
-============================================ */
-function initRegisterPage() {
   var selectedRole = '';
   var driverStep = 1;
   var resendTimer = 30;
@@ -214,9 +154,6 @@ function initRegisterPage() {
     selectRider.addEventListener('click', function() {
       selectedRole = 'rider';
       showStep('step-rider');
-
-      //when users click on the rider button, 
-      // it will lead to the div that has the 'step-rider' class name
     });
   }
 
@@ -510,4 +447,4 @@ function initRegisterPage() {
       }
     };
   }
-}
+})();

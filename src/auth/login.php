@@ -69,7 +69,7 @@
   </div>
 
   <script src="../public-assets/script.js"></script>
-  <script src="auth.js"></script>
+  <script src="login.js"></script>
 </body>
 
 </html>

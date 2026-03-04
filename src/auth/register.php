@@ -167,7 +167,7 @@
   </div>
 
   <script src="../public-assets/script.js"></script>
-  <script src="auth.js"></script>
+  <script src="register.js"></script>
 </body>
 
 </html>
