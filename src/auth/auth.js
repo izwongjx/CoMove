@@ -22,6 +22,7 @@ function initLoginPage() {
   var passwordInput = document.getElementById('loginPassword');
 
   function setRole(role) {
+    currentRole = role;
 
     riderBtn.classList.toggle('active', role === 'rider');
     driverBtn.classList.toggle('active', role === 'driver');
@@ -31,6 +32,8 @@ function initLoginPage() {
 
     roleText.textContent = role.toUpperCase();
   }
+
+  setRole(currentRole);
 
   riderBtn.addEventListener('click', function() {
     setRole('rider');
@@ -45,6 +48,9 @@ function initLoginPage() {
 
     var email = emailInput.value.trim();
     var password = passwordInput.value.trim();
+
+    //this part should check the database for the email and password, 
+    // but since we don't have a backend, we'll just log it and redirect
 
     console.log('Login:', { role: currentRole, email: email, password: password });
 
@@ -74,12 +80,79 @@ function initRegisterPage() {
     if (el) el.classList.add('active');
   }
 
+  function setupFileUploadFeedback() {
+    var fileInputs = document.querySelectorAll('.file-upload input[type="file"]');
+
+    function clearPreview(uploadLabel) {
+      var previewEl = uploadLabel.parentElement.querySelector('.file-preview');
+      if (!previewEl) return;
+
+      var previewImg = previewEl.querySelector('.file-preview-image');
+      if (previewImg && previewImg.dataset.objectUrl) {
+        URL.revokeObjectURL(previewImg.dataset.objectUrl);
+      }
+
+      previewEl.remove();
+    }
+
+    for (var i = 0; i < fileInputs.length; i++) {
+      (function(fileInput) {
+        var uploadLabel = fileInput.closest('.file-upload');
+        if (!uploadLabel) return;
+
+        var textEl = uploadLabel.querySelector('.file-upload-text');
+        if (textEl && !textEl.dataset.defaultText) {
+          textEl.dataset.defaultText = textEl.textContent;
+        }
+
+        fileInput.addEventListener('change', function() {
+          clearPreview(uploadLabel);
+
+          var selectedFile = this.files && this.files.length ? this.files[0] : null;
+          if (!selectedFile) {
+            uploadLabel.classList.remove('has-file');
+            if (textEl) textEl.textContent = textEl.dataset.defaultText || 'Upload File';
+            return;
+          }
+
+          uploadLabel.classList.add('has-file');
+          if (textEl) textEl.textContent = selectedFile.name;
+
+          var previewEl = document.createElement('div');
+          previewEl.className = 'file-preview';
+
+          if (selectedFile.type.indexOf('image/') === 0) {
+            var previewImage = document.createElement('img');
+            var objectUrl = URL.createObjectURL(selectedFile);
+            previewImage.src = objectUrl;
+            previewImage.dataset.objectUrl = objectUrl;
+            previewImage.className = 'file-preview-image';
+            previewImage.alt = 'Selected file preview';
+            previewEl.appendChild(previewImage);
+          } else {
+            var previewName = document.createElement('p');
+            previewName.className = 'file-preview-name';
+            previewName.textContent = selectedFile.name;
+            previewEl.appendChild(previewName);
+          }
+
+          uploadLabel.insertAdjacentElement('afterend', previewEl);
+        });
+      })(fileInputs[i]);
+    }
+  }
+
+  setupFileUploadFeedback();
+
   /* -------- Role Selection ------ */
   var selectRider = document.getElementById('selectRider');
   if (selectRider) {
     selectRider.addEventListener('click', function() {
       selectedRole = 'rider';
       showStep('step-rider');
+
+      //when users click on the rider button, 
+      // it will lead to the div that has the 'step-rider' class name
     });
   }
 
@@ -127,8 +200,8 @@ function initRegisterPage() {
   var stepLabels = [
     'Account Details',
     'Identity Verification',
-    "Driver's License",
-    'Vehicle Details'
+    'License Verification',
+    'Vehicle Information'
   ];
 
   function showDriverStep(step) {
@@ -143,7 +216,7 @@ function initRegisterPage() {
     }
 
     var counter = document.getElementById('driverStepCounter');
-    if (counter) counter.textContent = 'Step ' + step + ' of 4 — ' + stepLabels[step - 1];
+    if (counter) counter.textContent = 'Step ' + step + ' of 4 - ' + stepLabels[step - 1];
 
     if (backBtn) backBtn.style.display = step > 1 ? '' : 'none';
 
@@ -159,14 +232,50 @@ function initRegisterPage() {
     var inputs = stepEl.querySelectorAll('input[required], select[required], textarea[required]');
 
     for (var i = 0; i < inputs.length; i++) {
-      if (!inputs[i].value.trim()) {
-        inputs[i].focus();
-        inputs[i].style.borderColor = 'var(--red-500)';
+      var input = inputs[i];
+      var value = input.type === 'file' ? input.value : input.value.trim();
+      if (!value) {
+        if (input.type === 'file' && input.parentElement) {
+          input.parentElement.style.borderColor = 'var(--red-500)';
+        }
+        input.style.borderColor = 'var(--red-500)';
+        input.focus();
         return false;
+      }
+
+      if (input.type === 'file' && input.parentElement) {
+        input.parentElement.style.borderColor = '';
+      } else {
+        inputs[i].style.borderColor = '';
       }
     }
 
     return true;
+  }
+
+  function getOptionalFile(formData, fieldName) {
+    var fileValue = formData.get(fieldName);
+    if (!fileValue || !fileValue.name) return null;
+    return fileValue;
+  }
+
+  function getDriverPayload(formData) {
+    return {
+      name: (formData.get('name') || '').trim(),
+      email: (formData.get('email') || '').trim(),
+      password: (formData.get('password') || '').trim(),
+      phone_number: (formData.get('phone_number') || '').trim(),
+      profile_photo: getOptionalFile(formData, 'profile_photo'),
+      nric_number: (formData.get('nric_number') || '').trim().toUpperCase(),
+      nric_front_image: formData.get('nric_front_image'),
+      nric_back_image: formData.get('nric_back_image'),
+      lisence_front_image: formData.get('lisence_front_image'),
+      lisence_back_image: formData.get('lisence_back_image'),
+      lisence_expiry_date: formData.get('lisence_expiry_date'),
+      vehicle_type: ((formData.get('vehicle_type') || '').trim() || null),
+      plate_number: (formData.get('plate_number') || '').trim().toUpperCase(),
+      color: ((formData.get('color') || '').trim() || null)
+    };
   }
 
   var driverForm = document.getElementById('driverForm');
@@ -176,10 +285,29 @@ function initRegisterPage() {
 
       if (!validateDriverStep(driverStep)) return;
 
+      if (driverStep === 1) {
+        var passwordInput = this.elements.password;
+        var confirmPasswordInput = this.elements.confirmPassword;
+        var password = passwordInput ? passwordInput.value : '';
+        var confirmPassword = confirmPasswordInput ? confirmPasswordInput.value : '';
+
+        if (password !== confirmPassword) {
+          if (confirmPasswordInput) {
+            confirmPasswordInput.style.borderColor = 'var(--red-500)';
+            confirmPasswordInput.focus();
+          }
+          return;
+        }
+
+        if (confirmPasswordInput) confirmPasswordInput.style.borderColor = '';
+      }
+
       if (driverStep < 4) {
         showDriverStep(driverStep + 1);
       } else {
-        console.log('Driver Signup:', Object.fromEntries(new FormData(this)));
+        var formData = new FormData(this);
+        var driverPayload = getDriverPayload(formData);
+        console.log('Driver Signup Payload:', driverPayload);
         showStep('step-otp');
         startOtpTimer();
       }

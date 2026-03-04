@@ -85,7 +85,7 @@
             <p>Complete your driver registration</p>
           </div>
 
-          <div class="driver-step-counter" id="driverStepCounter">Step 1 of 4? Account Details</div>
+          <div class="driver-step-counter" id="driverStepCounter">Step 1 of 4 - Account Details</div>
           <div class="progress-bar" id="driverProgress">
             <div class="step active"></div>
             <div class="step"></div>
@@ -97,69 +97,52 @@
             <div class="driver-step active" id="driverStep1">
               <h3 class="step-title">Account Details</h3>
               <div class="form-group"><label class="form-label">Full Name</label>
-                <div class="input-wrapper"><img src="../public-assets/icons/user.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="text" class="form-input form-input-icon" name="dFullName" placeholder="John Doe" required></div>
+                <div class="input-wrapper"><img src="../public-assets/icons/user.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="text" class="form-input form-input-icon" name="name" maxlength="50" placeholder="John Doe" required></div>
               </div>
               <div class="form-group"><label class="form-label">Email Address</label>
-                <div class="input-wrapper"><img src="../public-assets/icons/mail.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="email" class="form-input form-input-icon" name="dEmail" placeholder="name@example.com" required></div>
+                <div class="input-wrapper"><img src="../public-assets/icons/mail.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="email" class="form-input form-input-icon" name="email" maxlength="100" placeholder="name@example.com" required></div>
               </div>
               <div class="form-group"><label class="form-label">Phone Number</label>
-                <div class="input-wrapper"><img src="../public-assets/icons/phone.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="tel" class="form-input form-input-icon" name="dPhone" placeholder="+1 (555) 000-0000" required></div>
+                <div class="input-wrapper"><img src="../public-assets/icons/phone.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="tel" class="form-input form-input-icon" name="phone_number" maxlength="20" placeholder="+1 (555) 000-0000" required></div>
               </div>
               <div class="form-group"><label class="form-label">Password</label>
-                <div class="input-wrapper"><img src="../public-assets/icons/lock.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="password" class="form-input form-input-icon" name="dPassword" placeholder="********" required></div>
+                <div class="input-wrapper"><img src="../public-assets/icons/lock.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="password" class="form-input form-input-icon" name="password" maxlength="255" placeholder="********" required></div>
               </div>
               <div class="form-group"><label class="form-label">Confirm Password</label>
-                <div class="input-wrapper"><img src="../public-assets/icons/lock.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="password" class="form-input form-input-icon" name="dConfirmPassword" placeholder="********" required></div>
+                <div class="input-wrapper"><img src="../public-assets/icons/lock.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="password" class="form-input form-input-icon" name="confirmPassword" maxlength="255" placeholder="********" required></div>
               </div>
-              <div class="form-group"><label class="form-label">Profile Photo</label><label class="file-upload"><input type="file" accept="image/*" name="profilePhoto"><img src="../public-assets/icons/upload.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"><span class="file-upload-text">Upload Photo</span></label></div>
+              <div class="form-group"><label class="form-label">Profile Photo (Optional)</label><label class="file-upload"><input type="file" accept="image/*" name="profile_photo"><img src="../public-assets/icons/upload.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"><span class="file-upload-text">Upload Photo</span></label></div>
             </div>
 
             <div class="driver-step" id="driverStep2">
               <h3 class="step-title">Identity Verification</h3>
               <div class="form-group"><label class="form-label">NRIC Number</label>
-                <div class="input-wrapper"><img src="../public-assets/icons/credit-card.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="text" class="form-input form-input-icon" name="nric" placeholder="S1234567A" required></div>
+                <div class="input-wrapper"><img src="../public-assets/icons/credit-card.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="text" class="form-input form-input-icon" name="nric_number" maxlength="12" placeholder="S1234567A" required></div>
               </div>
-              <div class="form-group"><label class="form-label">NRIC Photo (Front)</label><label class="file-upload"><input type="file" accept="image/*,.pdf" name="nricFront"><img src="../public-assets/icons/upload.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"><span class="file-upload-text">Upload Front</span></label></div>
-              <div class="form-group"><label class="form-label">NRIC Photo (Back)</label><label class="file-upload"><input type="file" accept="image/*,.pdf" name="nricBack"><img src="../public-assets/icons/upload.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"><span class="file-upload-text">Upload Back</span></label></div>
+              <div class="form-group"><label class="form-label">NRIC Photo (Front)</label><label class="file-upload"><input type="file" accept="image/*" name="nric_front_image" required><img src="../public-assets/icons/upload.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"><span class="file-upload-text">Upload Front</span></label></div>
+              <div class="form-group"><label class="form-label">NRIC Photo (Back)</label><label class="file-upload"><input type="file" accept="image/*" name="nric_back_image" required><img src="../public-assets/icons/upload.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"><span class="file-upload-text">Upload Back</span></label></div>
             </div>
 
             <div class="driver-step" id="driverStep3">
-              <h3 class="step-title">Driver's License (PSV)</h3>
-              <div class="form-group"><label class="form-label">PSV License Number</label>
-                <div class="input-wrapper"><img src="../public-assets/icons/credit-card.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="text" class="form-input form-input-icon" name="psvNumber" placeholder="PSV-12345" required></div>
+              <h3 class="step-title">License Verification</h3>
+              <div class="form-group"><label class="form-label">License Expiry Date</label>
+                <div class="input-wrapper"><img src="../public-assets/icons/calendar.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="date" class="form-input form-input-icon" name="lisence_expiry_date" required></div>
               </div>
-              <div class="form-row">
-                <div class="form-group"><label class="form-label">Issue Date</label>
-                  <div class="input-wrapper"><img src="../public-assets/icons/calendar.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="date" class="form-input form-input-icon" name="psvIssue" required></div>
-                </div>
-                <div class="form-group"><label class="form-label">Expiry Date</label>
-                  <div class="input-wrapper"><img src="../public-assets/icons/calendar.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="date" class="form-input form-input-icon" name="psvExpiry" required></div>
-                </div>
-              </div>
-              <div class="form-group"><label class="form-label">PSV License Photo (Front)</label><label class="file-upload"><input type="file" accept="image/*,.pdf" name="psvFront"><img src="../public-assets/icons/upload.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"><span class="file-upload-text">Upload Front</span></label></div>
-              <div class="form-group"><label class="form-label">PSV License Photo (Back)</label><label class="file-upload"><input type="file" accept="image/*,.pdf" name="psvBack"><img src="../public-assets/icons/upload.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"><span class="file-upload-text">Upload Back</span></label></div>
+              <div class="form-group"><label class="form-label">License Photo (Front)</label><label class="file-upload"><input type="file" accept="image/*" name="lisence_front_image" required><img src="../public-assets/icons/upload.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"><span class="file-upload-text">Upload Front</span></label></div>
+              <div class="form-group"><label class="form-label">License Photo (Back)</label><label class="file-upload"><input type="file" accept="image/*" name="lisence_back_image" required><img src="../public-assets/icons/upload.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"><span class="file-upload-text">Upload Back</span></label></div>
             </div>
 
             <div class="driver-step" id="driverStep4">
-              <h3 class="step-title">Vehicle Details</h3>
-              <div class="form-group"><label class="form-label">Vehicle Make & Model</label>
-                <div class="input-wrapper"><img src="../public-assets/icons/car.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="text" class="form-input form-input-icon" name="vehicleModel" placeholder="Toyota Prius 2022" required></div>
+              <h3 class="step-title">Vehicle Information</h3>
+              <div class="form-group"><label class="form-label">Vehicle Model</label>
+                <div class="input-wrapper"><img src="../public-assets/icons/car.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="text" class="form-input form-input-icon" name="vehicle_type" maxlength="20" placeholder="Toyota Prius 2022"></div>
               </div>
-              <div class="form-row">
-                <div class="form-group"><label class="form-label">Vehicle Color</label><input type="text" class="form-input" name="vehicleColor" placeholder="Silver" required></div>
-                <div class="form-group"><label class="form-label">Plate Number</label><input type="text" class="form-input" name="plateNumber" placeholder="ABC-1234" required></div>
+              <div class="form-group"><label class="form-label">Plate Number</label>
+                <div class="input-wrapper"><img src="../public-assets/icons/car.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="text" class="form-input form-input-icon" name="plate_number" maxlength="10" placeholder="ABC1234" required></div>
               </div>
-              <div class="form-group"><label class="form-label">Number of Seats</label><select class="form-input" name="vehicleSeats" required>
-                  <option value="">Select seats</option>
-                  <option value="2">2 Seats</option>
-                  <option value="4">4 Seats</option>
-                  <option value="5">5 Seats</option>
-                  <option value="6">6 Seats</option>
-                  <option value="7">7 Seats</option>
-                </select></div>
-              <div class="form-group"><label class="form-label">Vehicle Ownership Certificate</label><label class="file-upload"><input type="file" accept="image/*,.pdf" name="ownershipCert"><img src="../public-assets/icons/upload.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"><span class="file-upload-text">Upload Certificate</span></label></div>
-              <div class="form-group"><label class="form-label">Road Tax</label><label class="file-upload"><input type="file" accept="image/*,.pdf" name="roadtax"><img src="../public-assets/icons/upload.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"><span class="file-upload-text">Upload Road Tax</span></label></div>
-              <div class="form-group"><label class="form-label">Vehicle Insurance</label><label class="file-upload"><input type="file" accept="image/*,.pdf" name="insurance"><img src="../public-assets/icons/upload.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"><span class="file-upload-text">Upload Insurance</span></label></div>
+              <div class="form-group"><label class="form-label">Color</label>
+                <div class="input-wrapper"><img src="../public-assets/icons/edit.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true"><input type="text" class="form-input form-input-icon" name="color" maxlength="20" placeholder="Silver"></div>
+              </div>
             </div>
 
             <div class="driver-nav-buttons"><button type="button" class="driver-back-button" id="driverBack">BACK</button><button type="submit" class="driver-next-button" id="driverNext">NEXT STEP <img src="../public-assets/icons/arrow-right.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"></button></div>
