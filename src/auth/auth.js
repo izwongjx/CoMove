@@ -7,7 +7,7 @@ var registerRoleStep = document.getElementById('step-role');
 
 if (loginForm) initLoginPage();
 if (registerRoleStep) initRegisterPage();
-
+ 
 /* ============================================
    LOGIN PAGE
 ============================================ */
@@ -22,18 +22,12 @@ function initLoginPage() {
   var passwordInput = document.getElementById('loginPassword');
 
   function setRole(role) {
-    currentRole = role;
 
     riderBtn.classList.toggle('active', role === 'rider');
     driverBtn.classList.toggle('active', role === 'driver');
 
-    if (role === 'rider') {
-      emailLabel.textContent = 'APU Email Address';
-      emailInput.placeholder = 'example@apu.edu.my';
-    } else {
-      emailLabel.textContent = 'APU Email Address';
-      emailInput.placeholder = 'example@apu.edu.my';
-    }
+    emailLabel.textContent = 'APU Email Address';
+    emailInput.placeholder = 'example@apu.edu.my';
 
     roleText.textContent = role.toUpperCase();
   }
@@ -46,8 +40,8 @@ function initLoginPage() {
     setRole('driver');
   });
 
-  loginForm.addEventListener('submit', function(e) {
-    e.preventDefault();
+  loginForm.addEventListener('submit', function(event) {
+    event.preventDefault();
 
     var email = emailInput.value.trim();
     var password = passwordInput.value.trim();
@@ -80,7 +74,7 @@ function initRegisterPage() {
     if (el) el.classList.add('active');
   }
 
-  /* -------- Role Selection -------- */
+  /* -------- Role Selection ------ */
   var selectRider = document.getElementById('selectRider');
   if (selectRider) {
     selectRider.addEventListener('click', function() {
