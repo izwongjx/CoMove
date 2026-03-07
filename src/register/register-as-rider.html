@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoRide - Rider Sign Up</title>
+  <link rel="icon" type="image/svg+xml" href="../public-assets/icons/site-icon.svg">
+  <link rel="stylesheet" href="../public-assets/style.css">
+  <link rel="stylesheet" href="register.css">
+</head>
+
+<body>
+  <div class="layout">
+    <div class="hero">
+      <div class="hero-content">
+        <h2>JOIN THE<br><span>REVOLUTION</span></h2>
+        <p>Every shared ride is a vote for a cleaner planet. Be part of the solution, not the pollution.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <a href="register.html" class="home-link">
+        <img src="../public-assets/icons/arrow-left.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true">
+        BACK TO ROLE SELECTION
+      </a>
+
+      <div class="form-wrapper">
+        <div class="header">
+          <h1>Rider Sign Up</h1>
+          <p>Fill once and submit. No multi-step navigation.</p>
+        </div>
+
+        <form id="riderRegisterForm" class="register-form" novalidate>
+          <section class="form-section">
+            <h3 class="section-title">Account Details</h3>
+
+            <div class="field-group">
+              <label class="field-label" for="riderFullName">Full Name</label>
+              <div class="input-wrapper">
+                <img src="../public-assets/icons/user.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
+                <input type="text" class="field-input field-input-with-icon" id="riderFullName" name="fullName" placeholder="John Doe" required>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="riderEmail">University Email</label>
+              <div class="input-wrapper">
+                <img src="../public-assets/icons/mail.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
+                <input type="email" class="field-input field-input-with-icon" id="riderEmail" name="email" placeholder="xxx@mail.apu.edu.my" required>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="riderPhone">Phone Number</label>
+              <div class="input-wrapper">
+                <img src="../public-assets/icons/phone.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
+                <input type="tel" class="field-input field-input-with-icon" id="riderPhone" name="phone" placeholder="+1 (555) 000-0000" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="field-group">
+                <label class="field-label" for="riderPassword">Password</label>
+                <div class="input-wrapper">
+                  <img src="../public-assets/icons/lock.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
+                  <input type="password" class="field-input field-input-with-icon" id="riderPassword" name="password" placeholder="********" required>
+                </div>
+              </div>
+              <div class="field-group">
+                <label class="field-label" for="riderConfirmPassword">Confirm Password</label>
+                <div class="input-wrapper">
+                  <img src="../public-assets/icons/lock.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
+                  <input type="password" class="field-input field-input-with-icon" id="riderConfirmPassword" name="confirmPassword" placeholder="********" required>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="primary-button" id="registerSubmitBtn">
+              CREATE RIDER ACCOUNT
+              <img src="../public-assets/icons/arrow-right.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">
+            </button>
+          </section>
+        </form>
+
+        <section class="otp-card is-hidden" id="otpSection">
+          <div class="header otp-header">
+            <h1>Verify Your Account</h1>
+            <p id="otpSubtitle">We have sent a verification code to your email.</p>
+          </div>
+          <form id="otpForm">
+            <div class="otp-inputs">
+              <input type="text" maxlength="1" class="otp-input" data-index="0">
+              <input type="text" maxlength="1" class="otp-input" data-index="1">
+              <input type="text" maxlength="1" class="otp-input" data-index="2">
+              <input type="text" maxlength="1" class="otp-input" data-index="3">
+              <input type="text" maxlength="1" class="otp-input" data-index="4">
+              <input type="text" maxlength="1" class="otp-input" data-index="5">
+            </div>
+            <div class="otp-resend">
+              <p>Did not receive the code?</p>
+              <button type="button" id="resendBtn" class="resend-link" disabled>
+                <img src="../public-assets/icons/refresh.svg" width="14" height="14" class="icon-img" alt="" aria-hidden="true">
+                <span id="resendText">Resend in 30s</span>
+              </button>
+            </div>
+            <button type="submit" class="primary-button" id="verifyBtn" disabled>
+              VERIFY & CONTINUE
+              <img src="../public-assets/icons/arrow-right.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">
+            </button>
+          </form>
+        </section>
+
+        <div class="footer">
+          <p>Already have an account? <a href="../login/login-as-rider.html"><strong>Log in</strong></a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../public-assets/script.js"></script>
+  <script src="register.js"></script>
+</body>
+
+</html>
