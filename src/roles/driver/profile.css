@@ -1,0 +1,71 @@
+.mainNav{
+  background-color: #0f2a1d;
+  border-color: rgba(255, 255, 255, 0.1);
+  padding: 20px 20px 20px 20px;
+}
+
+
+.logo{
+  color: white;
+  font-size: 25px; 
+  font-weight: 800; 
+  gap: -10px;
+  margin-left: 1%;
+}
+
+.logo span{
+  color: #c4f547;
+}
+.insideNav{
+  display: flex;
+  align-items: center;
+}
+
+.navContents {
+  display: flex;
+  align-self: center;
+  margin: 0 auto;
+  gap: 32px;
+  color: var(--gray-400);
+}
+
+.navContents a{
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  gap: 10px;
+}
+
+.navContents a:hover {
+  color: var(--white);
+}
+
+/* for the remaining options on the nvbar */
+.navContents a img{
+  filter: brightness(0) saturate(100%) invert(60%);
+}
+
+/* for the current nav lmao */
+.currentNav{
+  color:#c4f547;
+  background-color: rgb(9, 31, 8);
+  padding: 5px 15px 5px 15px;
+  border-radius: 8px;
+}
+
+/* current nav logo */
+.navContents a.currentNav img{
+  filter: brightness(0) saturate(100%) invert(83%) sepia(54%) saturate(516%) hue-rotate(34deg);
+}
+
+.nav-logout img {
+  filter: brightness(0) saturate(100%) invert(60%);
+  transition: filter 0.2s ease; /* optional smooth transition */
+}
+
+.nav-logout:hover img {
+  filter: brightness(0) saturate(100%) invert(100%);
+}
+
+
+/* navigation ends here */
