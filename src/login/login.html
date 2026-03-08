@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>EcoRide - Sign Up</title>
+  <link rel="icon" type="image/svg+xml" href="../public-assets/icons/site-icon.svg">
+  <link rel="stylesheet" href="../public-assets/style.css">
+  <link rel="stylesheet" href="login.css">
+</head>
+
+<body>
+  <div class="layout">
+    <div class="hero">
+      <div class="hero-content">
+        <h2>JOIN THE<br><span>REVOLUTION</span></h2>
+        <p>Every shared ride is a vote for a cleaner planet. Be part of the solution, not the pollution.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <a href="../../index.php" class="home-link">
+        <img src="../public-assets/icons/arrow-left.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> BACK TO HOME
+      </a>
+
+      <div class="form-wrapper">
+        <div id="step-role" class="flow-step active">
+          <div class="header">
+            <h1>Join EcoRide</h1>
+            <p>Choose how you want to contribute to a greener future</p>
+          </div>
+
+          <div class="role-options">
+            <button class="role-option" onclick="window.location.href='login-as-rider.html'">
+              <div class="role-option-icon"><img src="../public-assets/icons/user.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></div>
+              <span class="role-option-label">Login as a Rider</span>
+              <img src="../public-assets/icons/arrow-right.svg" width="20" height="20" class="role-option-arrow icon-img" alt="" aria-hidden="true">
+            </button>
+            <button class="role-option" onclick="window.location.href='login-as-driver.html'">
+              <div class="role-option-icon"><img src="../public-assets/icons/car.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></div>
+              <span class="role-option-label">Login as a Driver</span>
+              <img src="../public-assets/icons/arrow-right.svg" width="20" height="20" class="role-option-arrow icon-img" alt="" aria-hidden="true">
+            </button>
+          </div>
+
+          <div class="footer">
+            <p>Don't have an account? <a href="register.php"><strong>Register</strong></a></p>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <script src="../public-assets/script.js"></script>
+  <script src="login.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoRide - Driver Sign Up</title>
+  <link rel="icon" type="image/svg+xml" href="../public-assets/icons/site-icon.svg">
+  <link rel="stylesheet" href="../public-assets/style.css">
+  <link rel="stylesheet" href="register.css">
+</head>
+
+<body>
+  <div class="layout">
+    <div class="hero">
+      <div class="hero-content">
+        <h2>JOIN THE<br><span>REVOLUTION</span></h2>
+        <p>Every shared ride is a vote for a cleaner planet. Be part of the solution, not the pollution.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <a href="register.html" class="home-link">
+        <img src="../public-assets/icons/arrow-left.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true">
+        BACK TO ROLE SELECTION
+      </a>
+
+      <div class="form-wrapper">
+        <div class="header">
+          <h1>Driver Sign Up</h1>
+          <p>All required details are on one page. Submit once.</p>
+        </div>
+
+        <form id="driverRegisterForm" class="register-form" novalidate>
+          <section class="form-section">
+            <h3 class="section-title">Account Details</h3>
+            <div class="field-group">
+              <label class="field-label" for="driverName">Full Name</label>
+              <div class="input-wrapper">
+                <img src="../public-assets/icons/user.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
+                <input type="text" class="field-input field-input-with-icon" id="driverName" name="name" maxlength="50" placeholder="John Doe" required>
+              </div>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="driverEmail">University Email</label>
+              <div class="input-wrapper">
+                <img src="../public-assets/icons/mail.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
+                <input type="email" class="field-input field-input-with-icon" id="driverEmail" name="email" maxlength="100" placeholder="xxx@mail.apu.edu.my" required>
+              </div>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="driverPhone">Phone Number</label>
+              <div class="input-wrapper">
+                <img src="../public-assets/icons/phone.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
+                <input type="tel" class="field-input field-input-with-icon" id="driverPhone" name="phone_number" maxlength="20" placeholder="+1 (555) 000-0000" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="field-group">
+                <label class="field-label" for="driverPassword">Password</label>
+                <div class="input-wrapper">
+                  <img src="../public-assets/icons/lock.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
+                  <input type="password" class="field-input field-input-with-icon" id="driverPassword" name="password" maxlength="255" placeholder="********" required>
+                </div>
+              </div>
+              <div class="field-group">
+                <label class="field-label" for="driverConfirmPassword">Confirm Password</label>
+                <div class="input-wrapper">
+                  <img src="../public-assets/icons/lock.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
+                  <input type="password" class="field-input field-input-with-icon" id="driverConfirmPassword" name="confirmPassword" maxlength="255" placeholder="********" required>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <h3 class="section-title">Identity Verification</h3>
+            <div class="field-group">
+              <label class="field-label" for="nricNumber">NRIC Number</label>
+              <div class="input-wrapper">
+                <img src="../public-assets/icons/credit-card.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
+                <input type="text" class="field-input field-input-with-icon" id="nricNumber" name="nric_number" maxlength="12" placeholder="S1234567A" required>
+              </div>
+            </div>
+            <div class="field-group">
+              <label class="field-label">NRIC Photo (Front)</label>
+              <label class="file-upload">
+                <input type="file" accept="image/*" name="nric_front_image" required>
+                <img src="../public-assets/icons/upload.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">
+                <span class="file-upload-text">Upload Front</span>
+              </label>
+            </div>
+            <div class="field-group">
+              <label class="field-label">NRIC Photo (Back)</label>
+              <label class="file-upload">
+                <input type="file" accept="image/*" name="nric_back_image" required>
+                <img src="../public-assets/icons/upload.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">
+                <span class="file-upload-text">Upload Back</span>
+              </label>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <h3 class="section-title">License Verification</h3>
+            <div class="field-group">
+              <label class="field-label" for="licenseExpiryDate">License Expiry Date</label>
+              <div class="input-wrapper">
+                <img src="../public-assets/icons/calendar.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
+                <input type="date" class="field-input field-input-with-icon" id="licenseExpiryDate" name="lisence_expiry_date" required>
+              </div>
+            </div>
+            <div class="field-group">
+              <label class="field-label">License Photo (Front)</label>
+              <label class="file-upload">
+                <input type="file" accept="image/*" name="lisence_front_image" required>
+                <img src="../public-assets/icons/upload.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">
+                <span class="file-upload-text">Upload Front</span>
+              </label>
+            </div>
+            <div class="field-group">
+              <label class="field-label">License Photo (Back)</label>
+              <label class="file-upload">
+                <input type="file" accept="image/*" name="lisence_back_image" required>
+                <img src="../public-assets/icons/upload.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">
+                <span class="file-upload-text">Upload Back</span>
+              </label>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <h3 class="section-title">Vehicle Information</h3>
+            <div class="field-group">
+              <label class="field-label" for="vehicleType">Vehicle Model</label>
+              <div class="input-wrapper">
+                <img src="../public-assets/icons/car.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
+                <input type="text" class="field-input field-input-with-icon" id="vehicleType" name="vehicle_type" maxlength="20" placeholder="Toyota Prius 2022">
+              </div>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="plateNumber">Plate Number</label>
+              <div class="input-wrapper">
+                <img src="../public-assets/icons/car.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
+                <input type="text" class="field-input field-input-with-icon" id="plateNumber" name="plate_number" maxlength="10" placeholder="ABC1234" required>
+              </div>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="vehicleColor">Color</label>
+              <div class="input-wrapper">
+                <img src="../public-assets/icons/edit.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
+                <input type="text" class="field-input field-input-with-icon" id="vehicleColor" name="color" maxlength="20" placeholder="Silver">
+              </div>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Profile Photo (Optional)</label>
+              <label class="file-upload">
+                <input type="file" accept="image/*" name="profile_photo">
+                <img src="../public-assets/icons/upload.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">
+                <span class="file-upload-text">Upload Photo</span>
+              </label>
+            </div>
+          </section>
+
+          <button type="submit" class="primary-button" id="registerSubmitBtn">
+            CREATE DRIVER ACCOUNT
+            <img src="../public-assets/icons/arrow-right.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">
+          </button>
+        </form>
+
+        <section class="otp-card is-hidden" id="otpSection">
+          <div class="header otp-header">
+            <h1>Verify Your Account</h1>
+            <p id="otpSubtitle">We have sent a verification code to your email.</p>
+          </div>
+          <form id="otpForm">
+            <div class="otp-inputs">
+              <input type="text" maxlength="1" class="otp-input" data-index="0">
+              <input type="text" maxlength="1" class="otp-input" data-index="1">
+              <input type="text" maxlength="1" class="otp-input" data-index="2">
+              <input type="text" maxlength="1" class="otp-input" data-index="3">
+              <input type="text" maxlength="1" class="otp-input" data-index="4">
+              <input type="text" maxlength="1" class="otp-input" data-index="5">
+            </div>
+            <div class="otp-resend">
+              <p>Did not receive the code?</p>
+              <button type="button" id="resendBtn" class="resend-link" disabled>
+                <img src="../public-assets/icons/refresh.svg" width="14" height="14" class="icon-img" alt="" aria-hidden="true">
+                <span id="resendText">Resend in 30s</span>
+              </button>
+            </div>
+            <button type="submit" class="primary-button" id="verifyBtn" disabled>
+              VERIFY & CONTINUE
+              <img src="../public-assets/icons/arrow-right.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">
+            </button>
+          </form>
+        </section>
+
+        <div class="footer">
+          <p>Already have an account? <a href="../login/login-as-driver.html"><strong>Log in</strong></a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../public-assets/script.js"></script>
+  <script src="register.js"></script>
+</body>
+
+</html>
