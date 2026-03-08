@@ -13,10 +13,11 @@
   var otpSection = document.getElementById('otpSection');
   var otpSubtitle = document.getElementById('otpSubtitle');
   var otpForm = document.getElementById('otpForm');
-  var otpInputs = document.querySelectorAll('.otp-input');
+  var otpInputs = document.querySelectorAll('.otp-digit');
   var verifyBtn = document.getElementById('verifyBtn');
   var resendBtn = document.getElementById('resendBtn');
   var resendText = document.getElementById('resendText');
+  var formFooter = document.querySelector('.form-wrapper > .section-footer');
 
   var pendingOtpEmail = '';
   var generatedOtp = '';
@@ -49,70 +50,6 @@
     return String(Math.floor(100000 + Math.random() * 900000));
   }
 
-  function setupFileUploadFeedback() {
-    var fileInputs = document.querySelectorAll('.file-upload input[type="file"]');
-
-    function clearPreview(uploadLabel) {
-      var previewEl = uploadLabel.parentElement.querySelector('.file-preview');
-      if (!previewEl) return;
-
-      var previewImg = previewEl.querySelector('.file-preview-image');
-      if (previewImg && previewImg.dataset.objectUrl) {
-        URL.revokeObjectURL(previewImg.dataset.objectUrl);
-      }
-
-      previewEl.remove();
-    }
-
-    for (var i = 0; i < fileInputs.length; i++) {
-      (function(fileInput) {
-        var uploadLabel = fileInput.closest('.file-upload');
-        if (!uploadLabel) return;
-
-        var textEl = uploadLabel.querySelector('.file-upload-text');
-        if (textEl && !textEl.dataset.defaultText) {
-          textEl.dataset.defaultText = textEl.textContent;
-        }
-
-        fileInput.addEventListener('change', function() {
-          clearPreview(uploadLabel);
-
-          var selectedFile = this.files && this.files.length ? this.files[0] : null;
-          if (!selectedFile) {
-            uploadLabel.classList.remove('has-file');
-            if (textEl) textEl.textContent = textEl.dataset.defaultText || 'Upload File';
-            return;
-          }
-
-          uploadLabel.classList.add('has-file');
-          if (textEl) textEl.textContent = selectedFile.name;
-
-          var previewEl = document.createElement('div');
-          previewEl.className = 'file-preview';
-
-          if (selectedFile.type.indexOf('image/') === 0) {
-            var previewImage = document.createElement('img');
-            var objectUrl = URL.createObjectURL(selectedFile);
-            previewImage.src = objectUrl;
-            previewImage.dataset.objectUrl = objectUrl;
-            previewImage.className = 'file-preview-image';
-            previewImage.alt = 'Selected file preview';
-            previewEl.appendChild(previewImage);
-          } else {
-            var previewName = document.createElement('p');
-            previewName.className = 'file-preview-name';
-            previewName.textContent = selectedFile.name;
-            previewEl.appendChild(previewName);
-          }
-
-          uploadLabel.insertAdjacentElement('afterend', previewEl);
-        });
-      })(fileInputs[i]);
-    }
-  }
-
-  setupFileUploadFeedback();
-
   activeForm.addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -126,19 +63,19 @@
 
     if (!isApuEmail(email)) {
       alert('Use APU email format: xxx@mail.apu.edu.my');
-      if (emailInput) emailInput.focus();
+      emailInput.focus();
       return;
     }
 
     if (password.length < 8) {
       alert('Password must be at least 8 characters.');
-      if (passwordInput) passwordInput.focus();
+      passwordInput.focus();
       return;
     }
 
     if (password !== confirmPassword) {
       alert('Password and confirm password do not match.');
-      if (confirmPasswordInput) confirmPasswordInput.focus();
+      confirmPasswordInput.focus();
       return;
     }
 
@@ -160,14 +97,14 @@
       alert('Demo OTP: ' + generatedOtp);
 
       if (otpSection) {
-        otpSection.classList.remove('is-hidden');
-        otpSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        activeForm.classList.add('form-hidden');
+        otpSection.classList.remove('otp-hidden');
       }
 
       for (var i = 0; i < otpInputs.length; i++) {
         otpInputs[i].value = '';
       }
-      if (otpInputs.length) otpInputs[0].focus();
+      otpInputs[0].focus();
       if (verifyBtn) verifyBtn.disabled = true;
 
       startOtpTimer();
@@ -224,11 +161,6 @@
       var otp = '';
       for (var i = 0; i < otpInputs.length; i++) {
         otp += otpInputs[i].value;
-      }
-
-      if (!/^\d{6}$/.test(otp)) {
-        alert('Please enter a valid 6-digit OTP.');
-        return;
       }
 
       if (otp !== generatedOtp) {

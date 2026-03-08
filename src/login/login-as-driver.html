@@ -6,65 +6,63 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EcoRide - Log In</title>
   <link rel="icon" type="image/svg+xml" href="../public-assets/icons/site-icon.svg">
-  <link rel="stylesheet" href="../public-assets/style.css">
   <link rel="stylesheet" href="login.css">
 </head>
 
 <body>
-  <div class="layout">
-    <div class="hero">
+  <main class="page">
+    <aside class="hero" aria-label="EcoRide Message">
       <div class="hero-content">
         <h2>JOIN THE<br><span>REVOLUTION</span></h2>
         <p>Every shared ride is a vote for a cleaner planet. Be part of the solution, not the pollution.</p>
       </div>
-    </div>
+    </aside>
 
-    <div class="panel">
-      <a href="../../index.php" class="home-link">
-        <img src="../public-assets/icons/arrow-left.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true">
-        BACK TO HOME
-      </a>
+    <section class="panel">
+      <nav class="top-nav" aria-label="Page Navigation">
+        <a href="login.html" class="back-link">
+          <img src="../public-assets/icons/arrow-left.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true">
+          BACK TO ROLE SELECTION
+        </a>
+      </nav>
 
       <div class="form-wrapper">
-        <div class="header">
+        <header class="section-header">
           <h1>Welcome Back</h1>
           <p>Sign in to continue your eco-friendly journey</p>
-        </div>
+        </header>
 
-        <form id="loginForm">
-          <div class="field-group">
-            <label class="field-label" id="emailLabel">APU Email Address</label>
-            <div class="input-wrapper">
+        <form class="login-form">
+          <div>
+            <label class="form-label" for="loginEmail">APU Email Address</label>
+            <div class="input-wrap">
               <img src="../public-assets/icons/mail.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
-              <input type="email" class="field-input field-input-with-icon" id="loginEmail" placeholder="xxx@mail.apu.edu.my" required>
+              <input type="email" class="input-control" id="loginEmail" placeholder="xxx@mail.apu.edu.my" required>
             </div>
           </div>
 
-          <div class="field-group">
-            <div class="label-row">
-              <label class="field-label">Password</label>
-            </div>
-            <div class="input-wrapper">
+          <div>
+            <label class="form-label" for="loginPassword">Password</label>
+            <div class="input-wrap">
               <img src="../public-assets/icons/lock.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
-              <input type="password" class="field-input field-input-with-icon" id="loginPassword" placeholder="********" required>
+              <input type="password" class="input-control" id="loginPassword" placeholder="********" required>
             </div>
           </div>
 
-          <button type="submit" class="primary-button" id="loginBtn">
-            LOG IN AS <span id="roleText">DRIVER</span>
+          <button type="submit" class="submit-button">
+            LOG IN AS DRIVER
             <img src="../public-assets/icons/arrow-right.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">
           </button>
 
-          <div class="footer">
-            <p>Don't have an account? <a href="register.php"><strong>Sign up now</strong></a></p>
-          </div>
+          <footer class="section-footer">
+            <p>Don't have an account? <a href="../register/register-as-driver.html"><strong>Sign up now</strong></a></p>
+          </footer>
         </form>
       </div>
-    </div>
-  </div>
+    </section>
+  </main>
 
   <script src="../public-assets/script.js"></script>
-  <script src="login.js"></script>
 </body>
 
 </html>

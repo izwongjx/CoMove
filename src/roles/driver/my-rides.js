@@ -1,11 +1,9 @@
 /* ============================================
    ECORIDE - Driver Pages JavaScript
-   My Rides data-driven rendering and modal behavior
+   My Rides inline rendering
    ============================================ */
 
 function initDriverMyRidesPage() {
-  
-
   var pageRoot = document.getElementById('myRidesPage');
   if (!pageRoot) {
     return;
@@ -82,34 +80,9 @@ function initDriverMyRidesPage() {
 
   var ridesListElement = document.getElementById('myRidesList');
   var ridesEmptyStateElement = document.getElementById('myRidesEmptyState');
-
-  var modalElement = document.getElementById('manageRideModal');
-  var manageRideTimeElement = document.getElementById('manageRideTime');
-  var manageRideStatusElement = document.getElementById('manageRideStatus');
-  var manageRideVehicleElement = document.getElementById('manageRideVehicle');
-  var manageRideFromElement = document.getElementById('manageRideFrom');
-  var manageRideToElement = document.getElementById('manageRideTo');
-  var manageRideSeatsElement = document.getElementById('manageRideSeats');
-  var manageRidePriceElement = document.getElementById('manageRidePrice');
-  var manageRidePassengersTitleElement = document.getElementById(
-    'manageRidePassengersTitle'
-  );
-  var manageRideRidersElement = document.getElementById('manageRideRiders');
-  var manageRideRidersEmptyElement = document.getElementById('manageRideRidersEmpty');
-
-  var cancelRideTriggerButton = document.getElementById('cancelRideTrigger');
-  var cancelRideConfirmElement = document.getElementById('cancelRideConfirm');
-  var cancelRideConfirmTextElement = document.getElementById('cancelRideConfirmText');
-  var cancelRideKeepButton = document.getElementById('cancelRideKeep');
-  var cancelRideConfirmButton = document.getElementById('cancelRideConfirmButton');
-
-  if (!ridesListElement || !modalElement) {
+  if (!ridesListElement) {
     return;
   }
-
-  var selectedRide = null;
-  var selectedRiders = [];
-  var isCancelConfirmVisible = false;
 
   function escapeHtml(value) {
     return String(value)
@@ -227,72 +200,6 @@ function initDriverMyRidesPage() {
     };
   }
 
-  function buildRideCardMarkup(ride) {
-    var statusText = asText(ride.status, 'Pending');
-    var statusClass = toStatusClass(statusText);
-
-    var booked = asNumber(ride.booked, 0);
-    var seats = asNumber(ride.seats, 0);
-    var price = asNumber(ride.price, 0);
-
-    return (
-      '<article class="ride-card">' +
-      '  <div class="ride-card-header">' +
-      '    <div class="ride-card-header-left">' +
-      '      <span class="ride-status-badge ' +
-      statusClass +
-      '">' +
-      escapeHtml(statusText) +
-      '</span>' +
-      '      <span class="ride-time">' +
-      '        <img src="' +
-      iconBasePath +
-      '/calendar.svg" width="14" height="14" alt="" aria-hidden="true" />' +
-      escapeHtml(asText(ride.time, 'Time not set')) +
-      '      </span>' +
-      '    </div>' +
-      '    <span class="ride-vehicle">' +
-      escapeHtml(asText(ride.vehicle, 'Vehicle not set')) +
-      '</span>' +
-      '  </div>' +
-      '  <p class="ride-route">' +
-      '    <span>' +
-      escapeHtml(asText(ride.from, 'Pickup not set')) +
-      '</span>' +
-      '    <span class="ride-route-divider"></span>' +
-      '    <span>' +
-      escapeHtml(asText(ride.to, 'Dropoff not set')) +
-      '</span>' +
-      '  </p>' +
-      '  <div class="ride-meta">' +
-      '    <span class="ride-meta-item">' +
-      '      <img src="' +
-      iconBasePath +
-      '/users.svg" width="14" height="14" alt="" aria-hidden="true" />' +
-      '      <span><strong>' +
-      booked +
-      '</strong>/' +
-      seats +
-      ' Booked</span>' +
-      '    </span>' +
-      '    <span class="ride-meta-item">' +
-      '      <img src="' +
-      iconBasePath +
-      '/dollar-sign.svg" width="14" height="14" alt="" aria-hidden="true" />' +
-      '      <span><strong>' +
-      formatMoney(price) +
-      '</strong> per person</span>' +
-      '    </span>' +
-      '  </div>' +
-      '  <div class="ride-actions">' +
-      '    <button class="driver-btn driver-btn-primary driver-btn-small manage-bookings-btn" type="button" data-ride-id="' +
-      escapeHtml(asText(ride.id, '')) +
-      '">Manage Bookings</button>' +
-      '  </div>' +
-      '</article>'
-    );
-  }
-
   function buildRiderMarkup(rider) {
     var paymentConfig = getPaymentConfig(rider.paymentMethod);
     var rating = asNumber(rider.rating, 0).toFixed(1);
@@ -380,22 +287,101 @@ function initDriverMyRidesPage() {
     );
   }
 
-  function updateStatusBadge(element, statusText) {
-    if (!element) {
-      return;
+  function buildRidersListMarkup(riders) {
+    if (!riders.length) {
+      return (
+        '<div class="manage-riders-empty">' +
+        '  <img src="' +
+        iconBasePath +
+        '/users.svg" width="36" height="36" alt="" aria-hidden="true" />' +
+        '  <p class="manage-riders-empty-title">No passengers yet.</p>' +
+        '  <p class="manage-riders-empty-text">Bookings will appear here once accepted.</p>' +
+        '</div>'
+      );
     }
 
-    element.classList.remove(
-      'status-scheduled',
-      'status-completed',
-      'status-cancelled',
-      'status-progress',
-      'status-default'
-    );
+    return '<div class="manage-riders-list">' + riders.map(buildRiderMarkup).join('') + '</div>';
+  }
 
+  function buildRideCardMarkup(ride) {
+    var statusText = asText(ride.status, 'Pending');
     var statusClass = toStatusClass(statusText);
-    element.classList.add(statusClass);
-    element.textContent = asText(statusText, 'Pending');
+    var booked = asNumber(ride.booked, 0);
+    var seats = asNumber(ride.seats, 0);
+    var price = asNumber(ride.price, 0);
+    var riders = getRidersForRide(ride);
+
+    return (
+      '<article class="ride-card" data-ride-card-id="' +
+      escapeHtml(asText(ride.id, '')) +
+      '">' +
+      '  <div class="ride-card-header">' +
+      '    <div class="ride-card-header-left">' +
+      '      <span class="ride-status-badge ' +
+      statusClass +
+      '">' +
+      escapeHtml(statusText) +
+      '</span>' +
+      '      <span class="ride-time">' +
+      '        <img src="' +
+      iconBasePath +
+      '/calendar.svg" width="14" height="14" alt="" aria-hidden="true" />' +
+      escapeHtml(asText(ride.time, 'Time not set')) +
+      '      </span>' +
+      '    </div>' +
+      '    <span class="ride-vehicle">' +
+      escapeHtml(asText(ride.vehicle, 'Vehicle not set')) +
+      '</span>' +
+      '  </div>' +
+      '  <p class="ride-route">' +
+      '    <span>' +
+      escapeHtml(asText(ride.from, 'Pickup not set')) +
+      '</span>' +
+      '    <span class="ride-route-divider"></span>' +
+      '    <span>' +
+      escapeHtml(asText(ride.to, 'Dropoff not set')) +
+      '</span>' +
+      '  </p>' +
+      '  <div class="ride-meta">' +
+      '    <span class="ride-meta-item">' +
+      '      <img src="' +
+      iconBasePath +
+      '/users.svg" width="14" height="14" alt="" aria-hidden="true" />' +
+      '      <span><strong>' +
+      booked +
+      '</strong>/' +
+      seats +
+      ' Booked</span>' +
+      '    </span>' +
+      '    <span class="ride-meta-item">' +
+      '      <img src="' +
+      iconBasePath +
+      '/dollar-sign.svg" width="14" height="14" alt="" aria-hidden="true" />' +
+      '      <span><strong>' +
+      formatMoney(price) +
+      '</strong> per person</span>' +
+      '    </span>' +
+      '  </div>' +
+      '  <div class="ride-manage-panel">' +
+      '    <section class="manage-riders-section">' +
+      '      <h3 class="manage-riders-title">Passenger List (' +
+      riders.length +
+      ')</h3>' +
+      buildRidersListMarkup(riders) +
+      '    </section>' +
+      '    <section class="manage-cancel-section">' +
+      '      <button class="driver-btn driver-btn-danger-outline cancel-ride-btn" type="button" data-ride-id="' +
+      escapeHtml(asText(ride.id, '')) +
+      '">' +
+      '        <img src="' +
+      iconBasePath +
+      '/alert-triangle.svg" width="16" height="16" alt="" aria-hidden="true" />' +
+      '        Cancel Entire Ride' +
+      '      </button>' +
+      '    </section>' +
+      '  </div>' +
+      '</article>'
+    );
   }
 
   function renderRideCards() {
@@ -414,123 +400,16 @@ function initDriverMyRidesPage() {
     ridesListElement.innerHTML = rides.map(buildRideCardMarkup).join('');
   }
 
-  function renderRidersList() {
-    if (!manageRideRidersElement || !manageRideRidersEmptyElement) {
-      return;
-    }
-
-    if (!selectedRiders.length) {
-      manageRideRidersElement.innerHTML = '';
-      manageRideRidersEmptyElement.hidden = false;
-      return;
-    }
-
-    manageRideRidersEmptyElement.hidden = true;
-    manageRideRidersElement.innerHTML = selectedRiders.map(buildRiderMarkup).join('');
-  }
-
-  function updateCancelConfirmationVisibility() {
-    if (!cancelRideTriggerButton || !cancelRideConfirmElement) {
-      return;
-    }
-
-    cancelRideTriggerButton.hidden = isCancelConfirmVisible;
-    cancelRideConfirmElement.hidden = !isCancelConfirmVisible;
-  }
-
-  function setCancelConfirmation(show) {
-    isCancelConfirmVisible = Boolean(show);
-    updateCancelConfirmationVisibility();
-  }
-
-  function renderManageRideModal() {
+  function handleCancelRide(rideId) {
+    var selectedRide = getRideById(rideId);
     if (!selectedRide) {
       return;
     }
 
-    var booked = asNumber(selectedRide.booked, 0);
-    var seats = asNumber(selectedRide.seats, 0);
-    var passengerCount = selectedRiders.length;
-
-    if (manageRideTimeElement) {
-      manageRideTimeElement.textContent = asText(selectedRide.time, 'Time not set');
-    }
-
-    updateStatusBadge(manageRideStatusElement, selectedRide.status);
-
-    if (manageRideVehicleElement) {
-      manageRideVehicleElement.textContent = asText(selectedRide.vehicle, 'Vehicle not set');
-    }
-
-    if (manageRideFromElement) {
-      manageRideFromElement.textContent = asText(selectedRide.from, 'Pickup not set');
-    }
-
-    if (manageRideToElement) {
-      manageRideToElement.textContent = asText(selectedRide.to, 'Dropoff not set');
-    }
-
-    if (manageRideSeatsElement) {
-      manageRideSeatsElement.innerHTML =
-        '<strong>' + booked + '</strong>/' + seats + ' Booked';
-    }
-
-    if (manageRidePriceElement) {
-      manageRidePriceElement.innerHTML =
-        '<strong>' + formatMoney(selectedRide.price) + '</strong> per person';
-    }
-
-    if (manageRidePassengersTitleElement) {
-      manageRidePassengersTitleElement.textContent =
-        'Passenger List (' + passengerCount + ')';
-    }
-
-    if (cancelRideConfirmTextElement) {
-      cancelRideConfirmTextElement.textContent =
-        'This will cancel the entire ride and this action cannot be undone.';
-    }
-
-    renderRidersList();
-    updateCancelConfirmationVisibility();
-  }
-
-  function openManageRideModal(rideId) {
-    var matchingRide = getRideById(rideId);
-    if (!matchingRide) {
-      return;
-    }
-
-    selectedRide = matchingRide;
-    selectedRiders = getRidersForRide(matchingRide);
-    setCancelConfirmation(false);
-    renderManageRideModal();
-
-    modalElement.classList.add('is-open');
-    modalElement.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('modal-open');
-  }
-
-  function closeManageRideModal() {
-    selectedRide = null;
-    selectedRiders = [];
-    setCancelConfirmation(false);
-
-    modalElement.classList.remove('is-open');
-    modalElement.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('modal-open');
-  }
-
-  function handleCancelRide() {
-    if (!selectedRide) {
-      return;
-    }
-
-    var rideId = selectedRide.id;
     var shouldRemoveLocalRide = true;
-
     if (onCancelRide) {
       try {
-        var callbackResult = onCancelRide(rideId, selectedRide);
+        var callbackResult = onCancelRide(selectedRide.id, selectedRide);
         if (callbackResult === false) {
           shouldRemoveLocalRide = false;
         }
@@ -539,68 +418,44 @@ function initDriverMyRidesPage() {
       }
     }
 
-    if (shouldRemoveLocalRide) {
-      var removeIndex = rides.findIndex(function (ride) {
-        return String(ride.id) === String(rideId);
-      });
-
-      if (removeIndex >= 0) {
-        rides.splice(removeIndex, 1);
-      }
-
-      delete ridersByRide[rideId];
-      delete ridersByRide[String(rideId)];
-
-      renderRideCards();
-    }
-
-    closeManageRideModal();
-  }
-
-  ridesListElement.addEventListener('click', function (event) {
-    var button = event.target.closest('.manage-bookings-btn');
-    if (!button) {
+    if (!shouldRemoveLocalRide) {
       return;
     }
 
-    openManageRideModal(button.getAttribute('data-ride-id'));
-  });
-
-  var closeModalElements = document.querySelectorAll('[data-close-manage-modal]');
-  closeModalElements.forEach(function (closeElement) {
-    closeElement.addEventListener('click', function () {
-      closeManageRideModal();
+    var removeIndex = rides.findIndex(function (ride) {
+      return String(ride.id) === String(selectedRide.id);
     });
-  });
-
-  if (cancelRideTriggerButton) {
-    cancelRideTriggerButton.addEventListener('click', function () {
-      setCancelConfirmation(true);
-    });
-  }
-
-  if (cancelRideKeepButton) {
-    cancelRideKeepButton.addEventListener('click', function () {
-      setCancelConfirmation(false);
-    });
-  }
-
-  if (cancelRideConfirmButton) {
-    cancelRideConfirmButton.addEventListener('click', function () {
-      handleCancelRide();
-    });
-  }
-
-  document.addEventListener('keydown', function (event) {
-    if (event.key === 'Escape' && modalElement.classList.contains('is-open')) {
-      closeManageRideModal();
+    if (removeIndex >= 0) {
+      rides.splice(removeIndex, 1);
     }
+
+    delete ridersByRide[selectedRide.id];
+    delete ridersByRide[String(selectedRide.id)];
+
+    renderRideCards();
+  }
+
+  ridesListElement.addEventListener('click', function (event) {
+    var cancelButton = event.target.closest('.cancel-ride-btn');
+    if (!cancelButton) {
+      return;
+    }
+
+    handleCancelRide(cancelButton.getAttribute('data-ride-id'));
   });
 
-  window.openDriverManageRideModal = openManageRideModal;
+  /* Keep compatibility for pages/scripts still calling this old entry point. */
+  window.openDriverManageRideModal = function (rideId) {
+    var rideCard = ridesListElement.querySelector(
+      '.ride-card[data-ride-card-id="' + String(rideId) + '"]'
+    );
+
+    if (rideCard && typeof rideCard.scrollIntoView === 'function') {
+      rideCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   renderRideCards();
 }
 
 initDriverMyRidesPage();
-
