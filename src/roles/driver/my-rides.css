@@ -865,3 +865,222 @@ body.modal-open {
   }
 }
 
+/* --- My Rides Table View Override --- */
+.my-rides-list {
+  display: grid;
+  gap: 16px;
+}
+
+.my-rides-table-wrap,
+.passenger-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
+  background: var(--white);
+}
+
+.my-rides-table,
+.ride-detail-table,
+.passenger-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.my-rides-table th,
+.my-rides-table td,
+.ride-detail-table th,
+.ride-detail-table td,
+.passenger-table th,
+.passenger-table td {
+  border-bottom: 1px solid var(--gray-200);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: middle;
+  font-size: 13px;
+}
+
+.my-rides-table thead th,
+.passenger-table thead th {
+  background: var(--gray-50);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.my-rides-table tbody tr:last-child td,
+.ride-detail-table tbody tr:last-child th,
+.ride-detail-table tbody tr:last-child td,
+.passenger-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.ride-detail-panel {
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
+  background: var(--white);
+  padding: 14px;
+  display: grid;
+  gap: 14px;
+}
+
+.ride-detail-view {
+  display: grid;
+  gap: 10px;
+}
+
+.ride-detail-top-actions {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.ride-detail-placeholder {
+  color: var(--gray-600);
+  background: var(--gray-50);
+}
+
+.ride-detail-title {
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.ride-detail-table th {
+  width: 170px;
+  white-space: nowrap;
+  background: var(--gray-50);
+  font-weight: 700;
+}
+
+.ride-detail-table td {
+  background: var(--white);
+}
+
+.rides-action-cell {
+  display: flex;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.profile-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  border: 1px solid var(--gray-300);
+  background: var(--gray-50);
+  color: var(--gray-700);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.passenger-empty {
+  color: var(--gray-500);
+}
+
+@media (max-width: 767px) {
+  .my-rides-table-wrap,
+  .passenger-table-wrap {
+    overflow-x: visible;
+    border: 0;
+    background: transparent;
+  }
+
+  .my-rides-table,
+  .my-rides-table tbody,
+  .my-rides-table tr,
+  .passenger-table,
+  .passenger-table tbody,
+  .passenger-table tr,
+  .ride-detail-table,
+  .ride-detail-table tbody,
+  .ride-detail-table tr,
+  .ride-detail-table th,
+  .ride-detail-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .my-rides-table thead,
+  .passenger-table thead {
+    display: none;
+  }
+
+  .my-rides-table tr,
+  .passenger-table tr {
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 4px 0;
+    background: var(--white);
+  }
+
+  .my-rides-table td,
+  .passenger-table td,
+  .ride-detail-table th,
+  .ride-detail-table td {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .my-rides-table td,
+  .passenger-table td {
+    display: block;
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  .my-rides-table td:last-child,
+  .passenger-table td:last-child {
+    border-bottom: 0;
+  }
+
+  .my-rides-table td::before,
+  .passenger-table td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gray-600);
+    margin-bottom: 2px;
+  }
+
+  .passenger-empty::before {
+    content: '';
+    display: none;
+  }
+
+  .ride-detail-table tr {
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  .ride-detail-table tr:last-child {
+    border-bottom: 0;
+  }
+
+  .ride-detail-table th {
+    border-bottom: 0;
+    padding-bottom: 2px;
+  }
+
+  .ride-detail-table td {
+    padding-top: 0;
+  }
+
+  .rides-action-cell {
+    display: block;
+    white-space: normal;
+  }
+
+  .rides-action-cell .driver-btn {
+    width: 100%;
+    display: block;
+    margin-top: 6px;
+  }
+
+  .rides-action-cell .driver-btn:first-child {
+    margin-top: 0;
+  }
+}
+
