@@ -7,34 +7,9 @@ require_once __DIR__ . '/../../phpmailer/src/SMTP.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 
-function generateOtpId(mysqli $dbConn): string
-{
-    $query = "SELECT otp_id FROM OTP WHERE otp_id LIKE 'OTP%' ORDER BY CAST(SUBSTRING(TRIM(otp_id), 4) AS UNSIGNED) DESC LIMIT 1";
-    $result = mysqli_query($dbConn, $query);
-
-    if (!$result) {
-        return 'OTP00001';
-    }
-
-    $row = mysqli_fetch_assoc($result);
-    mysqli_free_result($result);
-
-    $lastNumber = 0;
-    if ($row && isset($row['otp_id'])) {
-        $lastId = trim((string) $row['otp_id']);
-        if (preg_match('/^OTP(\d+)$/', $lastId, $matches)) {
-            $lastNumber = (int) $matches[1];
-        }
-    }
-
-    return 'OTP' . str_pad((string) ($lastNumber + 1), 5, '0', STR_PAD_LEFT);
-}
-
 function issueOtpForEmail(mysqli $dbConn, string $email): void
 {
     $otpCode = (string) random_int(100000, 999999);
-    $otpId = generateOtpId($dbConn);
-    $expiresAt = date('Y-m-d H:i:s', time() + 300);
 
     mysqli_begin_transaction($dbConn);
 
@@ -52,13 +27,13 @@ function issueOtpForEmail(mysqli $dbConn, string $email): void
 
         $insertStmt = mysqli_prepare(
             $dbConn,
-            'INSERT INTO OTP (otp_id, email_address, otp_code, is_used, expires_at) VALUES (?, ?, ?, 0, ?)'
+            'INSERT INTO OTP (email_address, otp_code, is_used, expires_at) VALUES (?, ?, 0, DATE_ADD(NOW(), INTERVAL 5 MINUTE))'
         );
         if ($insertStmt === false) {
             throw new RuntimeException('Unable to prepare OTP insert statement.');
         }
 
-        mysqli_stmt_bind_param($insertStmt, 'ssss', $otpId, $email, $otpCode, $expiresAt);
+        mysqli_stmt_bind_param($insertStmt, 'ss', $email, $otpCode);
         if (!mysqli_stmt_execute($insertStmt)) {
             throw new RuntimeException('Unable to store OTP in database.');
         }

@@ -21,7 +21,6 @@
     <section class="panel">
       <nav class="top-nav" aria-label="Page Navigation">
         <a href="login.html" class="back-link">
-          <img src="../public-assets/icons/arrow-left.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true">
           BACK TO ROLE SELECTION
         </a>
       </nav>
@@ -32,26 +31,33 @@
           <p>Sign in to continue your eco-friendly journey</p>
         </header>
 
-        <form class="login-form">
-          <div>
-            <label class="form-label" for="loginEmail">APU Email Address</label>
-            <div class="input-wrap">
-              <img src="../public-assets/icons/mail.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
-              <input type="email" class="input-control" id="loginEmail" placeholder="xxx@mail.apu.edu.my" required>
-            </div>
-          </div>
-
-          <div>
-            <label class="form-label" for="loginPassword">Password</label>
-            <div class="input-wrap">
-              <img src="../public-assets/icons/lock.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
-              <input type="password" class="input-control" id="loginPassword" placeholder="********" required>
-            </div>
-          </div>
+        <form class="login-form" method="post" action="login.php">
+          <input type="hidden" name="role" value="driver">
+          <table class="form-table" role="presentation">
+            <tr>
+              <th class="field-label-cell" scope="row">
+                <label class="form-label" for="loginEmail">APU Email Address</label>
+              </th>
+              <td class="field-input-cell">
+                <div class="input-wrap">
+                  <input type="email" class="input-control" id="loginEmail" name="user" placeholder="xxx@mail.apu.edu.my" required>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th class="field-label-cell" scope="row">
+                <label class="form-label" for="loginPassword">Password</label>
+              </th>
+              <td class="field-input-cell">
+                <div class="input-wrap">
+                  <input type="password" class="input-control" id="loginPassword" name="pass" placeholder="********" required>
+                </div>
+              </td>
+            </tr>
+          </table>
 
           <button type="submit" class="submit-button">
             LOG IN AS DRIVER
-            <img src="../public-assets/icons/arrow-right.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">
           </button>
 
           <footer class="section-footer">

@@ -10,43 +10,61 @@ function initDriverMyRidesPage() {
   }
 
   /* Replace this default data with PHP output from database. */
-  window.driverRideData = window.driverRideData || {
+  window.driverRideData = window.driverRideData = {
     rides: [
       {
         id: 101,
         from: 'University Campus',
         to: 'Downtown Mall',
-        time: '2026-03-04 14:52:37',
+        time: '2026-03-10 08:30:00',
         price: 22,
         seats: 4,
         booked: 2,
         vehicle: 'Toyota Vios',
         status: 'Scheduled',
       },
+      {
+        id: 102,
+        from: 'APU Residence',
+        to: 'KL Sentral',
+        time: '2026-03-10 18:15:00',
+        price: 18,
+        seats: 6,
+        booked: 6,
+        vehicle: 'Perodua Alza',
+        status: 'In Progress',
+      },
+      {
+        id: 103,
+        from: 'Bukit Jalil',
+        to: 'Sunway Pyramid',
+        time: '2026-03-11 09:00:00',
+        price: 12,
+        seats: 4,
+        booked: 1,
+        vehicle: 'Honda City',
+        status: 'Scheduled',
+      },
     ],
     ridersByRide: {
       101: [
-        {
-          id: 'R-2001',
-          name: 'Alicia Tan',
-          rating: 4.8,
-          seats: 1,
-          paymentMethod: 'card',
-          phone: '+65 9123 4567',
-          email: 'alicia.tan@mail.com',
-        },
-        {
-          id: 'R-2002',
-          name: 'Marcus Lim',
-          rating: 4.6,
-          seats: 1,
-          paymentMethod: 'cash',
-          phone: '+65 9345 6789',
-          email: 'marcus.lim@mail.com',
-        },
+        { id: 'R-2001', name: 'Alicia Tan', rating: 4.8, seats: 1, paymentMethod: 'card', phone: '+65 9123 4567', email: 'alicia.tan@mail.com' },
+        { id: 'R-2002', name: 'Marcus Lim', rating: 4.6, seats: 1, paymentMethod: 'cash', phone: '+65 9345 6789', email: 'marcus.lim@mail.com' },
+      ],
+      102: [
+        { id: 'R-2101', name: 'Jason Lee', rating: 4.9, seats: 1, paymentMethod: 'card', phone: '+65 9001 1111', email: 'jason.lee@mail.com' },
+        { id: 'R-2102', name: 'Nur Aina', rating: 4.7, seats: 1, paymentMethod: 'cash', phone: '+65 9001 2222', email: 'nur.aina@mail.com' },
+        { id: 'R-2103', name: 'Kumar Raj', rating: 4.5, seats: 1, paymentMethod: 'card', phone: '+65 9001 3333', email: 'kumar.raj@mail.com' },
+        { id: 'R-2104', name: 'Mei Xin', rating: 4.8, seats: 1, paymentMethod: 'cash', phone: '+65 9001 4444', email: 'mei.xin@mail.com' },
+        { id: 'R-2105', name: 'Adam Wong', rating: 4.6, seats: 1, paymentMethod: 'card', phone: '+65 9001 5555', email: 'adam.wong@mail.com' },
+        { id: 'R-2106', name: 'Siti Zara', rating: 4.9, seats: 1, paymentMethod: 'cash', phone: '+65 9001 6666', email: 'siti.zara@mail.com' },
+      ],
+      103: [
+        { id: 'R-2201', name: 'Farah Nabilah', rating: 4.8, seats: 1, paymentMethod: 'card', phone: '+65 9111 0000', email: 'farah.n@mail.com' },
       ],
     },
   };
+
 
   var iconBasePath = '../../public-assets/icons';
 

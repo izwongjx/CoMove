@@ -57,7 +57,6 @@ if (!isApuEmail($email)) {
 }
 
 try {
-    $dbConn = getDbConnection();
     issueOtpForEmail($dbConn, $email);
 
     respond(200, [
@@ -71,3 +70,4 @@ try {
         'message' => 'Unable to generate OTP at the moment.'
     ]);
 }
+?>

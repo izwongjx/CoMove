@@ -22,13 +22,14 @@
     <section class="panel">
       <nav class="top-nav" aria-label="Page Navigation">
         <a href="register.html" class="back-link">
-          <img src="../public-assets/icons/arrow-left.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true">
           BACK TO ROLE SELECTION
         </a>
       </nav>
 
       <div class="form-wrapper">
-        <form id="riderRegisterForm" class="account-form" novalidate>
+        <form id="riderRegisterForm" class="account-form" method="post" action="register.php" enctype="multipart/form-data">
+          <input type="hidden" name="role" value="rider">
+          <input type="hidden" name="otp_code" id="otpCode" value="">
           <header class="section-header">
             <h1>Rider Sign Up</h1>
             <p>Fill once and submit. No multi-step navigation.</p>
@@ -36,51 +37,69 @@
 
           <section class="info-section">
             <h3 class="section-title">Account Details</h3>
-
-            <div class="form-group">
-              <label class="form-label" for="riderFullName">Full Name</label>
-              <div class="input-wrap">
-                <img src="../public-assets/icons/user.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
-                <input type="text" class="input-control" id="riderFullName" name="fullName" placeholder="John Doe" required>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label" for="riderEmail">University Email</label>
-              <div class="input-wrap">
-                <img src="../public-assets/icons/mail.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
-                <input type="email" class="input-control" id="riderEmail" name="email" placeholder="xxx@mail.apu.edu.my" required>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label" for="riderPhone">Phone Number</label>
-              <div class="input-wrap">
-                <img src="../public-assets/icons/phone.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
-                <input type="tel" class="input-control" id="riderPhone" name="phone" placeholder="+1 (555) 000-0000" required>
-              </div>
-            </div>
-
-            <div class="split-row">
-              <div class="form-group">
-                <label class="form-label" for="riderPassword">Password</label>
-                <div class="input-wrap">
-                  <img src="../public-assets/icons/lock.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
-                  <input type="password" class="input-control" id="riderPassword" name="password" placeholder="********" required>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="riderConfirmPassword">Confirm Password</label>
-                <div class="input-wrap">
-                  <img src="../public-assets/icons/lock.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
-                  <input type="password" class="input-control" id="riderConfirmPassword" name="confirmPassword" placeholder="********" required>
-                </div>
-              </div>
-            </div>
+            <table class="form-table" role="presentation">
+              <tr>
+                <th class="field-label-cell" scope="row">
+                  <label class="form-label" for="riderFullName">Full Name</label>
+                </th>
+                <td class="field-input-cell">
+                  <div class="input-wrap">
+                    <input type="text" class="input-control" id="riderFullName" name="fullName" placeholder="John Doe" required>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th class="field-label-cell" scope="row">
+                  <label class="form-label" for="riderEmail">University Email</label>
+                </th>
+                <td class="field-input-cell">
+                  <div class="input-wrap">
+                    <input type="email" class="input-control" id="riderEmail" name="email" placeholder="xxx@mail.apu.edu.my" required>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th class="field-label-cell" scope="row">
+                  <label class="form-label" for="riderPhone">Phone Number</label>
+                </th>
+                <td class="field-input-cell">
+                  <div class="input-wrap">
+                    <input type="tel" class="input-control" id="riderPhone" name="phone" placeholder="+1 (555) 000-0000" required>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th class="field-label-cell" scope="row">
+                  <label class="form-label" for="riderPassword">Password</label>
+                </th>
+                <td class="field-input-cell">
+                  <div class="input-wrap">
+                    <input type="password" class="input-control" id="riderPassword" name="password" placeholder="********" required>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th class="field-label-cell" scope="row">
+                  <label class="form-label" for="riderConfirmPassword">Confirm Password</label>
+                </th>
+                <td class="field-input-cell">
+                  <div class="input-wrap">
+                    <input type="password" class="input-control" id="riderConfirmPassword" name="confirmPassword" placeholder="********" required>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th class="field-label-cell" scope="row">
+                  <label class="form-label">Profile Photo (Optional)</label>
+                </th>
+                <td class="field-input-cell">
+                  <input type="file" class="file-input-control" accept="image/*" name="profile_photo">
+                </td>
+              </tr>
+            </table>
 
             <button type="submit" class="submit-button" id="registerSubmitBtn">
               CREATE RIDER ACCOUNT
-              <img src="../public-assets/icons/arrow-right.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">
             </button>
           </section>
         </form>
@@ -102,13 +121,11 @@
             <div class="otp-resend">
               <p>Did not receive the code?</p>
               <button type="button" id="resendBtn" class="resend-btn" disabled>
-                <img src="../public-assets/icons/refresh.svg" width="14" height="14" class="icon-img" alt="" aria-hidden="true">
                 <span id="resendText">Resend in 30s</span>
               </button>
             </div>
             <button type="submit" class="submit-button" id="verifyBtn" disabled>
               VERIFY & CONTINUE
-              <img src="../public-assets/icons/arrow-right.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">
             </button>
           </form>
         </section>

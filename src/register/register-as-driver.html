@@ -22,13 +22,14 @@
     <section class="panel">
       <nav class="top-nav" aria-label="Page Navigation">
         <a href="register.html" class="back-link">
-          <img src="../public-assets/icons/arrow-left.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true">
           BACK TO ROLE SELECTION
         </a>
       </nav>
 
       <div class="form-wrapper">
-        <form id="driverRegisterForm" class="account-form" novalidate>
+        <form id="driverRegisterForm" class="account-form" method="post" action="register.php" enctype="multipart/form-data">
+          <input type="hidden" name="role" value="driver">
+          <input type="hidden" name="otp_code" id="otpCode" value="">
           <header class="section-header">
             <h1>Driver Sign Up</h1>
             <p>All required details are on one page. Submit once.</p>
@@ -36,115 +37,170 @@
 
           <section class="info-section">
             <h3 class="section-title">Account Details</h3>
-            <div class="form-group">
-              <label class="form-label" for="driverName">Full Name</label>
-              <div class="input-wrap">
-                <img src="../public-assets/icons/user.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
-                <input type="text" class="input-control" id="driverName" name="name" maxlength="50" placeholder="John Doe" required>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="driverEmail">University Email</label>
-              <div class="input-wrap">
-                <img src="../public-assets/icons/mail.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
-                <input type="email" class="input-control" id="driverEmail" name="email" maxlength="100" placeholder="xxx@mail.apu.edu.my" required>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="driverPhone">Phone Number</label>
-              <div class="input-wrap">
-                <img src="../public-assets/icons/phone.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
-                <input type="tel" class="input-control" id="driverPhone" name="phone_number" maxlength="20" placeholder="+1 (555) 000-0000" required>
-              </div>
-            </div>
-            <div class="split-row">
-              <div class="form-group">
-                <label class="form-label" for="driverPassword">Password</label>
-                <div class="input-wrap">
-                  <img src="../public-assets/icons/lock.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
-                  <input type="password" class="input-control" id="driverPassword" name="password" maxlength="255" placeholder="********" required>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="driverConfirmPassword">Confirm Password</label>
-                <div class="input-wrap">
-                  <img src="../public-assets/icons/lock.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
-                  <input type="password" class="input-control" id="driverConfirmPassword" name="confirmPassword" maxlength="255" placeholder="********" required>
-                </div>
-              </div>
-            </div>
+            <table class="form-table" role="presentation">
+              <tr>
+                <th class="field-label-cell" scope="row">
+                  <label class="form-label" for="driverName">Full Name</label>
+                </th>
+                <td class="field-input-cell">
+                  <div class="input-wrap">
+                    <input type="text" class="input-control" id="driverName" name="name" maxlength="50" placeholder="John Doe" required>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th class="field-label-cell" scope="row">
+                  <label class="form-label" for="driverEmail">University Email</label>
+                </th>
+                <td class="field-input-cell">
+                  <div class="input-wrap">
+                    <input type="email" class="input-control" id="driverEmail" name="email" maxlength="100" placeholder="xxx@mail.apu.edu.my" required>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th class="field-label-cell" scope="row">
+                  <label class="form-label" for="driverPhone">Phone Number</label>
+                </th>
+                <td class="field-input-cell">
+                  <div class="input-wrap">
+                    <input type="tel" class="input-control" id="driverPhone" name="phone_number" maxlength="20" placeholder="+1 (555) 000-0000" required>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th class="field-label-cell" scope="row">
+                  <label class="form-label" for="driverPassword">Password</label>
+                </th>
+                <td class="field-input-cell">
+                  <div class="input-wrap">
+                    <input type="password" class="input-control" id="driverPassword" name="password" maxlength="255" placeholder="********" required>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th class="field-label-cell" scope="row">
+                  <label class="form-label" for="driverConfirmPassword">Confirm Password</label>
+                </th>
+                <td class="field-input-cell">
+                  <div class="input-wrap">
+                    <input type="password" class="input-control" id="driverConfirmPassword" name="confirmPassword" maxlength="255" placeholder="********" required>
+                  </div>
+                </td>
+              </tr>
+            </table>
           </section>
 
           <section class="info-section">
             <h3 class="section-title">Identity Verification</h3>
-            <div class="form-group">
-              <label class="form-label" for="nricNumber">NRIC Number</label>
-              <div class="input-wrap">
-                <img src="../public-assets/icons/credit-card.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
-                <input type="text" class="input-control" id="nricNumber" name="nric_number" maxlength="12" placeholder="S1234567A" required>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="form-label">NRIC Photo (Front)</label>
-              <input type="file" class="file-input-control" accept="image/*" name="nric_front_image" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label">NRIC Photo (Back)</label>
-              <input type="file" class="file-input-control" accept="image/*" name="nric_back_image" required>
-            </div>
+            <table class="form-table" role="presentation">
+              <tr>
+                <th class="field-label-cell" scope="row">
+                  <label class="form-label" for="nricNumber">NRIC Number</label>
+                </th>
+                <td class="field-input-cell">
+                  <div class="input-wrap">
+                    <input type="text" class="input-control" id="nricNumber" name="nric_number" maxlength="12" placeholder="S1234567A" required>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th class="field-label-cell" scope="row">
+                  <label class="form-label">NRIC Photo (Front)</label>
+                </th>
+                <td class="field-input-cell">
+                  <input type="file" class="file-input-control" accept="image/*" name="nric_front_image" required>
+                </td>
+              </tr>
+              <tr>
+                <th class="field-label-cell" scope="row">
+                  <label class="form-label">NRIC Photo (Back)</label>
+                </th>
+                <td class="field-input-cell">
+                  <input type="file" class="file-input-control" accept="image/*" name="nric_back_image" required>
+                </td>
+              </tr>
+            </table>
           </section>
 
           <section class="info-section">
             <h3 class="section-title">License Verification</h3>
-            <div class="form-group">
-              <label class="form-label" for="licenseExpiryDate">License Expiry Date</label>
-              <div class="input-wrap">
-                <img src="../public-assets/icons/calendar.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
-                <input type="date" class="input-control" id="licenseExpiryDate" name="lisence_expiry_date" required>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="form-label">License Photo (Front)</label>
-              <input type="file" class="file-input-control" accept="image/*" name="lisence_front_image" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label">License Photo (Back)</label>
-              <input type="file" class="file-input-control" accept="image/*" name="lisence_back_image" required>
-            </div>
+            <table class="form-table" role="presentation">
+              <tr>
+                <th class="field-label-cell" scope="row">
+                  <label class="form-label" for="licenseExpiryDate">License Expiry Date</label>
+                </th>
+                <td class="field-input-cell">
+                  <div class="input-wrap">
+                    <input type="date" class="input-control" id="licenseExpiryDate" name="lisence_expiry_date" required>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th class="field-label-cell" scope="row">
+                  <label class="form-label">License Photo (Front)</label>
+                </th>
+                <td class="field-input-cell">
+                  <input type="file" class="file-input-control" accept="image/*" name="lisence_front_image" required>
+                </td>
+              </tr>
+              <tr>
+                <th class="field-label-cell" scope="row">
+                  <label class="form-label">License Photo (Back)</label>
+                </th>
+                <td class="field-input-cell">
+                  <input type="file" class="file-input-control" accept="image/*" name="lisence_back_image" required>
+                </td>
+              </tr>
+            </table>
           </section>
 
           <section class="info-section">
             <h3 class="section-title">Vehicle Information</h3>
-            <div class="form-group">
-              <label class="form-label" for="vehicleType">Vehicle Model</label>
-              <div class="input-wrap">
-                <img src="../public-assets/icons/car.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
-                <input type="text" class="input-control" id="vehicleType" name="vehicle_type" maxlength="20" placeholder="Toyota Prius 2022">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="plateNumber">Plate Number</label>
-              <div class="input-wrap">
-                <img src="../public-assets/icons/car.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
-                <input type="text" class="input-control" id="plateNumber" name="plate_number" maxlength="10" placeholder="ABC1234" required>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="vehicleColor">Color</label>
-              <div class="input-wrap">
-                <img src="../public-assets/icons/edit.svg" width="20" height="20" class="input-icon icon-img" alt="" aria-hidden="true">
-                <input type="text" class="input-control" id="vehicleColor" name="color" maxlength="20" placeholder="Silver">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Profile Photo (Optional)</label>
-              <input type="file" class="file-input-control" accept="image/*" name="profile_photo">
-            </div>
+            <table class="form-table" role="presentation">
+              <tr>
+                <th class="field-label-cell" scope="row">
+                  <label class="form-label" for="vehicleType">Vehicle Model</label>
+                </th>
+                <td class="field-input-cell">
+                  <div class="input-wrap">
+                    <input type="text" class="input-control" id="vehicleType" name="vehicle_type" maxlength="20" placeholder="Toyota Prius 2022">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th class="field-label-cell" scope="row">
+                  <label class="form-label" for="plateNumber">Plate Number</label>
+                </th>
+                <td class="field-input-cell">
+                  <div class="input-wrap">
+                    <input type="text" class="input-control" id="plateNumber" name="plate_number" maxlength="10" placeholder="ABC1234" required>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th class="field-label-cell" scope="row">
+                  <label class="form-label" for="vehicleColor">Color</label>
+                </th>
+                <td class="field-input-cell">
+                  <div class="input-wrap">
+                    <input type="text" class="input-control" id="vehicleColor" name="color" maxlength="20" placeholder="Silver">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th class="field-label-cell" scope="row">
+                  <label class="form-label">Profile Photo (Optional)</label>
+                </th>
+                <td class="field-input-cell">
+                  <input type="file" class="file-input-control" accept="image/*" name="profile_photo">
+                </td>
+              </tr>
+            </table>
           </section>
 
           <button type="submit" class="submit-button" id="registerSubmitBtn">
             CREATE DRIVER ACCOUNT
-            <img src="../public-assets/icons/arrow-right.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">
           </button>
         </form>
 
@@ -165,13 +221,11 @@
             <div class="otp-resend">
               <p>Did not receive the code?</p>
               <button type="button" id="resendBtn" class="resend-btn" disabled>
-                <img src="../public-assets/icons/refresh.svg" width="14" height="14" class="icon-img" alt="" aria-hidden="true">
                 <span id="resendText">Resend in 30s</span>
               </button>
             </div>
             <button type="submit" class="submit-button" id="verifyBtn" disabled>
               VERIFY & CONTINUE
-              <img src="../public-assets/icons/arrow-right.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">
             </button>
           </form>
         </section>

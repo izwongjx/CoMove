@@ -1,30 +1,13 @@
 <?php
-declare(strict_types=1);
+$localhost = 'localhost';
+$user = 'root';
+$pass = '';
+$dbName = 'comove';
 
-function getDbConnection(): mysqli
-{
-    static $connection = null;
+$dbConn = mysqli_connect($localhost, $user, $pass, $dbName);
 
-    if ($connection instanceof mysqli) {
-        return $connection;
-    }
-
-    $host = 'localhost';
-    $username = 'root';
-    $password = '';
-    $database = 'comove';
-
-    $connection = mysqli_connect($host, $username, $password, $database);
-
-    if ($connection === false) {
-        http_response_code(500);
-        exit('Database connection failed.');
-    }
-
-    mysqli_set_charset($connection, 'utf8mb4');
-    return $connection;
+if (mysqli_connect_errno()) {
+    die('<script>alert("Connection failed: Please check your SQL connection!");</script>');
 }
-
-// Backward compatibility with existing includes expecting $dbConn.
-$dbConn = getDbConnection();
+?>
 
