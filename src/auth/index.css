@@ -294,7 +294,7 @@
    content: '';
    position: absolute;
    inset: 0;
-   background: url('../images/background_pic.avif');
+   background: url('../public-assets/images/background_pic.avif');
    opacity: 0.1;
    mix-blend-mode: multiply;
 }

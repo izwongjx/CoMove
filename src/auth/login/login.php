@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include "../config/conn.php";
+include "../../config/conn.php";
 
 $email = mysqli_real_escape_string($dbConn, isset($_POST['user']) ? trim((string) $_POST['user']) : '');
 $password = mysqli_real_escape_string($dbConn, isset($_POST['pass']) ? (string) $_POST['pass'] : '');
@@ -15,8 +15,8 @@ if ($email === '' || $password === '' || ($role !== 'rider' && $role !== 'driver
 $tableName = $role === 'driver' ? 'DRIVER' : 'RIDER';
 $idColumn = $role === 'driver' ? 'driver_id' : 'rider_id';
 $dashboardPath = $role === 'driver'
-    ? '../roles/driver/dashboard.html'
-    : '../roles/rider/dashboard.html';
+    ? '../../roles/driver/dashboard.html'
+    : '../../roles/rider/dashboard.html';
 
 $sql = "Select * from " . $tableName . " where email ='" . $email . "' and password ='" . md5($password) . "'";
 $result = mysqli_query($dbConn, $sql);

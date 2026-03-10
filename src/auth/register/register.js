@@ -46,7 +46,7 @@
   }
 
   function requestOtp(email) {
-    return fetch('../config/send-otp.php', {
+    return fetch('../send-otp.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

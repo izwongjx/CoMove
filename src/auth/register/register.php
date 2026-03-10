@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "../config/conn.php";
+include "../../config/conn.php";
 date_default_timezone_set('asia/kuala_lumpur');
 
 function failBack(string $message): void
@@ -45,7 +45,7 @@ function readUpload(mysqli $dbConn, string $fieldName, bool $required): ?string
 
 function getDefaultProfilePhoto(mysqli $dbConn): ?string
 {
-    $defaultPath = __DIR__ . '/../public-assets/images/profile-picture.avif';
+    $defaultPath = __DIR__ . '/../../public-assets/images/profile-picture.avif';
     if (!is_file($defaultPath)) {
         return null;
     }
@@ -155,7 +155,7 @@ if ($role === 'rider') {
     $_SESSION['user_id'] = $riderId;
 
     echo "<script>alert('Registration completed successfully!');";
-    echo "window.location.href='../roles/rider/dashboard.html';</script>";
+    echo "window.location.href='../../roles/rider/dashboard.html';</script>";
     exit;
 }
 
@@ -216,5 +216,5 @@ $_SESSION['role'] = 'driver';
 $_SESSION['user_id'] = $driverId;
 
 echo "<script>alert('Registration completed successfully!');";
-echo "window.location.href='../roles/driver/dashboard.html';</script>";
+echo "window.location.href='../../roles/driver/dashboard.html';</script>";
 ?>

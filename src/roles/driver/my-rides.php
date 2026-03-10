@@ -7,7 +7,7 @@ $driverId = isset($_SESSION['user_id']) ? trim((string) $_SESSION['user_id']) : 
 
 if ($role !== 'driver' || $driverId === '') {
     echo "<script>alert('Please login as driver first.');";
-    die("window.location.href='../../login/login.html';</script>");
+    die("window.location.href='../../auth/login/login.html';</script>");
 }
 
 $driverIdSafe = mysqli_real_escape_string($dbConn, $driverId);
