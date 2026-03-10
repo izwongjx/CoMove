@@ -43,6 +43,21 @@ function readUpload(mysqli $dbConn, string $fieldName, bool $required): ?string
     return mysqli_real_escape_string($dbConn, $rawContent);
 }
 
+function getDefaultProfilePhoto(mysqli $dbConn): ?string
+{
+    $defaultPath = __DIR__ . '/../public-assets/images/profile-picture.avif';
+    if (!is_file($defaultPath)) {
+        return null;
+    }
+
+    $rawContent = file_get_contents($defaultPath);
+    if ($rawContent === false) {
+        return null;
+    }
+
+    return mysqli_real_escape_string($dbConn, $rawContent);
+}
+
 function isApuEmail(string $email): bool
 {
     return (bool) preg_match('/^[A-Za-z0-9._%+-]+@mail\.apu\.edu\.my$/i', $email);
@@ -106,6 +121,9 @@ if ($role === 'rider') {
     $email = mysqli_real_escape_string($dbConn, strtolower($emailRaw));
     $phone = mysqli_real_escape_string($dbConn, isset($_POST['phone']) ? trim((string) $_POST['phone']) : '');
     $profilePhoto = readUpload($dbConn, 'profile_photo', false);
+    if ($profilePhoto === null) {
+        $profilePhoto = getDefaultProfilePhoto($dbConn);
+    }
 
     if ($name === '' || $email === '' || $phone === '' || $password === '') {
         failBack('Please fill all required fields!');
@@ -120,8 +138,9 @@ if ($role === 'rider') {
 
     $profilePhotoSql = $profilePhoto === null ? "NULL" : "'" . $profilePhoto . "'";
 
+    $createdAtSql = "NOW()";
     $sql = "Insert into RIDER (name, email, password, phone_number, profile_photo, created_at, rider_status) VALUES ('" .
-        $name . "','" . $email . "','" . md5($password) . "','" . $phone . "'," . $profilePhotoSql . ",'" . date("Y-m-d H:i:s") . "','active')";
+        $name . "','" . $email . "','" . md5($password) . "','" . $phone . "'," . $profilePhotoSql . "," . $createdAtSql . ",'active')";
     mysqli_query($dbConn, $sql);
 
     if (mysqli_affected_rows($dbConn) <= 0) {
@@ -174,11 +193,15 @@ $nricBackImage = readUpload($dbConn, 'nric_back_image', true);
 $licenseFrontImage = readUpload($dbConn, 'lisence_front_image', true);
 $licenseBackImage = readUpload($dbConn, 'lisence_back_image', true);
 $profilePhoto = readUpload($dbConn, 'profile_photo', false);
+if ($profilePhoto === null) {
+    $profilePhoto = getDefaultProfilePhoto($dbConn);
+}
 
 $profilePhotoSql = $profilePhoto === null ? "NULL" : "'" . $profilePhoto . "'";
 
+$createdAtSql = "NOW()";
 $sql = "Insert into DRIVER (name, email, password, phone_number, profile_photo, created_at, driver_status, nric_number, nric_front_image, nric_back_image, lisence_front_image, lisence_back_image, lisence_expiry_date, vehicle_model, plate_number, color) VALUES ('" .
-    $name . "','" . $email . "','" . md5($password) . "','" . $phoneNumber . "'," . $profilePhotoSql . ",'" . date("Y-m-d H:i:s") . "','pending','" . $nricNumber . "','" . $nricFrontImage . "','" . $nricBackImage . "','" . $licenseFrontImage . "','" . $licenseBackImage . "','" . $licenseExpiryDate . "','" . $vehicleModel . "','" . $plateNumber . "','" . $color . "')";
+    $name . "','" . $email . "','" . md5($password) . "','" . $phoneNumber . "'," . $profilePhotoSql . "," . $createdAtSql . ",'pending','" . $nricNumber . "','" . $nricFrontImage . "','" . $nricBackImage . "','" . $licenseFrontImage . "','" . $licenseBackImage . "','" . $licenseExpiryDate . "','" . $vehicleModel . "','" . $plateNumber . "','" . $color . "')";
 mysqli_query($dbConn, $sql);
 
 if (mysqli_affected_rows($dbConn) <= 0) {
