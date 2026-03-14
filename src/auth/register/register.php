@@ -45,7 +45,7 @@ function readUpload(mysqli $dbConn, string $fieldName, bool $required): ?string
 
 function getDefaultProfilePhoto(mysqli $dbConn): ?string
 {
-    $defaultPath = __DIR__ . '/../../public-assets/images/profile-picture.avif';
+    $defaultPath = __DIR__ . '/../../public-assets/images/profile-icon.png';
     if (!is_file($defaultPath)) {
         return null;
     }
@@ -162,8 +162,10 @@ if ($role === 'rider') {
     $profilePhotoSql = $profilePhoto === null ? "NULL" : "'" . $profilePhoto . "'";
 
     $createdAtSql = "NOW()";
+    // TODO: re-enable password hashing when ready (example: md5($password) or password_hash)
+    // $hashedPassword = md5($password);
     $sql = "Insert into RIDER (rider_id, name, email, password, phone_number, profile_photo, created_at, rider_status) VALUES ('" .
-        $riderId . "','" . $name . "','" . $email . "','" . md5($password) . "','" . $phone . "'," . $profilePhotoSql . "," . $createdAtSql . ",'active')";
+        $riderId . "','" . $name . "','" . $email . "','" . $password . "','" . $phone . "'," . $profilePhotoSql . "," . $createdAtSql . ",'active')";
     mysqli_query($dbConn, $sql);
 
     if (mysqli_affected_rows($dbConn) <= 0) {
@@ -223,8 +225,10 @@ if ($profilePhoto === null) {
 $profilePhotoSql = $profilePhoto === null ? "NULL" : "'" . $profilePhoto . "'";
 
 $createdAtSql = "NOW()";
+// TODO: re-enable password hashing when ready (example: md5($password) or password_hash)
+// $hashedPassword = md5($password);
 $sql = "Insert into DRIVER (driver_id, name, email, password, phone_number, profile_photo, created_at, driver_status, nric_number, nric_front_image, nric_back_image, lisence_front_image, lisence_back_image, lisence_expiry_date, vehicle_model, plate_number, color) VALUES ('" .
-    $driverId . "','" . $name . "','" . $email . "','" . md5($password) . "','" . $phoneNumber . "'," . $profilePhotoSql . "," . $createdAtSql . ",'pending','" . $nricNumber . "','" . $nricFrontImage . "','" . $nricBackImage . "','" . $licenseFrontImage . "','" . $licenseBackImage . "','" . $licenseExpiryDate . "','" . $vehicleModel . "','" . $plateNumber . "','" . $color . "')";
+    $driverId . "','" . $name . "','" . $email . "','" . $password . "','" . $phoneNumber . "'," . $profilePhotoSql . "," . $createdAtSql . ",'pending','" . $nricNumber . "','" . $nricFrontImage . "','" . $nricBackImage . "','" . $licenseFrontImage . "','" . $licenseBackImage . "','" . $licenseExpiryDate . "','" . $vehicleModel . "','" . $plateNumber . "','" . $color . "')";
 mysqli_query($dbConn, $sql);
 
 if (mysqli_affected_rows($dbConn) <= 0) {
