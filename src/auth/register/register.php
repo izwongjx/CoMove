@@ -98,6 +98,28 @@ function ensureEmailNotExists(mysqli $dbConn, string $tableName, string $email):
     }
 }
 
+function generateNextId(mysqli $dbConn, string $tableName, string $idColumn, string $prefix, int $padLength = 5): string
+{
+    $sql = "SELECT " . $idColumn . " FROM " . $tableName . " WHERE " . $idColumn . " LIKE '" . $prefix . "%' ORDER BY " . $idColumn . " DESC LIMIT 1";
+    $result = mysqli_query($dbConn, $sql);
+
+    if ($result && mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        $lastId = isset($row[$idColumn]) ? (string) $row[$idColumn] : '';
+        mysqli_free_result($result);
+
+        $numericPart = (int) substr($lastId, strlen($prefix));
+        $nextNumber = $numericPart + 1;
+        return $prefix . str_pad((string) $nextNumber, $padLength, '0', STR_PAD_LEFT);
+    }
+
+    if ($result) {
+        mysqli_free_result($result);
+    }
+
+    return $prefix . str_pad('1', $padLength, '0', STR_PAD_LEFT);
+}
+
 $role = strtolower(trim(isset($_POST['role']) ? (string) $_POST['role'] : ''));
 $password = mysqli_real_escape_string($dbConn, isset($_POST['password']) ? (string) $_POST['password'] : '');
 $confirmPassword = mysqli_real_escape_string($dbConn, isset($_POST['confirmPassword']) ? (string) $_POST['confirmPassword'] : '');
@@ -136,18 +158,18 @@ if ($role === 'rider') {
     ensureEmailNotExists($dbConn, 'RIDER', $email);
     ensureValidOtp($dbConn, $email, $otpCode);
 
+    $riderId = generateNextId($dbConn, 'RIDER', 'rider_id', 'R');
     $profilePhotoSql = $profilePhoto === null ? "NULL" : "'" . $profilePhoto . "'";
 
     $createdAtSql = "NOW()";
-    $sql = "Insert into RIDER (name, email, password, phone_number, profile_photo, created_at, rider_status) VALUES ('" .
-        $name . "','" . $email . "','" . md5($password) . "','" . $phone . "'," . $profilePhotoSql . "," . $createdAtSql . ",'active')";
+    $sql = "Insert into RIDER (rider_id, name, email, password, phone_number, profile_photo, created_at, rider_status) VALUES ('" .
+        $riderId . "','" . $name . "','" . $email . "','" . md5($password) . "','" . $phone . "'," . $profilePhotoSql . "," . $createdAtSql . ",'active')";
     mysqli_query($dbConn, $sql);
 
     if (mysqli_affected_rows($dbConn) <= 0) {
         failBack('Unable to register! Please Try Again!');
     }
     consumeOtp($dbConn, $email, $otpCode);
-    $riderId = (string) mysqli_insert_id($dbConn);
 
     $_SESSION['user'] = $name;
     $_SESSION['email'] = $email;
@@ -188,6 +210,7 @@ if (!isApuEmail($email)) {
 ensureEmailNotExists($dbConn, 'DRIVER', $email);
 ensureValidOtp($dbConn, $email, $otpCode);
 
+$driverId = generateNextId($dbConn, 'DRIVER', 'driver_id', 'D');
 $nricFrontImage = readUpload($dbConn, 'nric_front_image', true);
 $nricBackImage = readUpload($dbConn, 'nric_back_image', true);
 $licenseFrontImage = readUpload($dbConn, 'lisence_front_image', true);
@@ -200,15 +223,14 @@ if ($profilePhoto === null) {
 $profilePhotoSql = $profilePhoto === null ? "NULL" : "'" . $profilePhoto . "'";
 
 $createdAtSql = "NOW()";
-$sql = "Insert into DRIVER (name, email, password, phone_number, profile_photo, created_at, driver_status, nric_number, nric_front_image, nric_back_image, lisence_front_image, lisence_back_image, lisence_expiry_date, vehicle_model, plate_number, color) VALUES ('" .
-    $name . "','" . $email . "','" . md5($password) . "','" . $phoneNumber . "'," . $profilePhotoSql . "," . $createdAtSql . ",'pending','" . $nricNumber . "','" . $nricFrontImage . "','" . $nricBackImage . "','" . $licenseFrontImage . "','" . $licenseBackImage . "','" . $licenseExpiryDate . "','" . $vehicleModel . "','" . $plateNumber . "','" . $color . "')";
+$sql = "Insert into DRIVER (driver_id, name, email, password, phone_number, profile_photo, created_at, driver_status, nric_number, nric_front_image, nric_back_image, lisence_front_image, lisence_back_image, lisence_expiry_date, vehicle_model, plate_number, color) VALUES ('" .
+    $driverId . "','" . $name . "','" . $email . "','" . md5($password) . "','" . $phoneNumber . "'," . $profilePhotoSql . "," . $createdAtSql . ",'pending','" . $nricNumber . "','" . $nricFrontImage . "','" . $nricBackImage . "','" . $licenseFrontImage . "','" . $licenseBackImage . "','" . $licenseExpiryDate . "','" . $vehicleModel . "','" . $plateNumber . "','" . $color . "')";
 mysqli_query($dbConn, $sql);
 
 if (mysqli_affected_rows($dbConn) <= 0) {
     failBack('Unable to register! Please Try Again!');
 }
 consumeOtp($dbConn, $email, $otpCode);
-$driverId = (string) mysqli_insert_id($dbConn);
 
 $_SESSION['user'] = $name;
 $_SESSION['email'] = $email;
