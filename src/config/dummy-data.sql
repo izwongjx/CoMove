@@ -4,6 +4,9 @@ USE COMOVE;
 
 -- Load default profile image (src/public-assets/images/profile-icon.png)
 SET @profile_photo = LOAD_FILE('C:/xampp/htdocs/RWDD Assignment/src/public-assets/images/profile-icon.png');
+-- Load ID/license images (front used for both sides)
+SET @nric_front = LOAD_FILE('C:/xampp/htdocs/RWDD Assignment/src/public-assets/images/ic-front.jpg');
+SET @license_front = LOAD_FILE('C:/xampp/htdocs/RWDD Assignment/src/public-assets/images/license-front.png');
 
 
 -- Config tables
@@ -24,11 +27,11 @@ INSERT INTO DRIVER (
     vehicle_model, plate_number, color
 ) VALUES
 ('D00001', 'Aisyah Rahman', 'aisyah.rahman@mail.apu.edu.my', 'Driver@123', '012-1111222', @profile_photo, '2026-03-02 10:00:00', 'A00001', 'active',
- '900101-10-1234', @profile_photo, @profile_photo, @profile_photo, @profile_photo, '2028-12-31', 'Toyota Vios', 'WXY1234', 'Silver'),
+ '900101-10-1234', @nric_front, @nric_front, @license_front, @license_front, '2028-12-31', 'Toyota Vios', 'WXY1234', 'Silver'),
 ('D00002', 'Daniel Lim', 'daniel.lim@mail.apu.edu.my', 'Driver@123', '012-3333444', @profile_photo, '2026-03-02 11:00:00', 'A00001', 'active',
- '900202-10-5678', @profile_photo, @profile_photo, @profile_photo, @profile_photo, '2029-06-30', 'Perodua Alza', 'BHG9876', 'White'),
+ '900202-10-5678', @nric_front, @nric_front, @license_front, @license_front, '2029-06-30', 'Perodua Alza', 'BHG9876', 'White'),
 ('D00003', 'TP082975', 'tp082975@mail.apu.edu.my', 'Driver@123', '012-5555666', @profile_photo, '2026-03-02 11:30:00', 'A00001', 'active',
- '900303-10-9999', @profile_photo, @profile_photo, @profile_photo, @profile_photo, '2029-12-31', 'Honda City', 'VAX7788', 'Blue');
+ '900303-10-9999', @nric_front, @nric_front, @license_front, @license_front, '2029-12-31', 'Honda City', 'VAX7788', 'Blue');
 
 -- Riders
 INSERT INTO RIDER (
