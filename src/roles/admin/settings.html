@@ -30,10 +30,84 @@
   </nav>
   
   <main class="dashboard-main">
-    
-      <h1 class="page-title">Page Title</h1>
-      <p class="page-subtitle">Page Subtitle</p>
+      <h1 class="page-title">Settings</h1>
+  <p class="page-subtitle">Platform configuration and admin controls</p>
+
+  <!-- GREEN POINT MULTIPLIER -->
+  <div class="section-block">
+    <div class="section-title">🌱 Green Point Multiplier</div>
+    <div class="multiplier-box">
+      <p style="font-size:13px;color:var(--gray-400);margin-bottom:4px">Adjust the reward multiplier applied to all rides. Changes take effect immediately.</p>
+      <div class="multiplier-display" id="multiplierDisplay">1.0×</div>
+      <input type="range" class="multiplier-range" id="multiplierRange" min="0.5" max="5" step="0.1" value="1.0" oninput="updateMultiplier(this.value)">
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--gray-500);font-family:'DM Mono',monospace;margin-bottom:6px">
+        <span>0.5×</span><span>1.0×</span><span>2.0×</span><span>3.0×</span><span>4.0×</span><span>5.0×</span>
+      </div>
+      <div class="calc-row">
+        <span class="calc-num">1 ride</span>
+        <span class="calc-op">=</span>
+        <span class="calc-num">100 pts</span>
+        <span class="calc-op">×</span>
+        <span class="calc-num" id="calcMultiplier" style="color:var(--lime)">1.0</span>
+        <span class="calc-op">=</span>
+        <span class="calc-result" id="calcResult">100 pts / ride</span>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-sm" onclick="setMultiplierPreset(1.0)">Reset 1×</button>
+        <button class="btn btn-sm" onclick="setMultiplierPreset(1.5)">1.5× Boost</button>
+        <button class="btn btn-sm" onclick="setMultiplierPreset(2.0)">2× Double</button>
+        <button class="btn btn-sm" onclick="setMultiplierPreset(3.0)">3× Triple</button>
+        <button class="btn btn-lime btn-sm" id="saveMultiplierBtn" onclick="saveMultiplier()">Save Setting</button>
+      </div>
     </div>
+  </div>
+
+  <!-- GENERAL SETTINGS -->
+  <div class="section-block">
+    <div class="section-title">⚙️ General</div>
+    <div class="card">
+      <div class="card-body">
+        <div class="setting-row">
+          <div class="setting-info"><div class="setting-title">Maintenance Mode</div><div class="setting-desc">Temporarily disable the platform for all users</div></div>
+          <label class="toggle"><input type="checkbox" onchange="toast(this.checked ? 'Maintenance mode ON' : 'Maintenance mode OFF', this.checked ? 'warn' : 'success')"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info"><div class="setting-title">New Driver Registrations</div><div class="setting-desc">Allow new drivers to submit registration applications</div></div>
+          <label class="toggle"><input type="checkbox" checked onchange="toast(this.checked ? 'Driver registration enabled' : 'Driver registration disabled', this.checked ? 'success' : 'warn')"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info"><div class="setting-title">Email Notifications</div><div class="setting-desc">Send email alerts on critical system events</div></div>
+          <label class="toggle"><input type="checkbox" checked onchange="toast('Email notifications updated', 'info')"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info"><div class="setting-title">Auto-approve Low-risk Riders</div><div class="setting-desc">Instantly activate riders who pass identity check</div></div>
+          <label class="toggle"><input type="checkbox" checked onchange="toast('Auto-approve setting updated', 'info')"><span class="toggle-slider"></span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POINT CONFIG -->
+  <div class="section-block">
+    <div class="section-title">🏅 Point Configuration</div>
+    <div class="card">
+      <div class="card-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Base Points per Ride</label>
+            <input class="form-input" type="number" value="100" id="basePoints" oninput="updateMultiplier(document.getElementById('multiplierRange').value)">
+            <div class="form-hint">Default green points awarded per completed ride</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Minimum Fare Threshold (RM)</label>
+            <input class="form-input" type="number" value="5" step="0.5">
+            <div class="form-hint">Rides below this fare earn no green points</div>
+          </div>
+        </div>
+        <button class="btn btn-lime btn-sm" onclick="toast('Point config saved', 'success')">Save Config</button>
+      </div>
+    </div>
+  </div>
   </main>
 
   <nav class="bottom-nav admin-bottom-nav">
@@ -45,6 +119,24 @@
     <a href="settings.html" class="active"><img src="../../public-assets/icons/settings.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
     <a href="profile.html"><img src="../../public-assets/icons/user.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
   </nav>
+
+  <div class="modal-overlay" id="confirmModal">
+  <div class="modal modal-sm">
+    <div class="modal-header"><span class="modal-title">Confirm</span><div class="modal-close" onclick="closeModal('confirmModal')">✕</div></div>
+    <div class="modal-body"><p id="confirmText" style="font-size:14px;color:var(--gray-300);line-height:1.6"></p></div>
+    <div class="modal-footer"><button class="btn" onclick="closeModal('confirmModal')">Cancel</button><button class="btn btn-danger" id="confirmBtn">Confirm</button></div>
+  </div>
+</div>
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="admin.js"></script>
+<script>
+  function saveMultiplier() {
+    var val = document.getElementById('multiplierDisplay').textContent;
+    toast('Multiplier saved: ' + val, 'success');
+  }
+</script>
+
   <script src="../../public-assets/script.js"></script>
   <script src="settings.js"></script>
 </body>

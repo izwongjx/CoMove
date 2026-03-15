@@ -29,11 +29,79 @@
   </nav>
   
   <main class="dashboard-main">
-    
-      <h1 class="page-title">Page Title</h1>
-      <p class="page-subtitle">Page Subtitle</p>
+      <h1 class="page-title">Reward Management</h1>
+  <p class="page-subtitle">Manage redemption items and view redemption history</p>
+
+  <div class="sub-tabs">
+    <button class="sub-tab active" id="rtab-catalogue"   onclick="switchTab('rtab-','rewardsub-',['catalogue','redemptions'],'catalogue')">Catalogue</button>
+    <button class="sub-tab"        id="rtab-redemptions" onclick="switchTab('rtab-','rewardsub-',['catalogue','redemptions'],'redemptions')">Redemptions</button>
+  </div>
+
+  <!-- CATALOGUE -->
+  <div id="rewardsub-catalogue">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Redemption Items</span>
+        <div class="card-actions"><button class="btn btn-lime" onclick="openRewardModal(null)">＋ Add Item</button></div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Item</th><th>Description</th><th>Points</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="rewardRows">
+            <tr id="rw-1"><td><strong>Free Ride Voucher</strong></td><td style="font-size:12px;color:var(--gray-400)">One free ride up to RM 20</td><td style="font-family:'DM Mono',monospace">1,000</td><td style="font-family:'DM Mono',monospace">50</td><td><span class="badge b-lime"><span class="bdot"></span> Available</span></td><td><div class="action-btns"><button class="btn btn-xs" onclick="openRewardModal('rw-1')">Edit</button><button class="btn btn-xs btn-danger" onclick="confirmAction('Delete this reward?','deleteReward','rw-1')">Delete</button></div></td></tr>
+            <tr id="rw-2"><td><strong>Coffee Discount</strong></td><td style="font-size:12px;color:var(--gray-400)">20% off at partner cafes</td><td style="font-family:'DM Mono',monospace">500</td><td style="font-family:'DM Mono',monospace">200</td><td><span class="badge b-lime"><span class="bdot"></span> Available</span></td><td><div class="action-btns"><button class="btn btn-xs" onclick="openRewardModal('rw-2')">Edit</button><button class="btn btn-xs btn-danger" onclick="confirmAction('Delete this reward?','deleteReward','rw-2')">Delete</button></div></td></tr>
+            <tr id="rw-3"><td><strong>Eco Tote Bag</strong></td><td style="font-size:12px;color:var(--gray-400)">Branded reusable bag</td><td style="font-family:'DM Mono',monospace">2,000</td><td style="font-family:'DM Mono',monospace">0</td><td><span class="badge b-gray"><span class="bdot"></span> Out of Stock</span></td><td><div class="action-btns"><button class="btn btn-xs" onclick="openRewardModal('rw-3')">Edit</button><button class="btn btn-xs btn-danger" onclick="confirmAction('Delete this reward?','deleteReward','rw-3')">Delete</button></div></td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+  </div>
+
+  <!-- REDEMPTIONS -->
+  <div id="rewardsub-redemptions" style="display:none">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Redemption History</span><div class="card-actions"><input class="search-input" placeholder="🔍 Search…" oninput="filterTable('redemptionsTable',this.value)"></div></div>
+      <div class="table-wrap">
+        <table id="redemptionsTable">
+          <thead><tr><th>ID</th><th>User</th><th>Reward</th><th>Points Used</th><th>Date</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td style="font-family:'DM Mono',monospace">#RDM-0312</td><td>Siti Rahmah</td><td>Free Ride Voucher</td><td style="font-family:'DM Mono',monospace">1,000</td><td style="font-family:'DM Mono',monospace;font-size:11px">2026-03-03</td><td><span class="badge b-lime">Fulfilled</span></td></tr>
+            <tr><td style="font-family:'DM Mono',monospace">#RDM-0311</td><td>Kevin Ng</td><td>Coffee Discount</td><td style="font-family:'DM Mono',monospace">500</td><td style="font-family:'DM Mono',monospace;font-size:11px">2026-03-02</td><td><span class="badge b-yellow">Pending</span></td></tr>
+            <tr><td style="font-family:'DM Mono',monospace">#RDM-0310</td><td>Aisha Mahmoud</td><td>Free Ride Voucher</td><td style="font-family:'DM Mono',monospace">1,000</td><td style="font-family:'DM Mono',monospace;font-size:11px">2026-03-01</td><td><span class="badge b-lime">Fulfilled</span></td></tr>
+            <tr><td style="font-family:'DM Mono',monospace">#RDM-0309</td><td>Siti Rahmah</td><td>Eco Tote Bag</td><td style="font-family:'DM Mono',monospace">2,000</td><td style="font-family:'DM Mono',monospace;font-size:11px">2026-02-28</td><td><span class="badge b-red">Failed</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
   </main>
+  <div class="modal-overlay" id="rewardModal">
+  <div class="modal">
+    <div class="modal-header"><span class="modal-title" id="rewardModalTitle">Add Reward Item</span><div class="modal-close" onclick="closeModal('rewardModal')">✕</div></div>
+    <div class="modal-body">
+      <input type="hidden" id="editRewardId">
+      <div class="form-group"><label class="form-label">Item Name</label><input class="form-input" id="rwName" placeholder="e.g. Free Ride Voucher"></div>
+      <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="rwDesc" placeholder="Describe this reward…" style="min-height:70px"></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Points Required</label><input class="form-input" id="rwPoints" type="number" placeholder="500"><div class="form-hint">Green points to redeem</div></div>
+        <div class="form-group"><label class="form-label">Stock Quantity</label><input class="form-input" id="rwStock" type="number" placeholder="100"><div class="form-hint">0 = Out of Stock</div></div>
+      </div>
+      <div class="form-group"><label class="form-label">Availability</label><select class="form-select" id="rwAvail"><option value="available">Available</option><option value="unavailable">Unavailable</option></select></div>
+    </div>
+    <div class="modal-footer"><button class="btn" onclick="closeModal('rewardModal')">Cancel</button><button class="btn btn-lime" onclick="saveReward()">Save Item</button></div>
+  </div>
+</div>
+
+<!-- ══ CONFIRM MODAL ══ -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal modal-sm">
+    <div class="modal-header"><span class="modal-title">Confirm</span><div class="modal-close" onclick="closeModal('confirmModal')">✕</div></div>
+    <div class="modal-body"><p id="confirmText" style="font-size:14px;color:var(--gray-300);line-height:1.6"></p></div>
+    <div class="modal-footer"><button class="btn" onclick="closeModal('confirmModal')">Cancel</button><button class="btn btn-danger" id="confirmBtn">Confirm</button></div>
+  </div>
+</div>
+<div class="toast-container" id="toastContainer"></div>
+
 
   <nav class="bottom-nav admin-bottom-nav">
     <a href="dashboard.html"><img src="../../public-assets/icons/layout-dashboard.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
@@ -44,6 +112,8 @@
     <a href="settings.html"><img src="../../public-assets/icons/settings.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
     <a href="profile.html"><img src="../../public-assets/icons/user.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
   </nav>
+  
+  <script src="admin.js"></script>
   <script src="../../public-assets/script.js"></script>
   <script src="rewards.js"></script>
 </body>

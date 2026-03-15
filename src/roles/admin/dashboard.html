@@ -29,11 +29,58 @@
   </nav>
 
   <main class="dashboard-main">
-    
-      <h1 class="page-title">Page Title</h1>
-      <p class="page-subtitle">Page Subtitle</p>
+    <h1 class="page-title">Dashboard</h1>
+  <p class="page-subtitle">System overview — Comove Ride-Sharing Platform</p>
+
+  <!-- Stat Cards -->
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-card-accent" style="background:var(--lime)"></div><div class="stat-icon">👤</div><div class="stat-value" style="color:var(--lime)">248</div><div class="stat-label">Total Users</div><div class="stat-delta up">▲ 12 this week</div></div>
+    <div class="stat-card"><div class="stat-card-accent" style="background:var(--info)"></div><div class="stat-icon">🗺</div><div class="stat-value" style="color:var(--info)">1,840</div><div class="stat-label">Total Trips</div><div class="stat-delta up">▲ 94 this week</div></div>
+    <div class="stat-card"><div class="stat-card-accent" style="background:var(--purple)"></div><div class="stat-icon">🌱</div><div class="stat-value" style="color:var(--purple)">62.3K</div><div class="stat-label">Green Points</div><div class="stat-delta up">▲ 3,200 this week</div></div>
+    <div class="stat-card"><div class="stat-card-accent" style="background:var(--warn)"></div><div class="stat-icon">⚠️</div><div class="stat-value" style="color:var(--warn)">3</div><div class="stat-label">Pending Drivers</div><div class="stat-delta down">▼ needs review</div></div>
+  </div>
+
+  <!-- Chart Row -->
+  <div class="chart-row">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Trip Volume — Last 7 Days</span><span class="badge b-lime"><span class="bdot"></span> Live</span></div>
+      <div style="padding:18px 18px 12px">
+        <div class="mini-chart" id="tripChart"></div>
+        <div class="chart-labels"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+      </div>
     </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Platform Health</span></div>
+      <div style="padding:14px 18px;display:flex;flex-direction:column;gap:13px">
+        <div><div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-bottom:4px"><span>Active Drivers</span><span style="color:var(--lime);font-family:'DM Mono',monospace">78/104</span></div><div class="progress-bar"><div class="progress-fill" style="width:75%;background:var(--lime)"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-bottom:4px"><span>Trip Completion</span><span style="color:var(--info);font-family:'DM Mono',monospace">92%</span></div><div class="progress-bar"><div class="progress-fill" style="width:92%;background:var(--info)"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-bottom:4px"><span>Rewards Redeemed</span><span style="color:var(--purple);font-family:'DM Mono',monospace">312/500</span></div><div class="progress-bar"><div class="progress-fill" style="width:62%;background:var(--purple)"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-bottom:4px"><span>User Retention</span><span style="color:var(--warn);font-family:'DM Mono',monospace">84%</span></div><div class="progress-bar"><div class="progress-fill" style="width:84%;background:var(--warn)"></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="section-block">
+    <div class="section-title">Recent Activity</div>
+    <div class="card">
+      <div class="activity-item"><div class="activity-dot" style="background:var(--lime)"></div><div><div class="activity-text">New driver <strong>Marcus Lee</strong> registered and awaiting approval</div><div class="activity-time">2 min ago</div></div></div>
+      <div class="activity-item"><div class="activity-dot" style="background:var(--info)"></div><div><div class="activity-text">Trip <strong>#TRP-1840</strong> completed — RM 24.50 fare, 120 green points earned</div><div class="activity-time">8 min ago</div></div></div>
+      <div class="activity-item"><div class="activity-dot" style="background:var(--warn)"></div><div><div class="activity-text">Rider <strong>Aisha Rahman</strong> submitted a 2-star rating with complaint</div><div class="activity-time">15 min ago</div></div></div>
+      <div class="activity-item"><div class="activity-dot" style="background:var(--purple)"></div><div><div class="activity-text">Reward <strong>"Free Ride Voucher"</strong> redeemed by user #U-0192</div><div class="activity-time">31 min ago</div></div></div>
+      <div class="activity-item"><div class="activity-dot" style="background:var(--danger)"></div><div><div class="activity-text">User <strong>Jay Tan</strong> account banned — policy violation reported</div><div class="activity-time">1 hr ago</div></div></div>
+    </div>
+  </div>
   </main>
+
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal modal-sm">
+    <div class="modal-header"><span class="modal-title">Confirm</span><div class="modal-close" onclick="closeModal('confirmModal')">✕</div></div>
+    <div class="modal-body"><p id="confirmText" style="font-size:14px;color:var(--gray-300);line-height:1.6"></p></div>
+    <div class="modal-footer"><button class="btn" onclick="closeModal('confirmModal')">Cancel</button><button class="btn btn-danger" id="confirmBtn">Confirm</button></div>
+  </div>
+</div>
+<div class="toast-container" id="toastContainer"></div>
 
   <nav class="bottom-nav admin-bottom-nav">
     <a href="dashboard.html" class="active"><img src="../../public-assets/icons/layout-dashboard.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
@@ -45,6 +92,10 @@
     <a href="profile.html"><img src="../../public-assets/icons/user.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
   </nav>
 
+  <script src="admin.js"></script>
+  <script>
+    buildTripChart('tripChart', [88, 64, 102, 94, 120, 140, 110]);
+  </script>
   <script src="../../public-assets/script.js"></script>
   <script src="dashboard.js"></script>
 </body>
