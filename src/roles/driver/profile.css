@@ -4,18 +4,17 @@
   padding: 20px 20px 20px 20px;
 }
 
-
 .logo{
   color: white;
   font-size: 25px; 
   font-weight: 800; 
-  gap: -10px;
   margin-left: 1%;
 }
 
 .logo span{
   color: #c4f547;
 }
+
 .insideNav{
   display: flex;
   align-items: center;
@@ -29,19 +28,19 @@
   color: var(--gray-400);
 }
 
-.navContents a{
+.navContent{
   display: flex;
   align-items: center;
   font-weight: bold;
   gap: 10px;
 }
 
-.navContents a:hover {
+.navContent:hover {
   color: var(--white);
 }
 
 /* for the remaining options on the nvbar */
-.navContents a img{
+.navContent img{
   filter: brightness(0) saturate(100%) invert(60%);
 }
 
@@ -51,16 +50,20 @@
   background-color: rgb(9, 31, 8);
   padding: 5px 15px 5px 15px;
   border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: bold;
 }
 
 /* current nav logo */
-.navContents a.currentNav img{
+.currentNav img{
   filter: brightness(0) saturate(100%) invert(83%) sepia(54%) saturate(516%) hue-rotate(34deg);
 }
 
 .nav-logout img {
   filter: brightness(0) saturate(100%) invert(60%);
-  transition: filter 0.2s ease; /* optional smooth transition */
+  transition: filter 0.2s ease;
 }
 
 .nav-logout:hover img {
@@ -69,3 +72,356 @@
 
 
 /* navigation ends here */
+
+
+.dashboardMain{
+  padding: 24px 16px 96px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pageTitle{
+  font-family: sans-serif;
+  font-size: 35px;
+  font-weight: 900;
+  margin-top: 2%;
+}
+
+.pageSubtitle {
+  margin-bottom: 24px;
+}
+
+/* first Cont */
+.firstCont {
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 30px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 30px;
+  background-color: #ffffff;
+  margin-bottom: 3%;
+}
+
+.firstContContent {
+  display: flex;
+  justify-content: space-between; 
+  align-items: flex-start; 
+  gap: 40px; 
+}
+
+/* --- Left Side (Avatar horizontally aligned with Stats) --- */
+.firstContLeftSide {
+  display: flex;
+  flex-direction: row; 
+  align-items: center; 
+  gap: 24px; 
+  width: auto; 
+}
+
+.profile-pic {
+  width: 120px; 
+  height: auto;
+  margin-bottom: 0; 
+}
+
+.profile-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; 
+}
+
+.profile-stats p {
+  margin: 0; 
+  color: #2b2b2b; 
+}
+
+.name {
+  font-size: 30px;
+  font-weight: 800;
+  color: #000;
+}
+
+.verified,
+.ratings,
+.totalRide {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.verified{
+  background-color: #7eeea7;
+  width: 70%;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.ratings::before {
+  content: "⭐⭐⭐⭐⭐ ";
+}
+
+.totalRide::before {
+  content: "🚗 ";
+}
+
+
+.firstContRightSide {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; 
+  flex-grow: 1; 
+  max-width: 400px;
+}
+
+
+.contactInfo {
+  display: flex;
+  align-items: center;
+  gap: 15px; 
+}
+
+.contactInfo img {
+  width: 24px;
+  height: 24px;
+}
+
+/* --- Edit Button --- */
+.editProfileButton {
+  margin-top: 10px;
+}
+
+.editProfileButton button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 20px;
+  width: 250px;
+  background-color: #c4f547; 
+  color: black;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  transition: background-color 0.2s ease;
+}
+
+.editProfileButton button:hover {
+  background-color: rgb(0, 0, 0);
+  color: white;
+}
+
+.editProfileButton button img {
+  width: 18px;
+  height: 18px;
+}
+
+.editProfileButton button:hover img {
+  width: 18px;
+  height: 18px;
+  filter: invert(1);
+}
+
+
+/* 2nd cont */
+.ratingsCont{
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+.ratingsCont img{
+  width: 25px;
+}
+
+.ratingsContent{
+  display:flex;
+  flex-direction:column;
+}
+
+/* each rating row */
+
+.ratingRow{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 0;
+  border-bottom:1px solid #eeeeee;
+}
+
+.ratingRow:hover{
+  background:#f9fafb;
+  transition:0.2s;
+}
+
+.rateLeftSide{
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+.profilePIC img{
+  width:35px;
+  height:35px;
+}
+
+.tripInfo{
+  display:flex;
+  flex-direction:column;
+}
+
+.rater{
+  font-size:15px;
+  font-weight:600;
+}
+
+.comment{
+  font-size:13px;
+  color:#6b7280;
+}
+
+.tripRightSide{
+  text-align:right;
+}
+
+.stars{
+  font-size:12px;
+  color:#6b7280;
+  margin-bottom:5px;
+}
+
+.status{
+  font-size:12px;
+  padding:4px 10px;
+  border-radius:20px;
+  background:#e7f7ed;
+  color:#1f9d55;
+  font-weight:600;
+}
+
+
+/* 3rd column */
+.lastContContent {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; 
+}
+
+.lastFirstRow,
+.lastSecondRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px; 
+}
+
+.ratingCards {
+  background-color: #f1f1f1;
+  color: #000000;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  flex: 1; /* equal width */
+  padding: 20px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  text-align: left;
+}
+
+.ratingCards p {
+  margin: 5px 0;
+  font-weight: 600;
+}
+
+.ratingCards .star {
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.ratingCards .greenAccept {
+  font-size: 25px;
+  font-weight: 800;
+  color: #379c3c;
+}
+
+.dltAcct button {
+  background-color: black;
+  color: white;         
+  border: none;            
+  border-radius: 15px;       
+  padding: 20px 20px;       
+  font-weight: bold;
+  cursor: pointer;          
+  transition: background-color 0.2s ease; 
+  text-align: center;
+  display: inline-block;
+  width: 100%;
+  font-weight: 900;
+}
+
+.dltAcct:hover button{
+  background-color: red;
+  color: white;  
+}
+
+
+
+/* responsive */
+@media (max-width: 767px){
+  .navContents{
+    display: none;
+  }
+}
+
+@media (max-width: 767px){
+  .insideNav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+@media (max-width: 767px) {
+  .firstContContent {
+    flex-direction: column;   
+    align-items: center;   
+    gap: 20px;
+  }
+
+
+  .firstContLeftSide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .firstContRightSide {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; 
+    gap: 10px;
+    padding: 0 15px; 
+  }
+
+  .contactInfo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .editProfileButton {
+    width: 100%;
+    padding: 10px 15px;
+  }
+
+  .editProfileButton button {
+    width: 100%;     
+    text-align: center;
+    padding: 12px 0;
+  }
+}

@@ -7,6 +7,7 @@
   <title>EcoRide - Driver Earnings</title>
   <link rel="stylesheet" href="../../public-assets/style.css">
   <link rel="stylesheet" href="profile.css">
+  <script src="profile.js"></script>
 </head>
 
 <body>
@@ -26,17 +27,162 @@
     </nav>
 
   <!-- MAIN CONTENT -->
-  <main class="dashboard-main">
-      <h1 class="page-title">Page Title</h1>
-      <p class="page-subtitle">Page Subtitle</p>
+
+
+  <main class="dashboardMain">
+      <h1 class="pageTitle">MY PROFILE</h1>
+      <p class="pageSubtitle">Manage your driver account</p>
+
+      <div class="firstCont">
+        <div class="firstContContent">
+          
+          <div class="firstContLeftSide">
+            <img src="../../public-assets/icons/user.svg" alt="Profile Avatar" class="profile-pic">
+            <div class="profile-stats">
+              <p class="name">James Wilson</p>
+              <p class="verified">Driver - Verified</p>
+              <p class="ratings">6.7 Stars</p>
+              <p class="totalRide">67 Rides</p>
+            </div>
+          </div>
+
+          <div class="firstContRightSide">
+            <div class="contactInfo">
+              <img src="../../public-assets/icons/mail.svg" alt="Email Icon">
+              <span>james@gmail.com</span>
+            </div>
+            
+            <div class="contactInfo">
+              <img src="../../public-assets/icons/phone.svg" alt="Phone Icon">
+              <span>017 676 6767</span>
+            </div>
+            
+            <div class="contactInfo">
+              <img src="../../public-assets/icons/location.png" alt="Location Icon">
+              <span>123 Driver Lane, Cityville</span> </div>
+
+            <div class="editProfileButton">
+              <button>
+                <img src="../../public-assets/icons/edit.svg" alt="Edit Icon">
+                Edit Profile
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="firstCont">
+        <h2 class="ratingsCont">
+          <img src="../../public-assets/icons/star.svg" alt="" srcset=""> RECENT RATINGS</h2>
+          <div class="ratingsContent">
+            <div class="ratingRow">
+                <div class="rateLeftSide">
+                    <div class="profilePIC">
+                      <img src="../../public-assets/icons/profileCircle.png" alt="" srcset="">
+                    </div>
+                    <div class="tripInfo">
+                        <div class="rater">Alice Wong</div>
+                        <div class="comment">"Great driver! Very punctual and the car was clean."</div>
+                    </div>
+                </div>
+                <div class="tripRightSide">
+                    <div class="stars">2 DAYS AGO</div>
+                    <span class="status">⭐⭐⭐⭐⭐</span>
+                </div>
+            </div>
+
+            <div class="ratingRow">
+              <div class="rateLeftSide">
+                  <div class="profilePIC">
+                    <img src="../../public-assets/icons/profileCircle.png" alt="" srcset="">
+                  </div>
+                  <div class="tripInfo">
+                      <div class="rater">Alice Wong</div>
+                      <div class="comment">"Great driver! Very punctual and the car was clean."</div>
+                  </div>
+              </div>
+              <div class="tripRightSide">
+                  <div class="stars">2 DAYS AGO</div>
+                  <span class="status">⭐⭐⭐⭐⭐</span>
+              </div>
+            </div>
+
+            <div class="ratingRow">
+              <div class="rateLeftSide">
+                  <div class="profilePIC">
+                    <img src="../../public-assets/icons/profileCircle.png" alt="" srcset="">
+                  </div>
+                  <div class="tripInfo">
+                      <div class="rater">Alice Wong</div>
+                      <div class="comment">"Great driver! Very punctual and the car was clean."</div>
+                  </div>
+              </div>
+              <div class="tripRightSide">
+                  <div class="stars">2 DAYS AGO</div>
+                  <span class="status">⭐⭐⭐⭐⭐</span>
+              </div>
+            </div>
+        </div>
+      </div>
+
+      <div class="firstCont">
+          <h2 class="ratingsCont">
+          <img src="../../public-assets/icons/stats.png" alt="" srcset="">DRIVER STATS</h2>
+
+          <div class="lastContContent">
+
+            <div class="lastFirstRow">
+              <div class="ratingCards">
+                <p>RATINGS</p>
+                <p class="star">4.8 ⭐</p>
+              </div>
+              <div class="ratingCards">
+                <p>TOTAL TRIP</p>
+                <p class="star">67</p>
+              </div>
+            </div>
+
+            <div class="lastSecondRow">
+              <div class="ratingCards">
+                <p>ACCEPTANCE</p>
+                <p class="greenAccept">94%</p>
+              </div>
+              <div class="ratingCards">
+                <p>MEMBER SINCE</p>
+                <p class="star">2023 AUG</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        
+        <div class="dltAcct">
+          <button class="dltAcct" id="deleteAccountBtn">Delete Account</button>
+        </div>
+        
+        <script>
+          function confirmDelete() {
+            const result = confirm("Are you sure you want to delete?");
+            if (result) {
+              alert("Account deleted!"); // Replace with real deletion logic
+            } else {
+              alert("Deletion cancelled.");
+            }
+          }
+        </script>
+        
   </main>
+
+
+
 
   <nav class="bottom-nav driver-bottom-nav">
     <a href="dashboard.html"><img src="../../public-assets/icons/home.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
-    <a href="my-rides.php"><img src="../../public-assets/icons/car.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
-    <a href="earnings.html" class="active"><img src="../../public-assets/icons/dollar-sign.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
+    <a href="my-rides.html"><img src="../../public-assets/icons/car.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
+    <a href="earnings.html"><img src="../../public-assets/icons/dollar-sign.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
     <a href="vehicle.html"><img src="../../public-assets/icons/file-text.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
-    <a href="profile.html"><img src="../../public-assets/icons/user.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
+    <a href="profile.html" class="active" ><img src="../../public-assets/icons/user.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
   </nav>
 
   <script src="../../public-assets/script.js"></script>
@@ -44,10 +190,3 @@
 </body>
 
 </html>
-
-
-
-
-
-
-
