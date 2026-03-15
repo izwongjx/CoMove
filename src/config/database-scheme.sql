@@ -4,7 +4,7 @@
 CREATE DATABASE COMOVE;
 USE COMOVE;
 -- Drop tables if they exist (to avoid conflicts)
-DROP TABLE IF EXISTS OTP, TRIP_SHARE, RIDER_FRIEND, RIDER_SOCIAL_LINK, DRIVER_REDEMPTION, RIDER_REDEMPTION, DRIVER_GREEN_POINT_LOG, RIDER_GREEN_POINT_LOG, REWARD, RATING, RIDE_REQUEST, TRIP, DRIVER, RIDER, ADMIN, GREEN_POINT_MULTIPLIER;
+DROP TABLE IF EXISTS OTP, TRIP_SHARE, RIDER_FRIEND, RIDER_SOCIAL_LINK, SYSTEM_CONFIG, GREEN_POINT_CONFIG, DRIVER_REDEMPTION, RIDER_REDEMPTION, DRIVER_GREEN_POINT_LOG, RIDER_GREEN_POINT_LOG, REWARD, RATING, RIDE_REQUEST, TRIP, DRIVER, RIDER, ADMIN;
 
 -- =====================
 -- Admin Table
@@ -47,9 +47,9 @@ CREATE TABLE DRIVER (
     nric_number CHAR(12) NOT NULL UNIQUE,
     nric_front_image MEDIUMBLOB NOT NULL,
     nric_back_image MEDIUMBLOB NOT NULL,
-    lisence_front_image MEDIUMBLOB NOT NULL,
-    lisence_back_image MEDIUMBLOB NOT NULL,
-    lisence_expiry_date DATE NOT NULL,
+    license_front_image MEDIUMBLOB NOT NULL,
+    license_back_image MEDIUMBLOB NOT NULL,
+    license_expiry_date DATE NOT NULL,
     vehicle_model VARCHAR(20),
     plate_number CHAR(10) NOT NULL UNIQUE,
     color VARCHAR(20),
@@ -69,6 +69,7 @@ CREATE TABLE TRIP (
     total_seats INT NOT NULL DEFAULT 0,
     estimated_duration INT,
     total_amount FLOAT NOT NULL DEFAULT 0,
+    gained_point INT,
     trip_status VARCHAR(20) NOT NULL DEFAULT 'scheduled' CHECK (trip_status IN ('scheduled','ongoing','completed')),
     FOREIGN KEY (driver_id) REFERENCES DRIVER(driver_id)
 );
@@ -83,8 +84,10 @@ CREATE TABLE RIDE_REQUEST (
     seats_requested INT NOT NULL,
     request_status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (request_status IN ('pending','approved','rejected')),
     requested_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    amount_paid FLOAT,
     payment_method VARCHAR(20),
     proof_of_payment MEDIUMBLOB,
+    gained_point INT,
     FOREIGN KEY (trip_id) REFERENCES TRIP(trip_id),
     FOREIGN KEY (rider_id) REFERENCES RIDER(rider_id)
 );
@@ -108,6 +111,7 @@ CREATE TABLE RATING (
 -- =====================
 CREATE TABLE REWARD (
     reward_id CHAR(8) PRIMARY KEY,
+    reward_pic MEDIUMBLOB,
     reward_name NVARCHAR(50) NOT NULL,
     points_required INT NOT NULL,
     category VARCHAR(50) NOT NULL,
@@ -144,7 +148,7 @@ CREATE TABLE DRIVER_REDEMPTION (
 CREATE TABLE RIDER_GREEN_POINT_LOG (
     log_id CHAR(8) PRIMARY KEY,
     rider_id CHAR(8) NOT NULL,
-    points_earned INT NOT NULL DEFAULT 0,
+    points_change INT NOT NULL DEFAULT 0,
     source VARCHAR(50) NOT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (rider_id) REFERENCES RIDER(rider_id)
@@ -156,21 +160,29 @@ CREATE TABLE RIDER_GREEN_POINT_LOG (
 CREATE TABLE DRIVER_GREEN_POINT_LOG (
     log_id CHAR(8) PRIMARY KEY,
     driver_id CHAR(8) NOT NULL,
-    points_earned INT NOT NULL DEFAULT 0,
+    points_change INT NOT NULL DEFAULT 0,
     source VARCHAR(50) NOT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (driver_id) REFERENCES DRIVER(driver_id)
 );
 
 -- =====================
--- Green Point Multiplier
+-- Green Point Config
 -- =====================
-CREATE TABLE GREEN_POINT_MULTIPLIER (
-    multiplier_id CHAR(8) PRIMARY KEY,
+CREATE TABLE GREEN_POINT_CONFIG (
     multiplier_value FLOAT NOT NULL DEFAULT 1,
-    set_by CHAR(8),
-    set_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (set_by) REFERENCES ADMIN(admin_id)
+    driver_base_point INT,
+    rider_base_point INT,
+    min_price FLOAT
+);
+
+-- =====================
+-- System Config
+-- =====================
+CREATE TABLE SYSTEM_CONFIG (
+    driver_registration BOOLEAN,
+    rider_registration BOOLEAN,
+    system_maintenance BOOLEAN
 );
 
 -- =====================

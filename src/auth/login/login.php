@@ -18,17 +18,14 @@ $dashboardPath = $role === 'driver'
     ? '../../roles/driver/dashboard.html'
     : '../../roles/rider/dashboard.html';
 
-$sql = "Select * from " . $tableName . " where email ='" . $email . "' and password ='" . md5($password) . "'";
+// TODO: re-enable password hashing when ready (example: md5($password) or password_hash verify)
+// $hashedPassword = md5($password);
+$sql = "Select * from " . $tableName . " where email = '" . $email . "' and password = '" . $password . "'";
 $result = mysqli_query($dbConn, $sql);
 
 if (mysqli_num_rows($result) <= 0) {
-    $sql = "Select * from " . $tableName . " where email = '" . $email . "' and password = '" . $password . "'";
-    $result = mysqli_query($dbConn, $sql);
-
-    if (mysqli_num_rows($result) <= 0) {
-        echo "<script>alert('Wrong email / password !Please Try Again!');";
-        die("window.history.go(-1);</script>");
-    }
+    echo "<script>alert('Wrong email / password !Please Try Again!');";
+    die("window.history.go(-1);</script>");
 }
 
 if ($row = mysqli_fetch_array($result)) {

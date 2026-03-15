@@ -147,7 +147,10 @@ if ($deleteTripId !== '') {
                 ?>
                 <div class="ride-detail-view">
                   <div class="ride-detail-top-actions">
-                    <a href="my-rides.php" class="driver-btn driver-btn-small driver-btn-muted">Back</a>
+                    <a href="my-rides.php" class="driver-btn driver-btn-small driver-btn-muted">
+                      <img src="../../public-assets/icons/arrow-left.svg" width="14" height="14" alt="" aria-hidden="true">
+                      Back
+                    </a>
                   </div>
                   <section class="ride-detail-panel">
                     <div class="ride-detail-block">
