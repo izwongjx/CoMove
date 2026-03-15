@@ -73,7 +73,7 @@ erDiagram
 		INT seats_requested  "NOT NULL"  
 		VARCHAR(20) request_status  "NOT NULL, DEFAULT 'pending', CHECK (request_status IN ('pending','approved','rejected'))"  
 		DATETIME requested_at  "NOT NULL, DEFAULT CURRENT_TIMESTAMP"  
-		DECIMAL(10,2) amount_paid  ""  
+		DECIMAL(10,2) amount_paid  "DERIVED: (TRIP.total_amount / TRIP.total_seats) * RIDE_REQUEST.seats_requested"  
 		VARCHAR(20) payment_method  ""  
 		MEDIUMBLOB proof_of_payment  ""  
 		INT gained_point  ""  
@@ -128,7 +128,7 @@ erDiagram
 	}
 
 	GREEN_POINT_CONFIG {
-		FLOAT multiplier_value  "NOT NULL, DEFAULT 1"  
+		INT multiplier_value  "NOT NULL, DEFAULT 1"  
 		INT driver_base_point  ""
 		INT rider_base_point ""
 		FLOAT min_price ""

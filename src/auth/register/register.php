@@ -65,7 +65,7 @@ function isApuEmail(string $email): bool
 
 function ensureValidOtp(mysqli $dbConn, string $email, string $otpCode): void
 {
-    $sql = "SELECT 1 FROM OTP WHERE email_address = '" . $email . "' AND otp_code = '" . $otpCode . "' AND is_used = 0 AND expires_at >= NOW() LIMIT 1";
+    $sql = "SELECT 1 FROM OTP WHERE email_address = '" . $email . "' AND otp_code = '" . $otpCode . "' AND is_used = FALSE AND expires_at >= NOW() LIMIT 1";
     $result = mysqli_query($dbConn, $sql);
 
     if (!$result || mysqli_num_rows($result) <= 0) {
@@ -79,7 +79,7 @@ function consumeOtp(mysqli $dbConn, string $email, string $otpCode): void
 {
     mysqli_query(
         $dbConn,
-        "UPDATE OTP SET is_used = 1 WHERE email_address = '" . $email . "' AND otp_code = '" . $otpCode . "' AND is_used = 0 AND expires_at >= NOW() ORDER BY created_at DESC LIMIT 1"
+        "UPDATE OTP SET is_used = TRUE WHERE email_address = '" . $email . "' AND otp_code = '" . $otpCode . "' AND is_used = FALSE AND expires_at >= NOW() ORDER BY created_at DESC LIMIT 1"
     );
 }
 
