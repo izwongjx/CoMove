@@ -14,7 +14,7 @@ erDiagram
 		MEDIUMBLOB profile_photo  ""  
 		DATETIME created_at  "NOT NULL, DEFAULT CURRENT_TIMESTAMP"  
 		VARCHAR(20) rider_status  "NOT NULL, DEFAULT 'active', CHECK (rider_status IN ('active','banned'))"  
-		INT green_points  "DERIVED: SUM(RIDER_GREEN_POINT_LOG.points_change WHERE RIDER_GREEN_POINT_LOG.rider_id = RIDER.rider_id)" 
+		INT green_points  "DERIVED: SUM(RIDER_GREEN_POINT_LOG.points_change WHERE RIDER_GREEN_POINT_LOG.rider_id = RIDER.rider_id)"  
 	}
 
 	DRIVER {
@@ -40,12 +40,13 @@ erDiagram
 		VARCHAR(20) vehicle_model  ""  
 		CHAR(10) plate_number  "NOT NULL, UNIQUE"  
 		VARCHAR(20) color  ""  
-		INT green_points  "DERIVED: SUM(DRIVER_GREEN_POINT_LOG.points_change WHERE DRIVER_GREEN_POINT_LOG.driver_id = DRIVER.driver_id)" 
+		INT green_points  "DERIVED: SUM(DRIVER_GREEN_POINT_LOG.points_change WHERE DRIVER_GREEN_POINT_LOG.driver_id = DRIVER.driver_id)"  
 	}
 
 	ADMIN {
 		INT admin_id PK "AUTO_INCREMENT"  
 		NVARCHAR(50) name  "NOT NULL"  
+		VARCHAR(100) email  "NOT NULL, UNIQUE"  
 		VARCHAR(255) password  "NOT NULL"  
 		DATETIME created_at  "NOT NULL, DEFAULT CURRENT_TIMESTAMP"  
 	}
@@ -73,7 +74,7 @@ erDiagram
 		INT seats_requested  "NOT NULL"  
 		VARCHAR(20) request_status  "NOT NULL, DEFAULT 'pending', CHECK (request_status IN ('pending','approved','rejected'))"  
 		DATETIME requested_at  "NOT NULL, DEFAULT CURRENT_TIMESTAMP"  
-		DECIMAL(10,2) amount_paid  "DERIVED: (TRIP.total_amount / TRIP.total_seats) * RIDE_REQUEST.seats_requested"  
+		DECIMAL(10,2) amount_paid  ""  
 		VARCHAR(20) payment_method  ""  
 		MEDIUMBLOB proof_of_payment  ""  
 		INT gained_point  ""  
@@ -90,7 +91,7 @@ erDiagram
 
 	REWARD {
 		INT reward_id PK "AUTO_INCREMENT"  
-		MEDIUMBLOB reward_pic
+		MEDIUMBLOB reward_pic  ""  
 		NVARCHAR(50) reward_name  "NOT NULL"  
 		INT points_required  "NOT NULL"  
 		VARCHAR(50) category  "NOT NULL"  
@@ -127,19 +128,6 @@ erDiagram
 		DATETIME created_at  "NOT NULL, DEFAULT CURRENT_TIMESTAMP"  
 	}
 
-	GREEN_POINT_CONFIG {
-		INT multiplier_value  "NOT NULL, DEFAULT 1"  
-		INT driver_base_point  ""
-		INT rider_base_point ""
-		FLOAT min_price ""
-	}
-
-	SYSTEM_CONFIG{
-		BOOLEAN driver_registration "TRUE = registration open, FALSE = closed"
-		BOOLEAN rider_registration "TRUE = registration open, FALSE = closed"
-		BOOLEAN system_maintenance "TRUE = maintenance on, FALSE = normal operation"
-	}
-
 	RIDER_SOCIAL_LINK {
 		INT link_id PK "AUTO_INCREMENT"  
 		INT rider_id FK "NOT NULL"  
@@ -169,6 +157,15 @@ erDiagram
 		BOOLEAN is_used  "NOT NULL DEFAULT FALSE, TRUE = used, FALSE = not used"  
 		DATETIME expires_at  "NOT NULL"  
 		DATETIME created_at  "DEFAULT CURRENT_TIMESTAMP"  
+	}
+
+	GREEN_POINT_CONFIG {
+		FLOAT multiplier_value  "NOT NULL, DEFAULT 1"  
+	}
+
+	SYSTEM_CONFIG {
+		BOOLEAN driver_registration  "TRUE = registration open, FALSE = closed"  
+		BOOLEAN system_maintenance  "TRUE = maintenance on, FALSE = normal operation"  
 	}
 
 	RIDER||--o{RIDER_SOCIAL_LINK:"has"

@@ -12,8 +12,9 @@ DROP TABLE IF EXISTS OTP, TRIP_SHARE, RIDER_FRIEND, RIDER_SOCIAL_LINK, SYSTEM_CO
 CREATE TABLE ADMIN (
     admin_id INT AUTO_INCREMENT PRIMARY KEY,
     name NVARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    created_at DATETIME NOT NULL
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- =====================
@@ -26,7 +27,7 @@ CREATE TABLE RIDER (
     password VARCHAR(255) NOT NULL,
     phone_number VARCHAR(20),
     profile_photo MEDIUMBLOB,
-    created_at DATETIME NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     rider_status VARCHAR(20) NOT NULL DEFAULT 'active' CHECK (rider_status IN ('active','banned'))
     -- green_points is derived, so we don't store it directly
 );
@@ -41,7 +42,7 @@ CREATE TABLE DRIVER (
     password VARCHAR(255) NOT NULL,
     phone_number VARCHAR(20) NOT NULL,
     profile_photo MEDIUMBLOB,
-    created_at DATETIME NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     approved_by INT,
     driver_status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (driver_status IN ('pending','active','rejected','banned')),
     nric_number CHAR(12) NOT NULL UNIQUE,
@@ -68,7 +69,7 @@ CREATE TABLE TRIP (
     departure_time DATETIME NOT NULL,
     total_seats INT NOT NULL DEFAULT 0,
     estimated_duration INT,
-    total_amount FLOAT NOT NULL DEFAULT 0,
+    total_amount DECIMAL(10,2) NOT NULL DEFAULT 0,
     gained_point INT,
     trip_status VARCHAR(20) NOT NULL DEFAULT 'scheduled' CHECK (trip_status IN ('scheduled','ongoing','completed')),
     FOREIGN KEY (driver_id) REFERENCES DRIVER(driver_id)
@@ -84,7 +85,7 @@ CREATE TABLE RIDE_REQUEST (
     seats_requested INT NOT NULL,
     request_status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (request_status IN ('pending','approved','rejected')),
     requested_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    amount_paid FLOAT,
+    amount_paid DECIMAL(10,2),
     payment_method VARCHAR(20),
     proof_of_payment MEDIUMBLOB,
     gained_point INT,
@@ -101,7 +102,7 @@ CREATE TABLE RATING (
     rider_id INT NOT NULL,
     rating_score INT NOT NULL CHECK (rating_score BETWEEN 1 AND 5),
     comment NVARCHAR(255),
-    created_at DATETIME NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (trip_id) REFERENCES TRIP(trip_id),
     FOREIGN KEY (rider_id) REFERENCES RIDER(rider_id)
 );
@@ -150,7 +151,7 @@ CREATE TABLE RIDER_GREEN_POINT_LOG (
     rider_id INT NOT NULL,
     points_change INT NOT NULL DEFAULT 0,
     source VARCHAR(50) NOT NULL,
-    created_at DATETIME NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (rider_id) REFERENCES RIDER(rider_id)
 );
 
@@ -162,7 +163,7 @@ CREATE TABLE DRIVER_GREEN_POINT_LOG (
     driver_id INT NOT NULL,
     points_change INT NOT NULL DEFAULT 0,
     source VARCHAR(50) NOT NULL,
-    created_at DATETIME NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (driver_id) REFERENCES DRIVER(driver_id)
 );
 
@@ -170,10 +171,7 @@ CREATE TABLE DRIVER_GREEN_POINT_LOG (
 -- Green Point Config
 -- =====================
 CREATE TABLE GREEN_POINT_CONFIG (
-    multiplier_value FLOAT NOT NULL DEFAULT 1,
-    driver_base_point INT,
-    rider_base_point INT,
-    min_price FLOAT
+    multiplier_value FLOAT NOT NULL DEFAULT 1
 );
 
 -- =====================
@@ -181,7 +179,6 @@ CREATE TABLE GREEN_POINT_CONFIG (
 -- =====================
 CREATE TABLE SYSTEM_CONFIG (
     driver_registration BOOLEAN COMMENT 'TRUE = registration open, FALSE = closed',
-    rider_registration BOOLEAN COMMENT 'TRUE = registration open, FALSE = closed',
     system_maintenance BOOLEAN COMMENT 'TRUE = maintenance on, FALSE = normal operation'
 );
 
@@ -230,5 +227,5 @@ CREATE TABLE OTP (
     otp_code VARCHAR(10) NOT NULL,
     is_used BOOLEAN NOT NULL DEFAULT FALSE COMMENT 'FALSE = not used, TRUE = used',
     expires_at DATETIME NOT NULL,
-    created_at DATETIME NOT NULL
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

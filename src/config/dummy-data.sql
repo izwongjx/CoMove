@@ -10,15 +10,15 @@ SET @license_front = LOAD_FILE('C:/xampp/htdocs/RWDD Assignment/src/public-asset
 
 
 -- Config tables
-INSERT INTO GREEN_POINT_CONFIG (multiplier_value, driver_base_point, rider_base_point, min_price)
-VALUES (1, 10, 5, 5.00);
+INSERT INTO GREEN_POINT_CONFIG (multiplier_value)
+VALUES (1);
 
-INSERT INTO SYSTEM_CONFIG (driver_registration, rider_registration, system_maintenance)
-VALUES (TRUE, TRUE, FALSE);
+INSERT INTO SYSTEM_CONFIG (driver_registration, system_maintenance)
+VALUES (TRUE, FALSE);
 
 -- Admin
-INSERT INTO ADMIN (admin_id, name, password, created_at) VALUES
-(1, 'System Admin', 'Admin@123', '2026-03-01 09:00:00');
+INSERT INTO ADMIN (admin_id, name, email, password, created_at) VALUES
+(1, 'System Admin', 'admin@comove.local', 'Admin@123', '2026-03-01 09:00:00');
 
 -- Drivers (1-3)
 INSERT INTO DRIVER (
