@@ -3,10 +3,10 @@
 USE COMOVE;
 
 -- Load default profile image (src/public-assets/images/profile-icon.png)
-SET @profile_photo = LOAD_FILE('C:/xampp/htdocs/RWDD Assignment/src/public-assets/images/profile-icon.png');
+SET @profile_photo = LOAD_FILE('C:/xampp/htdocs/APU-Comove/src/public-assets/images/profile-icon.png');
 -- Load ID/license images (front used for both sides)
-SET @nric_front = LOAD_FILE('C:/xampp/htdocs/RWDD Assignment/src/public-assets/images/ic-front.jpg');
-SET @license_front = LOAD_FILE('C:/xampp/htdocs/RWDD Assignment/src/public-assets/images/license-front.png');
+SET @nric_front = LOAD_FILE('C:/xampp/htdocs/APU-Comove/src/public-assets/images/ic-front.jpg');
+SET @license_front = LOAD_FILE('C:/xampp/htdocs/APU-Comove/src/public-assets/images/license-front.png');
 
 
 -- Config tables
