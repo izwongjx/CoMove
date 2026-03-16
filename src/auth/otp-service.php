@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 require_once __DIR__ . '/../../phpmailer/src/Exception.php';
 require_once __DIR__ . '/../../phpmailer/src/PHPMailer.php';
@@ -14,7 +13,7 @@ function issueOtpForEmail(mysqli $dbConn, string $email): void
     mysqli_begin_transaction($dbConn);
 
     try {
-        $expireOldStmt = mysqli_prepare($dbConn, 'UPDATE OTP SET is_used = 1 WHERE email_address = ? AND is_used = 0');
+        $expireOldStmt = mysqli_prepare($dbConn, 'UPDATE OTP SET is_used = TRUE WHERE email_address = ? AND is_used = FALSE');
         if ($expireOldStmt === false) {
             throw new RuntimeException('Unable to prepare OTP update statement.');
         }
@@ -27,7 +26,7 @@ function issueOtpForEmail(mysqli $dbConn, string $email): void
 
         $insertStmt = mysqli_prepare(
             $dbConn,
-            'INSERT INTO OTP (email_address, otp_code, is_used, expires_at) VALUES (?, ?, 0, DATE_ADD(NOW(), INTERVAL 5 MINUTE))'
+            'INSERT INTO OTP (email_address, otp_code, is_used, expires_at) VALUES (?, ?, FALSE, DATE_ADD(NOW(), INTERVAL 5 MINUTE))'
         );
         if ($insertStmt === false) {
             throw new RuntimeException('Unable to prepare OTP insert statement.');
