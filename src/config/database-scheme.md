@@ -161,6 +161,7 @@ erDiagram
 
 	GREEN_POINT_CONFIG {
 		FLOAT multiplier_value  "NOT NULL, DEFAULT 1"  
+		INT base_point ""
 	}
 
 	SYSTEM_CONFIG {
