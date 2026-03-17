@@ -32,11 +32,10 @@
   <p class="page-subtitle">Create, edit, manage and monitor all platform users</p>
 
   <div class="sub-tabs">
-    <button class="sub-tab active" id="utab-all"     onclick="switchTab('utab-','usersub-',['all','riders','drivers','pending','social'],'all')">All Users</button>
-    <button class="sub-tab" id="utab-riders"  onclick="switchTab('utab-','usersub-',['all','riders','drivers','pending','social'],'riders')">Riders</button>
-    <button class="sub-tab" id="utab-drivers" onclick="switchTab('utab-','usersub-',['all','riders','drivers','pending','social'],'drivers')">Drivers</button>
-    <button class="sub-tab" id="utab-pending" onclick="switchTab('utab-','usersub-',['all','riders','drivers','pending','social'],'pending')">Driver Applications <span class="badge b-yellow" style="margin-left:4px">3</span></button>
-    <button class="sub-tab" id="utab-social"  onclick="switchTab('utab-','usersub-',['all','riders','drivers','pending','social'],'social')">Social Links</button>
+    <button class="sub-tab active" id="utab-all"     onclick="switchTab('utab-','usersub-',['all','riders','drivers','pending'],'all')">All Users</button>
+    <button class="sub-tab" id="utab-riders"  onclick="switchTab('utab-','usersub-',['all','riders','drivers','pending'],'riders')">Riders</button>
+    <button class="sub-tab" id="utab-drivers" onclick="switchTab('utab-','usersub-',['all','riders','drivers','pending'],'drivers')">Drivers</button>
+    <button class="sub-tab" id="utab-pending" onclick="switchTab('utab-','usersub-',['all','riders','drivers','pending'],'pending')">Driver Applications <span class="badge b-yellow" style="margin-left:4px">3</span></button>
   </div>
 
   <!-- ALL USERS -->
@@ -108,23 +107,6 @@
             <tr id="prow-ML"><td><div class="user-cell"><div class="user-avatar" style="background:linear-gradient(135deg,#a78bfa,#7c3aed);color:#fff">ML</div><div><div class="user-name">Marcus Lee</div><div class="user-sub">#U-0248</div></div></div></td><td style="font-family:'DM Mono',monospace;font-size:11px">VKL 8803</td><td style="font-size:12px">Honda City 2022</td><td style="font-family:'DM Mono',monospace;font-size:11px">2026-03-09</td><td id="pstat-ML"><span class="badge b-yellow"><span class="bdot"></span> Pending</span></td><td><div class="action-btns"><button class="btn btn-xs btn-lime" onclick="decideApp('ML','approve')">Approve</button><button class="btn btn-xs btn-danger" onclick="decideApp('ML','reject')">Reject</button></div></td></tr>
             <tr id="prow-ZA"><td><div class="user-cell"><div class="user-avatar" style="background:linear-gradient(135deg,#38bdf8,#0284c7);color:#000">ZA</div><div><div class="user-name">Zack Ahmad</div><div class="user-sub">#U-0251</div></div></div></td><td style="font-family:'DM Mono',monospace;font-size:11px">QRT 1122</td><td style="font-size:12px">Proton X50 2023</td><td style="font-family:'DM Mono',monospace;font-size:11px">2026-03-08</td><td id="pstat-ZA"><span class="badge b-yellow"><span class="bdot"></span> Pending</span></td><td><div class="action-btns"><button class="btn btn-xs btn-lime" onclick="decideApp('ZA','approve')">Approve</button><button class="btn btn-xs btn-danger" onclick="decideApp('ZA','reject')">Reject</button></div></td></tr>
             <tr id="prow-NR"><td><div class="user-cell"><div class="user-avatar" style="background:linear-gradient(135deg,#fb7185,#e11d48);color:#fff">NR</div><div><div class="user-name">Nurul Rina</div><div class="user-sub">#U-0253</div></div></div></td><td style="font-family:'DM Mono',monospace;font-size:11px">BJK 5577</td><td style="font-size:12px">Perodua Bezza 2021</td><td style="font-family:'DM Mono',monospace;font-size:11px">2026-03-10</td><td id="pstat-NR"><span class="badge b-yellow"><span class="bdot"></span> Pending</span></td><td><div class="action-btns"><button class="btn btn-xs btn-lime" onclick="decideApp('NR','approve')">Approve</button><button class="btn btn-xs btn-danger" onclick="decideApp('NR','reject')">Reject</button></div></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- SOCIAL LINKS -->
-  <div id="usersub-social" style="display:none">
-    <div class="card">
-      <div class="card-header"><span class="card-title">User Social Links</span></div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>User</th><th>Platform</th><th>Profile Link</th><th>Action</th></tr></thead>
-          <tbody>
-            <tr><td><div class="user-cell"><div class="user-avatar" style="background:linear-gradient(135deg,#c8f135,#a3e635);color:#000">AM</div><div><div class="user-name">Aisha Mahmoud</div></div></div></td><td><span class="badge b-purple">Instagram</span></td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--info)">instagram.com/aisha.m</td><td><button class="btn btn-xs" onclick="toast('Opened','info')">↗ Open</button></td></tr>
-            <tr><td><div class="user-cell"><div class="user-avatar" style="background:linear-gradient(135deg,#2ed5c4,#0891b2);color:#000">JT</div><div><div class="user-name">Jay Tan</div></div></div></td><td><span class="badge b-blue">LinkedIn</span></td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--info)">linkedin.com/in/jaytan</td><td><button class="btn btn-xs" onclick="toast('Opened','info')">↗ Open</button></td></tr>
-            <tr><td><div class="user-cell"><div class="user-avatar" style="background:linear-gradient(135deg,#fbbf24,#d97706);color:#000">SR</div><div><div class="user-name">Siti Rahmah</div></div></div></td><td><span class="badge b-yellow">Facebook</span></td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--info)">facebook.com/siti.rahmah</td><td><button class="btn btn-xs" onclick="toast('Opened','info')">↗ Open</button></td></tr>
           </tbody>
         </table>
       </div>
