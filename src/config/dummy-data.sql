@@ -27,11 +27,11 @@ INSERT INTO DRIVER (
     vehicle_model, plate_number, color
 ) VALUES
 (1, 'Aisyah Rahman', 'aisyah.rahman@mail.apu.edu.my', 'Driver@123', '012-1111222', @profile_photo, '2026-03-02 10:00:00', 1, 'active',
- '900101-10-1234', @nric_front, @nric_front, @license_front, @license_front, '2028-12-31', 'Toyota Vios', 'WXY1234', 'Silver'),
+ '900101101234', @nric_front, @nric_front, @license_front, @license_front, '2028-12-31', 'Toyota Vios', 'WXY1234', 'Silver'),
 (2, 'Daniel Lim', 'daniel.lim@mail.apu.edu.my', 'Driver@123', '012-3333444', @profile_photo, '2026-03-02 11:00:00', 1, 'active',
- '900202-10-5678', @nric_front, @nric_front, @license_front, @license_front, '2029-06-30', 'Perodua Alza', 'BHG9876', 'White'),
+ '900202105678', @nric_front, @nric_front, @license_front, @license_front, '2029-06-30', 'Perodua Alza', 'BHG9876', 'White'),
 (3, 'TP082975', 'tp082975@mail.apu.edu.my', 'Driver@123', '012-5555666', @profile_photo, '2026-03-02 11:30:00', 1, 'active',
- '900303-10-9999', @nric_front, @nric_front, @license_front, @license_front, '2029-12-31', 'Honda City', 'VAX7788', 'Blue');
+ '900303109999', @nric_front, @nric_front, @license_front, @license_front, '2029-12-31', 'Honda City', 'VAX7788', 'Blue');
 
 -- Riders
 INSERT INTO RIDER (
@@ -114,4 +114,3 @@ INSERT INTO TRIP_SHARE (share_id, trip_id, rider_id, visibility, shared_at) VALU
 -- OTP (example)
 INSERT INTO OTP (otp_id, email_address, otp_code, is_used, expires_at, created_at) VALUES
 (1, 'alicia.tan@mail.apu.edu.my', '123456', FALSE, '2026-03-31 23:59:59', '2026-03-19 10:00:00');
-
