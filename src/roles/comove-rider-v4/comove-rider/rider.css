@@ -675,9 +675,16 @@
   width: 46px; height: 46px;
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: 17px;
   flex-shrink: 0;
-  color: var(--black);
+  overflow: hidden;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.friend-ava img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 .friend-info { flex: 1; min-width: 0; }
 .friend-name { font-weight: 600; font-size: 14px; }
@@ -725,15 +732,21 @@
   border-radius: 50%;
   background: linear-gradient(135deg, var(--lime), var(--lime-dark));
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-display);
-  font-size: 36px;
-  font-weight: 900;
-  color: var(--black);
   position: relative;
+  overflow: visible;
+  border: 2px solid rgba(255,255,255,0.08);
+}
+.profile-ava img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 50%;
 }
 .ava-edit {
   position: absolute;
-  bottom: 0; right: 0;
+  right: -2px;
+  bottom: -2px;
   width: 26px; height: 26px;
   background: var(--black);
   border: 2px solid var(--black2);
@@ -741,6 +754,9 @@
   display: flex; align-items: center; justify-content: center;
   font-size: 11px;
   cursor: pointer;
+  color: var(--white);
+  padding: 0;
+  z-index: 1;
 }
 .profile-name {
   font-family: var(--font-display);
