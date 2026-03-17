@@ -10,8 +10,9 @@ DROP TABLE IF EXISTS OTP, TRIP_SHARE, RIDER_FRIEND, RIDER_SOCIAL_LINK, SYSTEM_CO
 -- Admin Table
 -- =====================
 CREATE TABLE ADMIN (
-    admin_id CHAR(8) PRIMARY KEY,
+    admin_id INT AUTO_INCREMENT PRIMARY KEY,
     name NVARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -20,7 +21,7 @@ CREATE TABLE ADMIN (
 -- Rider Table
 -- =====================
 CREATE TABLE RIDER (
-    rider_id CHAR(8) PRIMARY KEY,
+    rider_id INT AUTO_INCREMENT PRIMARY KEY,
     name NVARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
@@ -35,14 +36,14 @@ CREATE TABLE RIDER (
 -- Driver Table
 -- =====================
 CREATE TABLE DRIVER (
-    driver_id CHAR(8) PRIMARY KEY,
+    driver_id INT AUTO_INCREMENT PRIMARY KEY,
     name NVARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     phone_number VARCHAR(20) NOT NULL,
     profile_photo MEDIUMBLOB,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    approved_by CHAR(8),
+    approved_by INT,
     driver_status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (driver_status IN ('pending','active','rejected','banned')),
     nric_number CHAR(12) NOT NULL UNIQUE,
     nric_front_image MEDIUMBLOB NOT NULL,
@@ -61,14 +62,14 @@ CREATE TABLE DRIVER (
 -- Trip Table
 -- =====================
 CREATE TABLE TRIP (
-    trip_id CHAR(8) PRIMARY KEY,
-    driver_id CHAR(8) NOT NULL,
+    trip_id INT AUTO_INCREMENT PRIMARY KEY,
+    driver_id INT NOT NULL,
     start_location NVARCHAR(100) NOT NULL,
     end_location NVARCHAR(100) NOT NULL,
     departure_time DATETIME NOT NULL,
     total_seats INT NOT NULL DEFAULT 0,
     estimated_duration INT,
-    total_amount FLOAT NOT NULL DEFAULT 0,
+    total_amount DECIMAL(10,2) NOT NULL DEFAULT 0,
     gained_point INT,
     trip_status VARCHAR(20) NOT NULL DEFAULT 'scheduled' CHECK (trip_status IN ('scheduled','ongoing','completed')),
     FOREIGN KEY (driver_id) REFERENCES DRIVER(driver_id)
@@ -78,13 +79,13 @@ CREATE TABLE TRIP (
 -- Ride Request Table
 -- =====================
 CREATE TABLE RIDE_REQUEST (
-    request_id CHAR(8) PRIMARY KEY,
-    trip_id CHAR(8) NOT NULL,
-    rider_id CHAR(8) NOT NULL,
+    request_id INT AUTO_INCREMENT PRIMARY KEY,
+    trip_id INT NOT NULL,
+    rider_id INT NOT NULL,
     seats_requested INT NOT NULL,
     request_status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (request_status IN ('pending','approved','rejected')),
     requested_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    amount_paid FLOAT,
+    amount_paid DECIMAL(10,2),
     payment_method VARCHAR(20),
     proof_of_payment MEDIUMBLOB,
     gained_point INT,
@@ -96,9 +97,9 @@ CREATE TABLE RIDE_REQUEST (
 -- Rating Table
 -- =====================
 CREATE TABLE RATING (
-    rating_id CHAR(8) PRIMARY KEY,
-    trip_id CHAR(8) NOT NULL,
-    rider_id CHAR(8) NOT NULL,
+    rating_id INT AUTO_INCREMENT PRIMARY KEY,
+    trip_id INT NOT NULL,
+    rider_id INT NOT NULL,
     rating_score INT NOT NULL CHECK (rating_score BETWEEN 1 AND 5),
     comment NVARCHAR(255),
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -110,7 +111,7 @@ CREATE TABLE RATING (
 -- Reward Table
 -- =====================
 CREATE TABLE REWARD (
-    reward_id CHAR(8) PRIMARY KEY,
+    reward_id INT AUTO_INCREMENT PRIMARY KEY,
     reward_pic MEDIUMBLOB,
     reward_name NVARCHAR(50) NOT NULL,
     points_required INT NOT NULL,
@@ -122,9 +123,9 @@ CREATE TABLE REWARD (
 -- Rider Redemption
 -- =====================
 CREATE TABLE RIDER_REDEMPTION (
-    redemption_id CHAR(8) PRIMARY KEY,
-    rider_id CHAR(8) NOT NULL,
-    reward_id CHAR(8) NOT NULL,
+    redemption_id INT AUTO_INCREMENT PRIMARY KEY,
+    rider_id INT NOT NULL,
+    reward_id INT NOT NULL,
     redeemed_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (rider_id) REFERENCES RIDER(rider_id),
     FOREIGN KEY (reward_id) REFERENCES REWARD(reward_id)
@@ -134,9 +135,9 @@ CREATE TABLE RIDER_REDEMPTION (
 -- Driver Redemption
 -- =====================
 CREATE TABLE DRIVER_REDEMPTION (
-    redemption_id CHAR(8) PRIMARY KEY,
-    driver_id CHAR(8) NOT NULL,
-    reward_id CHAR(8) NOT NULL,
+    redemption_id INT AUTO_INCREMENT PRIMARY KEY,
+    driver_id INT NOT NULL,
+    reward_id INT NOT NULL,
     redeemed_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (driver_id) REFERENCES DRIVER(driver_id),
     FOREIGN KEY (reward_id) REFERENCES REWARD(reward_id)
@@ -146,8 +147,8 @@ CREATE TABLE DRIVER_REDEMPTION (
 -- Rider Green Point Log
 -- =====================
 CREATE TABLE RIDER_GREEN_POINT_LOG (
-    log_id CHAR(8) PRIMARY KEY,
-    rider_id CHAR(8) NOT NULL,
+    log_id INT AUTO_INCREMENT PRIMARY KEY,
+    rider_id INT NOT NULL,
     points_change INT NOT NULL DEFAULT 0,
     source VARCHAR(50) NOT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -158,8 +159,8 @@ CREATE TABLE RIDER_GREEN_POINT_LOG (
 -- Driver Green Point Log
 -- =====================
 CREATE TABLE DRIVER_GREEN_POINT_LOG (
-    log_id CHAR(8) PRIMARY KEY,
-    driver_id CHAR(8) NOT NULL,
+    log_id INT AUTO_INCREMENT PRIMARY KEY,
+    driver_id INT NOT NULL,
     points_change INT NOT NULL DEFAULT 0,
     source VARCHAR(50) NOT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -170,27 +171,23 @@ CREATE TABLE DRIVER_GREEN_POINT_LOG (
 -- Green Point Config
 -- =====================
 CREATE TABLE GREEN_POINT_CONFIG (
-    multiplier_value FLOAT NOT NULL DEFAULT 1,
-    driver_base_point INT,
-    rider_base_point INT,
-    min_price FLOAT
+    multiplier_value FLOAT NOT NULL DEFAULT 1
 );
 
 -- =====================
 -- System Config
 -- =====================
 CREATE TABLE SYSTEM_CONFIG (
-    driver_registration BOOLEAN,
-    rider_registration BOOLEAN,
-    system_maintenance BOOLEAN
+    driver_registration BOOLEAN COMMENT 'TRUE = registration open, FALSE = closed',
+    system_maintenance BOOLEAN COMMENT 'TRUE = maintenance on, FALSE = normal operation'
 );
 
 -- =====================
 -- Rider Social Link
 -- =====================
 CREATE TABLE RIDER_SOCIAL_LINK (
-    link_id CHAR(8) PRIMARY KEY,
-    rider_id CHAR(8) NOT NULL,
+    link_id INT AUTO_INCREMENT PRIMARY KEY,
+    rider_id INT NOT NULL,
     title NVARCHAR(50) NOT NULL,
     link_url VARCHAR(255) NOT NULL,
     FOREIGN KEY (rider_id) REFERENCES RIDER(rider_id)
@@ -200,9 +197,9 @@ CREATE TABLE RIDER_SOCIAL_LINK (
 -- Rider Friend
 -- =====================
 CREATE TABLE RIDER_FRIEND (
-    friend_id CHAR(8) PRIMARY KEY,
-    rider_id CHAR(8) NOT NULL,
-    friend_rider_id CHAR(8) NOT NULL,
+    friend_id INT AUTO_INCREMENT PRIMARY KEY,
+    rider_id INT NOT NULL,
+    friend_rider_id INT NOT NULL,
     status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','accepted','rejected')),
     FOREIGN KEY (rider_id) REFERENCES RIDER(rider_id),
     FOREIGN KEY (friend_rider_id) REFERENCES RIDER(rider_id)
@@ -212,9 +209,9 @@ CREATE TABLE RIDER_FRIEND (
 -- Trip Share
 -- =====================
 CREATE TABLE TRIP_SHARE (
-    share_id CHAR(8) PRIMARY KEY,
-    trip_id CHAR(8) NOT NULL,
-    rider_id CHAR(8) NOT NULL,
+    share_id INT AUTO_INCREMENT PRIMARY KEY,
+    trip_id INT NOT NULL,
+    rider_id INT NOT NULL,
     visibility VARCHAR(20) NOT NULL DEFAULT 'private' CHECK (visibility IN ('private','friends')),
     shared_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (trip_id) REFERENCES TRIP(trip_id),
@@ -225,10 +222,10 @@ CREATE TABLE TRIP_SHARE (
 -- OTP Table
 -- =====================
 CREATE TABLE OTP (
-    otp_id CHAR(8) PRIMARY KEY,
+    otp_id INT AUTO_INCREMENT PRIMARY KEY,
     email_address VARCHAR(100) NOT NULL,
     otp_code VARCHAR(10) NOT NULL,
-    is_used BOOLEAN NOT NULL DEFAULT FALSE,
+    is_used BOOLEAN NOT NULL DEFAULT FALSE COMMENT 'FALSE = not used, TRUE = used',
     expires_at DATETIME NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
