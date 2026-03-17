@@ -79,43 +79,6 @@ function riderFetchAll(string $sql): array
     return $rows;
 }
 
-function riderLevelInfo(int $points): array
-{
-    $levels = [
-        ['name' => 'Eco Starter', 'min' => 0, 'max' => 499],
-        ['name' => 'Eco Explorer', 'min' => 500, 'max' => 999],
-        ['name' => 'Eco Commuter', 'min' => 1000, 'max' => 1499],
-        ['name' => 'Eco Champion', 'min' => 1500, 'max' => 2499],
-        ['name' => 'Eco Legend', 'min' => 2500, 'max' => null],
-    ];
-
-    foreach ($levels as $index => $level) {
-        $max = $level['max'];
-        if ($max === null || $points <= $max) {
-            $next = $levels[$index + 1] ?? null;
-            return [
-                'level' => $index + 1,
-                'title' => $level['name'],
-                'current_min' => $level['min'],
-                'current_max' => $max,
-                'next_title' => $next ? $next['name'] : $level['name'],
-                'points_to_next' => $max === null ? 0 : max(0, $max + 1 - $points),
-                'progress_percent' => $max === null ? 100 : (int) round((($points - $level['min']) / max(1, ($max + 1 - $level['min']))) * 100),
-            ];
-        }
-    }
-
-    return [
-        'level' => 1,
-        'title' => 'Eco Starter',
-        'current_min' => 0,
-        'current_max' => 499,
-        'next_title' => 'Eco Explorer',
-        'points_to_next' => 500,
-        'progress_percent' => 0,
-    ];
-}
-
 function riderPhotoUrl(string $type, int $id): string
 {
     return 'api/photo.php?type=' . rawurlencode($type) . '&id=' . $id . '&v=' . time();

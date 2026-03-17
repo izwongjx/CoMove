@@ -54,7 +54,6 @@ $pointsRow = riderFetchOne("SELECT COALESCE(SUM(points_change), 0) AS total_poin
 $tripsRow = riderFetchOne("SELECT COUNT(*) AS total_trips FROM RIDE_REQUEST WHERE rider_id = {$riderId} AND request_status = 'approved'");
 $points = isset($pointsRow['total_points']) ? (int) $pointsRow['total_points'] : 0;
 $trips = isset($tripsRow['total_trips']) ? (int) $tripsRow['total_trips'] : 0;
-$level = riderLevelInfo($points);
 
 riderSuccess([
     'id' => (int) $row['rider_id'],
@@ -64,7 +63,5 @@ riderSuccess([
     'phone_number' => $row['phone_number'],
     'green_points' => $points,
     'total_trips' => $trips,
-    'level' => $level['level'],
-    'level_title' => $level['title'],
     'photo_url' => riderPhotoUrl('rider', $riderId),
 ]);

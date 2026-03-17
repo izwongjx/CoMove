@@ -40,7 +40,6 @@
       <div class="profile-stats">
         <div class="profile-stat"><div class="profile-stat-val" id="profilePoints">0</div><div class="profile-stat-lbl">Green Pts</div></div>
         <div class="profile-stat"><div class="profile-stat-val" id="profileTrips">0</div><div class="profile-stat-lbl">Trips</div></div>
-        <div class="profile-stat"><div class="profile-stat-val" id="profileLevel">Lv. 1</div><div class="profile-stat-lbl">Level</div></div>
       </div>
     </div>
 
@@ -64,49 +63,8 @@
       </div>
     </div>
 
-    <!-- Switch Account -->
     <div class="settings-card">
-      <div class="settings-section-title">Account Type</div>
-      <div class="setting-row" style="justify-content:space-between;">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div class="setting-icon">🚗</div>
-          <div>
-            <div class="setting-label">Driver Account</div>
-            <div style="font-size:12px;color:var(--gray-400);margin-top:2px;">Switch to offer rides and earn more</div>
-          </div>
-        </div>
-        <button class="btn-switch" onclick="showToast('🚗 Switching to Driver account...')">Switch</button>
-      </div>
-    </div>
-
-    <!-- Preferences -->
-    <div class="settings-card">
-      <div class="settings-section-title">Preferences</div>
-      <div class="setting-row">
-        <div class="setting-icon">🌿</div>
-        <div class="setting-label">Eco Mode</div>
-        <button class="toggle on" onclick="toggleSwitch(this)" aria-label="Toggle eco mode"></button>
-      </div>
-      <div class="setting-row">
-        <div class="setting-icon">🔔</div>
-        <div class="setting-label">Ride Notifications</div>
-        <button class="toggle on" onclick="toggleSwitch(this)" aria-label="Toggle notifications"></button>
-      </div>
-    </div>
-
-    <!-- Account -->
-    <div class="settings-card">
-      <div class="settings-section-title">Account</div>
-      <div class="setting-row clickable" onclick="showToast('🔒 Password reset email sent!')">
-        <div class="setting-icon">🔒</div>
-        <div class="setting-label">Change Password</div>
-        <div class="setting-value">→</div>
-      </div>
-      <div class="setting-row clickable" onclick="showToast('📋 Support ticket opened!')">
-        <div class="setting-icon">💬</div>
-        <div class="setting-label">Help & Support</div>
-        <div class="setting-value">→</div>
-      </div>
+      <div class="settings-section-title">Session</div>
       <div class="setting-row clickable danger" onclick="openLogoutModal()">
         <div class="setting-icon">🚪</div>
         <div class="setting-label">Log Out</div>

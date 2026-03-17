@@ -3,6 +3,43 @@ require_once __DIR__ . '/_bootstrap.php';
 
 $riderId = riderCurrentId();
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $action = isset($_POST['action']) ? strtolower(trim((string) $_POST['action'])) : '';
+    $requestId = isset($_POST['request_id']) ? (int) $_POST['request_id'] : 0;
+
+    if ($action === 'cancel') {
+        if ($requestId <= 0) {
+            riderError('Invalid trip request.');
+        }
+
+        $requestRow = riderFetchOne("
+            SELECT request_id, gained_point
+            FROM RIDE_REQUEST
+            WHERE request_id = {$requestId} AND rider_id = {$riderId} AND request_status IN ('pending','approved')
+            LIMIT 1
+        ");
+
+        if (!$requestRow) {
+            riderError('Trip booking not found.', 404);
+        }
+
+        mysqli_query($dbConn, "UPDATE RIDE_REQUEST SET request_status = 'rejected' WHERE request_id = {$requestId} LIMIT 1");
+
+        $points = isset($requestRow['gained_point']) ? (int) $requestRow['gained_point'] : 0;
+        if ($points > 0) {
+            mysqli_query($dbConn, "INSERT INTO RIDER_GREEN_POINT_LOG (rider_id, points_change, source) VALUES ({$riderId}, -" . $points . ", 'Trip cancellation {$requestId}')");
+        }
+
+        riderSuccess([
+            'message' => 'Trip booking cancelled.',
+        ]);
+    }
+
+    riderError('Unsupported action.');
+}
+$summaryTripsRow = riderFetchOne("SELECT COUNT(*) AS total_trips FROM RIDE_REQUEST WHERE rider_id = {$riderId} AND request_status <> 'rejected'");
+$summaryPointsRow = riderFetchOne("SELECT COALESCE(SUM(points_change), 0) AS total_points FROM RIDER_GREEN_POINT_LOG WHERE rider_id = {$riderId}");
+
 $upcomingRaw = riderFetchOne("
     SELECT
         rr.request_id,
@@ -44,7 +81,7 @@ $historyRaw = riderFetchAll("
     FROM RIDE_REQUEST rr
     INNER JOIN TRIP t ON t.trip_id = rr.trip_id
     INNER JOIN DRIVER d ON d.driver_id = t.driver_id
-    WHERE rr.rider_id = {$riderId}
+    WHERE rr.rider_id = {$riderId} AND rr.request_status <> 'rejected'
     ORDER BY t.departure_time DESC
 ");
 
@@ -66,6 +103,7 @@ if ($upcomingRaw) {
         'payment_method' => $upcomingRaw['payment_method'] ?: 'Pending',
         'points' => (int) ($upcomingRaw['gained_point'] ?? 0),
         'status' => ucfirst((string) $upcomingRaw['request_status']),
+        'request_id' => (int) $upcomingRaw['request_id'],
     ];
 }
 
@@ -87,6 +125,10 @@ foreach ($historyRaw as $trip) {
 }
 
 riderSuccess([
+    'summary' => [
+        'total_trips' => isset($summaryTripsRow['total_trips']) ? (int) $summaryTripsRow['total_trips'] : 0,
+        'total_points' => isset($summaryPointsRow['total_points']) ? (int) $summaryPointsRow['total_points'] : 0,
+    ],
     'upcoming' => $upcoming,
     'history' => $history,
 ]);

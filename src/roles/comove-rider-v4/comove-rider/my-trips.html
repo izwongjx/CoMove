@@ -27,16 +27,16 @@
 
   <main class="dashboard-main">
     <h1 class="page-title">My Trips</h1>
-    <p class="page-subtitle">Your carpool history and ride requests</p>
+    <p class="page-subtitle">Your carpool history</p>
 
     <!-- Stats -->
     <div class="form-card" style="display:grid;grid-template-columns:repeat(2,1fr);gap:0;padding:0;overflow:hidden;margin-bottom:24px;">
       <div style="padding:16px;text-align:center;border-right:1px solid rgba(255,255,255,0.06);">
-        <div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--lime);">38</div>
+        <div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--lime);" id="myTripsTotal">0</div>
         <div style="font-size:12px;color:var(--gray-400);">Total Trips</div>
       </div>
       <div style="padding:16px;text-align:center;">
-        <div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--lime);">1,240</div>
+        <div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--lime);" id="myTripsPoints">0</div>
         <div style="font-size:12px;color:var(--gray-400);">Pts Earned</div>
       </div>
     </div>
@@ -56,97 +56,6 @@
       <div class="section-title" style="margin-top:4px;">All Trips <span style="font-size:12px;color:var(--gray-400);font-family:var(--font-body);font-weight:400;text-transform:none;letter-spacing:0;">tap to view details</span></div>
       <div id="tripHistoryList"></div>
     </div>
-
-    <!-- ── RIDE REQUESTS TAB ── -->
-    <div id="tab-requests" style="display:none;">
-
-      <!-- Post a new request -->
-      <div class="section-title" style="margin-top:4px;">Post a Ride Request</div>
-      <div class="request-form-card">
-        <div class="form-grid cols2" style="margin-bottom:14px;">
-          <div class="form-group">
-            <label class="form-label">📍 Pickup</label>
-            <input class="form-input" type="text" id="reqPickup" placeholder="e.g. APU Campus">
-          </div>
-          <div class="form-group">
-            <label class="form-label">📍 Destination</label>
-            <input class="form-input" type="text" id="reqDrop" placeholder="e.g. KL Sentral">
-          </div>
-          <div class="form-group">
-            <label class="form-label">📅 Date</label>
-            <input class="form-input" type="date" id="reqDate">
-          </div>
-          <div class="form-group">
-            <label class="form-label">🕐 Time</label>
-            <input class="form-input" type="time" id="reqTime">
-          </div>
-        </div>
-        <div class="form-group" style="margin-bottom:14px;">
-          <label class="form-label">💬 Note (optional)</label>
-          <input class="form-input" type="text" id="reqNote" placeholder="e.g. Female driver preferred, 1 luggage bag">
-        </div>
-        <button class="btn-primary" onclick="postRequest()">📢 Post Ride Request</button>
-      </div>
-
-      <!-- My pending request -->
-      <div class="section-title">My Requests</div>
-      <div class="request-card my-request" id="myRequest">
-        <div class="request-status status-pending">⏳ Pending — waiting for driver</div>
-        <div class="request-route">APU Campus <span style="color:var(--gray-400);font-weight:400;">→</span> Mid Valley Megamall</div>
-        <div class="request-meta">📅 Today · 🕐 8:00 AM · 👤 1 seat · 💬 "No luggage, prefer fast route"</div>
-        <div class="request-footer">
-          <div class="request-poster">
-            <div class="request-poster-ava" style="background:linear-gradient(135deg,#c8f135,#a8d020);">JL</div>
-            <span>You (Jun Lin)</span>
-          </div>
-          <button class="btn-danger-sm" onclick="cancelRequest()">Cancel Request</button>
-        </div>
-      </div>
-
-      <!-- Other open requests from peers -->
-      <div class="section-title" style="margin-top:20px;">Open Requests Nearby</div>
-      <p style="font-size:13px;color:var(--gray-400);margin:-12px 0 14px;">Requests posted by other riders looking for the same route</p>
-
-      <div class="request-card">
-        <div class="request-status status-open">🔵 Open</div>
-        <div class="request-route">Sri Petaling <span style="color:var(--gray-400);font-weight:400;">→</span> APU Campus</div>
-        <div class="request-meta">📅 Today · 🕐 8:30 AM · 👤 2 seats · 💬 "UCDF2409 student, flexible on route"</div>
-        <div class="request-footer">
-          <div class="request-poster">
-            <div class="request-poster-ava" style="background:linear-gradient(135deg,#34d399,#10b981);">MF</div>
-            <span>Muhammad Fariz</span>
-          </div>
-          <button class="btn-sm primary" onclick="showToast('✅ You offered to drive Muhammad Fariz!')">Offer Ride</button>
-        </div>
-      </div>
-
-      <div class="request-card">
-        <div class="request-status status-open">🔵 Open</div>
-        <div class="request-route">Bukit Jalil LRT <span style="color:var(--gray-400);font-weight:400;">→</span> KLCC</div>
-        <div class="request-meta">📅 Today · 🕐 9:30 AM · 👤 1 seat · 💬 "Going for internship interview, punctual pls"</div>
-        <div class="request-footer">
-          <div class="request-poster">
-            <div class="request-poster-ava" style="background:linear-gradient(135deg,#fb923c,#f97316);">NY</div>
-            <span>Nur Yasmin</span>
-          </div>
-          <button class="btn-sm primary" onclick="showToast('✅ You offered to drive Nur Yasmin!')">Offer Ride</button>
-        </div>
-      </div>
-
-      <div class="request-card">
-        <div class="request-status status-accepted">✅ Accepted</div>
-        <div class="request-route">Puchong Prima <span style="color:var(--gray-400);font-weight:400;">→</span> APU Campus</div>
-        <div class="request-meta">📅 Yesterday · 🕐 7:45 AM · 👤 1 seat · 💬 "Early morning class"</div>
-        <div class="request-footer">
-          <div class="request-poster">
-            <div class="request-poster-ava" style="background:linear-gradient(135deg,#c084fc,#a855f7);">PL</div>
-            <span>Priya Lakshmi</span>
-          </div>
-          <span style="font-size:12px;color:var(--lime);">Fulfilled by Kai Wei</span>
-        </div>
-      </div>
-    </div>
-
   </main>
 
   <!-- Trip Detail Modal -->

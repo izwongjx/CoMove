@@ -3,6 +3,179 @@ require_once __DIR__ . '/_bootstrap.php';
 
 $riderId = riderCurrentId();
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $action = isset($_POST['action']) ? strtolower(trim((string) $_POST['action'])) : '';
+    $friendId = isset($_POST['friend_id']) ? (int) $_POST['friend_id'] : 0;
+
+    if (($action === 'accept' || $action === 'remove' || $action === 'decline') && $friendId <= 0) {
+        riderError('Invalid friend request.');
+    }
+
+    if ($action === 'request') {
+        $targetRiderId = isset($_POST['target_rider_id']) ? (int) $_POST['target_rider_id'] : 0;
+        if ($targetRiderId <= 0 || $targetRiderId === $riderId) {
+            riderError('Invalid rider selected.');
+        }
+
+        $targetRow = riderFetchOne("SELECT rider_id, name FROM RIDER WHERE rider_id = {$targetRiderId} LIMIT 1");
+        if (!$targetRow) {
+            riderError('Rider not found.', 404);
+        }
+
+        $existingRow = riderFetchOne("
+            SELECT friend_id, rider_id, friend_rider_id, status
+            FROM RIDER_FRIEND
+            WHERE (rider_id = {$targetRiderId} AND friend_rider_id = {$riderId})
+               OR (rider_id = {$riderId} AND friend_rider_id = {$targetRiderId})
+            LIMIT 1
+        ");
+
+        if ($existingRow) {
+            if ((string) $existingRow['status'] === 'rejected') {
+                mysqli_query(
+                    $dbConn,
+                    "UPDATE RIDER_FRIEND
+                     SET rider_id = {$targetRiderId}, friend_rider_id = {$riderId}, status = 'pending'
+                     WHERE friend_id = " . (int) $existingRow['friend_id'] . " LIMIT 1"
+                );
+                riderSuccess([
+                    'message' => 'Friend request sent.',
+                ]);
+            }
+
+            riderError('Friend relationship already exists.');
+        }
+
+        mysqli_query($dbConn, "INSERT INTO RIDER_FRIEND (rider_id, friend_rider_id, status) VALUES ({$targetRiderId}, {$riderId}, 'pending')");
+        if (mysqli_affected_rows($dbConn) <= 0) {
+            riderError('Unable to send friend request.', 500);
+        }
+
+        riderSuccess([
+            'message' => 'Friend request sent.',
+        ]);
+    }
+
+    if ($action === 'accept') {
+        $requestRow = riderFetchOne("
+            SELECT friend_id, rider_id, friend_rider_id
+            FROM RIDER_FRIEND
+            WHERE friend_id = {$friendId} AND rider_id = {$riderId} AND status = 'pending'
+            LIMIT 1
+        ");
+
+        if (!$requestRow) {
+            riderError('Friend request not found.', 404);
+        }
+
+        $otherRiderId = (int) $requestRow['friend_rider_id'];
+        mysqli_query($dbConn, "UPDATE RIDER_FRIEND SET status = 'accepted' WHERE friend_id = {$friendId} LIMIT 1");
+
+        $reverseRow = riderFetchOne("
+            SELECT friend_id
+            FROM RIDER_FRIEND
+            WHERE rider_id = {$otherRiderId} AND friend_rider_id = {$riderId}
+            LIMIT 1
+        ");
+
+        if ($reverseRow) {
+            mysqli_query($dbConn, "UPDATE RIDER_FRIEND SET status = 'accepted' WHERE friend_id = " . (int) $reverseRow['friend_id'] . " LIMIT 1");
+        } else {
+            mysqli_query($dbConn, "INSERT INTO RIDER_FRIEND (rider_id, friend_rider_id, status) VALUES ({$otherRiderId}, {$riderId}, 'accepted')");
+        }
+
+        riderSuccess([
+            'message' => 'Friend request accepted.',
+        ]);
+    }
+
+    if ($action === 'decline') {
+        $requestRow = riderFetchOne("
+            SELECT friend_id
+            FROM RIDER_FRIEND
+            WHERE friend_id = {$friendId} AND rider_id = {$riderId} AND status = 'pending'
+            LIMIT 1
+        ");
+
+        if (!$requestRow) {
+            riderError('Friend request not found.', 404);
+        }
+
+        mysqli_query($dbConn, "UPDATE RIDER_FRIEND SET status = 'rejected' WHERE friend_id = {$friendId} LIMIT 1");
+        riderSuccess([
+            'message' => 'Friend request declined.',
+        ]);
+    }
+
+    if ($action === 'remove') {
+        $friendRow = riderFetchOne("
+            SELECT friend_id, rider_id, friend_rider_id
+            FROM RIDER_FRIEND
+            WHERE friend_id = {$friendId} AND rider_id = {$riderId}
+            LIMIT 1
+        ");
+
+        if (!$friendRow) {
+            riderError('Friend not found.', 404);
+        }
+
+        $otherRiderId = (int) $friendRow['friend_rider_id'];
+        mysqli_query($dbConn, "DELETE FROM RIDER_FRIEND WHERE friend_id = {$friendId} LIMIT 1");
+        mysqli_query($dbConn, "DELETE FROM RIDER_FRIEND WHERE rider_id = {$otherRiderId} AND friend_rider_id = {$riderId}");
+
+        riderSuccess([
+            'message' => 'Friend removed.',
+        ]);
+    }
+
+    riderError('Unsupported action.');
+}
+
+$search = isset($_GET['q']) ? trim((string) $_GET['q']) : '';
+if ($search !== '') {
+    $searchSql = riderEsc('%' . strtolower($search) . '%');
+    $searchRaw = riderFetchAll("
+        SELECT
+            r.rider_id,
+            r.name,
+            r.email
+        FROM RIDER r
+        WHERE r.rider_id <> {$riderId}
+          AND (
+            LOWER(r.name) LIKE '{$searchSql}'
+            OR LOWER(r.email) LIKE '{$searchSql}'
+            OR CONCAT('RIDER-', LPAD(r.rider_id, 4, '0')) LIKE UPPER('" . riderEsc('%' . $search . '%') . "')
+          )
+          AND NOT EXISTS (
+            SELECT 1
+            FROM RIDER_FRIEND rf
+            WHERE (
+                rf.rider_id = r.rider_id AND rf.friend_rider_id = {$riderId}
+            ) OR (
+                rf.rider_id = {$riderId} AND rf.friend_rider_id = r.rider_id
+            )
+            AND rf.status IN ('pending', 'accepted')
+          )
+        ORDER BY r.name ASC
+        LIMIT 10
+    ");
+
+    $results = [];
+    foreach ($searchRaw as $row) {
+        $results[] = [
+            'rider_id' => (int) $row['rider_id'],
+            'name' => $row['name'],
+            'student_id' => 'RIDER-' . str_pad((string) $row['rider_id'], 4, '0', STR_PAD_LEFT),
+            'meta' => $row['email'],
+            'photo_url' => riderPhotoUrl('rider', (int) $row['rider_id']),
+        ];
+    }
+
+    riderSuccess([
+        'results' => $results,
+    ]);
+}
+
 $friendsRaw = riderFetchAll("
     SELECT
         rf.friend_id,

@@ -18,5 +18,14 @@ if (!$row || !isset($row['profile_photo']) || $row['profile_photo'] === null) {
     exit;
 }
 
-header('Content-Type: image/png');
+if (function_exists('finfo_open')) {
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mimeType = $finfo ? finfo_buffer($finfo, $row['profile_photo']) : false;
+    if ($finfo) {
+        finfo_close($finfo);
+    }
+    header('Content-Type: ' . ($mimeType ?: 'application/octet-stream'));
+} else {
+    header('Content-Type: application/octet-stream');
+}
 echo $row['profile_photo'];

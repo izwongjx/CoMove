@@ -13,13 +13,21 @@ function selectPill(el) {
   el.classList.add('active');
 }
 
+function getSelectedSeatCount() {
+  var active = document.querySelector('.type-pills .type-pill.active');
+  if (!active) return 1;
+  var count = parseInt(active.textContent, 10);
+  return count > 0 ? count : 1;
+}
+
 async function searchRides() {
   var pickup = document.getElementById('pickupInput').value.trim();
   var drop = document.getElementById('dropInput').value.trim();
+  var seats = getSelectedSeatCount();
   if (!pickup || !drop) { showToast('⚠️ Please enter pickup and destination'); return; }
 
   try {
-    var data = await apiGet('api/rides.php?pickup=' + encodeURIComponent(pickup) + '&drop=' + encodeURIComponent(drop));
+    var data = await apiGet('api/rides.php?pickup=' + encodeURIComponent(pickup) + '&drop=' + encodeURIComponent(drop) + '&seats=' + seats);
     renderRideResults(data.rides || []);
     document.getElementById('availableRides').style.display = 'block';
     document.getElementById('availableRides').scrollIntoView({ behavior: 'smooth' });
@@ -65,17 +73,20 @@ function goToBooking(tripId) {
     car: ride.vehicle_model,
     plate: ride.plate_number,
     price: ride.price,
+    unit_price: ride.unit_price,
     time: ride.time,
     from: ride.from,
     to: ride.to,
-    date: ride.date
+    date: ride.date,
+    seats_requested: getSelectedSeatCount()
   };
 
   document.getElementById('bkAva').textContent = ride.driver_initials;
   document.getElementById('bkName').textContent = ride.driver_name;
   document.getElementById('bkCar').textContent = ride.vehicle_model + ' · ' + ride.plate_number;
   document.getElementById('bkRating').textContent = 'Driver available';
-  document.getElementById('bkPrice').textContent = ride.price;
+  document.getElementById('bkPrice').textContent = 'RM ' + (Number(ride.unit_price || 0) * currentBooking.seats_requested).toFixed(2);
+  document.getElementById('bkPriceNote').textContent = currentBooking.seats_requested + ' seat' + (currentBooking.seats_requested > 1 ? 's' : '') + ' total';
   document.getElementById('bkFrom').textContent = ride.from;
   document.getElementById('bkTo').textContent = ride.to;
   document.getElementById('bkDate').textContent = ride.date;
@@ -105,7 +116,7 @@ async function confirmBooking() {
   var formData = new FormData();
   formData.append('trip_id', currentBooking.trip_id);
   formData.append('payment_method', labels[selectedPayment]);
-  formData.append('seats_requested', '1');
+  formData.append('seats_requested', String(currentBooking.seats_requested || 1));
 
   try {
     var result = await apiPost('api/book-ride.php', formData);
@@ -133,6 +144,7 @@ function showReceiptPanel(ride, payMethod, ref, amountPaid) {
     + '<div class="receipt-row"><span class="lbl">To</span><span class="val">' + escapeHtml(ride.to) + '</span></div>'
     + '<div class="receipt-row"><span class="lbl">Date</span><span class="val">' + escapeHtml(ride.date) + '</span></div>'
     + '<div class="receipt-row"><span class="lbl">Departure</span><span class="val">' + escapeHtml(ride.time) + '</span></div>'
+    + '<div class="receipt-row"><span class="lbl">Seats</span><span class="val">' + (ride.seats_requested || 1) + '</span></div>'
     + '<div class="receipt-row"><span class="lbl">Amount Paid</span><span class="val" style="color:var(--lime);">' + escapeHtml(amountPaid || ride.price) + '</span></div>'
     + '<div class="receipt-row"><span class="lbl">Payment Method</span><span class="val">' + escapeHtml(payMethod) + '</span></div>'
     + '<div class="receipt-row"><span class="lbl">Confirmed At</span><span class="val">' + dateStr + ' ' + timeStr + '</span></div>'

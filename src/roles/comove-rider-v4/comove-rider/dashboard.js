@@ -26,19 +26,13 @@ function renderDashboard(data) {
   document.getElementById('riderName').textContent = data.name || 'Rider';
   document.getElementById('dashPoints').textContent = data.green_points || 0;
   document.getElementById('dashTrips').textContent = data.total_trips || 0;
-  document.getElementById('dashLevel').textContent = 'Lv. ' + (data.level.level || 1);
-  document.getElementById('dashLevelTitle').textContent = '🌿 ' + data.level.title;
-  document.getElementById('dashLevelBadge').textContent = 'Lv.' + data.level.level;
-  document.getElementById('dashLevelMeta').textContent = data.level.points_to_next + ' pts to next level → ' + data.level.next_title;
-  document.getElementById('dashLevelCount').textContent = data.green_points + ' / ' + (data.level.current_max === null ? data.green_points : data.level.current_max + 1);
-  document.getElementById('dashProgressBar').style.width = Math.max(0, Math.min(100, data.level.progress_percent)) + '%';
 
   document.getElementById('dashAvailableRides').innerHTML = (data.available_rides || []).map(function(ride) {
     return '<div class="dash-ride-card">'
       + '<div class="driver-ava" style="flex-shrink:0;">' + escapeHtml(ride.driver_initials) + '</div>'
       + '<div class="ride-details" style="flex:1;">'
       + '<div class="ride-driver-name">' + escapeHtml(ride.driver_name) + '</div>'
-      + '<div class="ride-info">' + escapeHtml(ride.from) + ' → ' + escapeHtml(ride.to) + ' · ' + escapeHtml(ride.departure_time) + ' <span class="ride-pts-tag">+' + ride.points + ' pts</span></div>'
+      + '<div class="ride-info">' + escapeHtml(ride.from) + ' → ' + escapeHtml(ride.to) + ' · ' + escapeHtml(ride.departure_time) + ' · ' + ride.seats_left + ' seats left <span class="ride-pts-tag">+' + ride.points + ' pts</span></div>'
       + '<div style="font-size:12px;color:var(--gray-400);">' + escapeHtml(ride.vehicle_model) + ' · ' + escapeHtml(ride.plate_number) + '</div>'
       + '</div>'
       + '<div style="text-align:right;flex-shrink:0;">'
@@ -65,15 +59,40 @@ function dashBook(tripId) {
   if (!ride) return;
 
   dbCurrentRide = ride;
+  dbCurrentRide.selected_seats = 1;
   document.getElementById('dbAva').textContent = ride.driver_initials;
   document.getElementById('dbName').textContent = ride.driver_name;
   document.getElementById('dbCarPlate').textContent = ride.vehicle_model + ' · ' + ride.plate_number;
-  document.getElementById('dbPrice').textContent = ride.price;
   document.getElementById('dbFrom').textContent = ride.from;
   document.getElementById('dbTo').textContent = ride.to;
   document.getElementById('dbTime').textContent = ride.departure_time;
+  populateSeatOptions(ride.seats_left);
+  updateDashboardBookingPrice();
   dbSelectPayment('tng');
   document.getElementById('dashBookModal').classList.add('open');
+}
+
+function populateSeatOptions(maxSeats) {
+  var select = document.getElementById('dbSeatCount');
+  if (!select) return;
+
+  var count = Math.max(1, parseInt(maxSeats, 10) || 1);
+  var options = '';
+  for (var i = 1; i <= count; i++) {
+    options += '<option value="' + i + '">' + i + ' seat' + (i > 1 ? 's' : '') + '</option>';
+  }
+  select.innerHTML = options;
+  select.value = '1';
+}
+
+function updateDashboardBookingPrice() {
+  var select = document.getElementById('dbSeatCount');
+  var seatCount = select ? parseInt(select.value, 10) || 1 : 1;
+  dbCurrentRide.selected_seats = seatCount;
+
+  var unitPrice = Number(dbCurrentRide.unit_price || 0);
+  var totalPrice = unitPrice * seatCount;
+  document.getElementById('dbPrice').textContent = 'RM ' + totalPrice.toFixed(2);
 }
 
 function closeDashBookModal() {
@@ -93,7 +112,7 @@ async function dbConfirmBooking() {
   var formData = new FormData();
   formData.append('trip_id', dbCurrentRide.trip_id);
   formData.append('payment_method', labels[dbSelectedPayment]);
-  formData.append('seats_requested', '1');
+  formData.append('seats_requested', String(dbCurrentRide.selected_seats || 1));
 
   try {
     var result = await apiPost('api/book-ride.php', formData);
@@ -119,6 +138,7 @@ function showReceipt(ride, payMethod, ref, amountPaid) {
     + '<div class="receipt-row"><span class="lbl">From</span><span class="val">' + escapeHtml(ride.from) + '</span></div>'
     + '<div class="receipt-row"><span class="lbl">To</span><span class="val">' + escapeHtml(ride.to) + '</span></div>'
     + '<div class="receipt-row"><span class="lbl">Departure</span><span class="val">' + escapeHtml(ride.departure_time) + '</span></div>'
+    + '<div class="receipt-row"><span class="lbl">Seats</span><span class="val">' + (ride.selected_seats || 1) + '</span></div>'
     + '<div class="receipt-row"><span class="lbl">Amount Paid</span><span class="val" style="color:var(--lime);">' + escapeHtml(amountPaid || ride.price) + '</span></div>'
     + '<div class="receipt-row"><span class="lbl">Payment</span><span class="val">' + escapeHtml(payMethod) + '</span></div>'
     + '<div class="receipt-row"><span class="lbl">Date & Time</span><span class="val">' + dateStr + ' ' + timeStr + '</span></div>'
@@ -133,15 +153,8 @@ function closeReceipt() {
   document.getElementById('receiptModal').classList.remove('open');
 }
 
-function switchToDriver() { document.getElementById('switchDriverModal').classList.add('open'); }
-function closeSwitchModal() { document.getElementById('switchDriverModal').classList.remove('open'); }
-function doSwitchDriver() {
-  closeSwitchModal();
-  showToast('Driver switching is still using the old flow.');
-}
-
 document.addEventListener('DOMContentLoaded', function() {
-  ['dashBookModal','switchDriverModal','receiptModal','cancelTripModal'].forEach(function(id) {
+  ['dashBookModal','receiptModal'].forEach(function(id) {
     var m = document.getElementById(id);
     if (m) m.addEventListener('click', function(e){ if(e.target===m) m.classList.remove('open'); });
   });

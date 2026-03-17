@@ -11,7 +11,6 @@ $pointsRow = riderFetchOne("SELECT COALESCE(SUM(points_change), 0) AS total_poin
 $tripsRow = riderFetchOne("SELECT COUNT(*) AS total_trips FROM RIDE_REQUEST WHERE rider_id = {$riderId} AND request_status = 'approved'");
 $points = isset($pointsRow['total_points']) ? (int) $pointsRow['total_points'] : 0;
 $totalTrips = isset($tripsRow['total_trips']) ? (int) $tripsRow['total_trips'] : 0;
-$level = riderLevelInfo($points);
 
 $availableRidesRaw = riderFetchAll("
     SELECT
@@ -22,13 +21,21 @@ $availableRidesRaw = riderFetchAll("
         t.total_amount,
         t.gained_point,
         t.total_seats,
+        GREATEST(t.total_seats - COALESCE(bookings.booked_seats, 0), 0) AS seats_left,
         d.driver_id,
         d.name AS driver_name,
         d.vehicle_model,
         d.plate_number
     FROM TRIP t
     INNER JOIN DRIVER d ON d.driver_id = t.driver_id
+    LEFT JOIN (
+        SELECT trip_id, COALESCE(SUM(seats_requested), 0) AS booked_seats
+        FROM RIDE_REQUEST
+        WHERE request_status = 'approved'
+        GROUP BY trip_id
+    ) bookings ON bookings.trip_id = t.trip_id
     WHERE t.trip_status = 'scheduled'
+      AND GREATEST(t.total_seats - COALESCE(bookings.booked_seats, 0), 0) > 0
     ORDER BY t.departure_time ASC
     LIMIT 3
 ");
@@ -45,9 +52,11 @@ foreach ($availableRidesRaw as $ride) {
         'to' => $ride['end_location'],
         'departure_time' => $ride['departure_label'],
         'price' => 'RM ' . number_format(((float) $ride['total_amount']) / max(1, (int) $ride['total_seats']), 2),
+        'unit_price' => (float) $ride['total_amount'] / max(1, (int) $ride['total_seats']),
         'vehicle_model' => $ride['vehicle_model'],
         'plate_number' => $ride['plate_number'],
         'points' => (int) ($ride['gained_point'] ?? 0),
+        'seats_left' => (int) $ride['seats_left'],
     ];
 }
 
@@ -82,7 +91,6 @@ riderSuccess([
     'name' => $rider['name'],
     'green_points' => $points,
     'total_trips' => $totalTrips,
-    'level' => $level,
     'available_rides' => $availableRides,
     'recent_trips' => $recentTrips,
 ]);

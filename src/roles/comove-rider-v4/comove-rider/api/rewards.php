@@ -5,7 +5,6 @@ $riderId = riderCurrentId();
 
 $pointsRow = riderFetchOne("SELECT COALESCE(SUM(points_change), 0) AS total_points FROM RIDER_GREEN_POINT_LOG WHERE rider_id = {$riderId}");
 $points = isset($pointsRow['total_points']) ? (int) $pointsRow['total_points'] : 0;
-$level = riderLevelInfo($points);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $rewardId = isset($_POST['reward_id']) ? (int) $_POST['reward_id'] : 0;
@@ -70,7 +69,6 @@ foreach ($historyRaw as $entry) {
 
 riderSuccess([
     'green_points' => $points,
-    'level' => $level,
     'rewards' => $rewards,
     'history' => $history,
 ]);

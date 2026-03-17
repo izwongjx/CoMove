@@ -3,6 +3,7 @@ require_once __DIR__ . '/_bootstrap.php';
 
 $pickup = isset($_GET['pickup']) ? strtolower(trim((string) $_GET['pickup'])) : '';
 $drop = isset($_GET['drop']) ? strtolower(trim((string) $_GET['drop'])) : '';
+$requestedSeats = isset($_GET['seats']) ? max(1, (int) $_GET['seats']) : 1;
 
 $sql = "
     SELECT
@@ -12,6 +13,7 @@ $sql = "
         DATE_FORMAT(t.departure_time, '%Y-%m-%d') AS departure_date,
         DATE_FORMAT(t.departure_time, '%l:%i %p') AS departure_time,
         t.total_seats,
+        GREATEST(t.total_seats - COALESCE(bookings.booked_seats, 0), 0) AS seats_left,
         t.total_amount,
         t.gained_point,
         d.driver_id,
@@ -20,6 +22,12 @@ $sql = "
         d.plate_number
     FROM TRIP t
     INNER JOIN DRIVER d ON d.driver_id = t.driver_id
+    LEFT JOIN (
+        SELECT trip_id, COALESCE(SUM(seats_requested), 0) AS booked_seats
+        FROM RIDE_REQUEST
+        WHERE request_status = 'approved'
+        GROUP BY trip_id
+    ) bookings ON bookings.trip_id = t.trip_id
     WHERE t.trip_status = 'scheduled'
 ";
 
@@ -32,7 +40,7 @@ if ($drop !== '') {
     $sql .= " AND LOWER(t.end_location) LIKE '{$dropSql}'";
 }
 
-$sql .= " ORDER BY t.departure_time ASC LIMIT 10";
+$sql .= " AND GREATEST(t.total_seats - COALESCE(bookings.booked_seats, 0), 0) >= {$requestedSeats} ORDER BY t.departure_time ASC LIMIT 10";
 
 $ridesRaw = riderFetchAll($sql);
 $rides = [];
@@ -50,8 +58,9 @@ foreach ($ridesRaw as $ride) {
         'date' => $ride['departure_date'],
         'time' => $ride['departure_time'],
         'price' => 'RM ' . number_format(((float) $ride['total_amount']) / max(1, (int) $ride['total_seats']), 2),
+        'unit_price' => (float) $ride['total_amount'] / max(1, (int) $ride['total_seats']),
         'points' => (int) ($ride['gained_point'] ?? 0),
-        'seats_left' => (int) $ride['total_seats'],
+        'seats_left' => (int) $ride['seats_left'],
     ];
 }
 

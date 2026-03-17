@@ -2,6 +2,8 @@
 var currentDeleteId = '';
 var currentViewFriend = null;
 var friendsCache = [];
+var pendingFriendsCache = [];
+var searchResultsCache = [];
 
 function initRiderFriends() {
   loadFriends();
@@ -19,25 +21,54 @@ function switchFriendTab(el, tab) {
 function searchFriends() {
   var q = document.getElementById('friendSearch').value.trim().toLowerCase();
   if (!q) {
+    renderSearchResults([]);
     renderFriends(friendsCache);
     return;
   }
 
-  var filtered = friendsCache.filter(function(friend) {
-    return friend.name.toLowerCase().indexOf(q) !== -1 || friend.student_id.toLowerCase().indexOf(q) !== -1;
-  });
-  renderFriends(filtered);
+  loadFriendSearch(q);
 }
 
 async function loadFriends() {
   try {
     var data = await apiGet('api/friends.php');
     friendsCache = data.friends || [];
+    pendingFriendsCache = data.pending || [];
     renderFriends(friendsCache);
-    renderPending(data.pending || []);
+    renderPending(pendingFriendsCache);
   } catch (err) {
     showToast('⚠️ Unable to load friends');
   }
+}
+
+async function loadFriendSearch(query) {
+  try {
+    var data = await apiGet('api/friends.php?q=' + encodeURIComponent(query));
+    renderSearchResults(data.results || []);
+  } catch (err) {
+    showToast('⚠️ Unable to search riders');
+  }
+}
+
+function renderSearchResults(results) {
+  var panel = document.getElementById('friendSearchResults');
+  searchResultsCache = results;
+  if (!panel) return;
+
+  if (!results.length) {
+    panel.innerHTML = '';
+    return;
+  }
+
+  panel.innerHTML = '<div class="section-title" style="margin-top:18px;">Search Results</div>' + results.map(function(rider) {
+    return '<div class="friend-card">'
+      + '<div class="friend-ava"><img src="' + escapeHtml(rider.photo_url) + '" alt="' + escapeHtml(rider.name) + ' profile photo"></div>'
+      + '<div class="friend-info"><div class="friend-name">' + escapeHtml(rider.name) + '</div><div class="friend-meta">' + escapeHtml(rider.student_id) + ' · ' + escapeHtml(rider.meta) + '</div></div>'
+      + '<div style="display:flex;gap:8px;">'
+      + '<button class="btn-sm primary" onclick="sendFriendRequest(' + rider.rider_id + ')">Add Friend</button>'
+      + '</div>'
+      + '</div>';
+  }).join('');
 }
 
 function renderFriends(friends) {
@@ -79,8 +110,8 @@ function renderPending(pending) {
       + '<div class="friend-ava"><img src="' + escapeHtml(friend.photo_url) + '" alt="' + escapeHtml(friend.name) + ' profile photo"></div>'
       + '<div class="friend-info"><div class="friend-name">' + escapeHtml(friend.name) + '</div><div class="friend-meta">' + escapeHtml(friend.meta) + '</div></div>'
       + '<div style="display:flex;gap:8px;">'
-      + '<button class="btn-sm primary" onclick="acceptFriend(\'' + escapeHtml(friend.name) + '\')">Accept</button>'
-      + '<button class="btn-sm ghost" onclick="showToast(\'Request declined\')">Decline</button>'
+      + '<button class="btn-sm primary" onclick="acceptFriendById(' + friend.friend_id + ')">Accept</button>'
+      + '<button class="btn-sm ghost" onclick="declineFriendById(' + friend.friend_id + ')">Decline</button>'
       + '</div>'
       + '</div>';
   }).join('');
@@ -121,25 +152,81 @@ function closeDeleteModal() {
   document.getElementById('deleteModal').classList.remove('open');
 }
 
-function doDelete() {
+async function doDelete() {
   closeDeleteModal();
-  var card = document.getElementById('friend-' + currentDeleteId);
-  friendsCache = friendsCache.filter(function(item) { return item.friend_id !== currentDeleteId; });
-  if (card) {
-    card.style.transition = 'opacity 0.3s, transform 0.3s';
-    card.style.opacity = '0';
-    card.style.transform = 'translateX(30px)';
-    setTimeout(function() {
+  var friendId = currentDeleteId;
+  var card = document.getElementById('friend-' + friendId);
+  var formData = new FormData();
+  formData.append('action', 'remove');
+  formData.append('friend_id', String(friendId));
+
+  try {
+    await apiPost('api/friends.php', formData);
+    friendsCache = friendsCache.filter(function(item) { return item.friend_id !== friendId; });
+    currentViewFriend = currentViewFriend && currentViewFriend.friend_id === friendId ? null : currentViewFriend;
+    if (card) {
+      card.style.transition = 'opacity 0.3s, transform 0.3s';
+      card.style.opacity = '0';
+      card.style.transform = 'translateX(30px)';
+      setTimeout(function() {
+        renderFriends(friendsCache);
+      }, 300);
+    } else {
       renderFriends(friendsCache);
-      showToast('✅ Friend removed');
-    }, 300);
-    return;
+    }
+    showToast('✅ Friend removed');
+  } catch (err) {
+    showToast('⚠️ ' + err.message);
   }
-  renderFriends(friendsCache);
 }
 
-function acceptFriend(name) {
-  showToast('✅ ' + name + ' added as friend!');
+async function acceptFriendById(friendId) {
+  var friend = pendingFriendsCache.find(function(item) { return item.friend_id === friendId; });
+  var name = friend ? friend.name : 'Friend';
+  var formData = new FormData();
+  formData.append('action', 'accept');
+  formData.append('friend_id', String(friendId));
+
+  try {
+    await apiPost('api/friends.php', formData);
+    await loadFriends();
+    showToast('✅ ' + name + ' added as friend!');
+  } catch (err) {
+    showToast('⚠️ ' + err.message);
+  }
+}
+
+async function declineFriendById(friendId) {
+  var friend = pendingFriendsCache.find(function(item) { return item.friend_id === friendId; });
+  var name = friend ? friend.name : 'Friend';
+  var formData = new FormData();
+  formData.append('action', 'decline');
+  formData.append('friend_id', String(friendId));
+
+  try {
+    await apiPost('api/friends.php', formData);
+    await loadFriends();
+    showToast('✅ ' + name + ' declined');
+  } catch (err) {
+    showToast('⚠️ ' + err.message);
+  }
+}
+
+async function sendFriendRequest(riderId) {
+  var rider = searchResultsCache.find(function(item) { return item.rider_id === riderId; });
+  var name = rider ? rider.name : 'this rider';
+  var formData = new FormData();
+  formData.append('action', 'request');
+  formData.append('target_rider_id', String(riderId));
+
+  try {
+    await apiPost('api/friends.php', formData);
+    renderSearchResults([]);
+    document.getElementById('friendSearch').value = '';
+    showToast('✅ Friend request sent to ' + name);
+  } catch (err) {
+    showToast('⚠️ ' + err.message);
+  }
 }
 
 document.addEventListener('DOMContentLoaded', function() {

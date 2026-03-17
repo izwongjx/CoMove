@@ -15,14 +15,28 @@ if ($tripId <= 0 || $paymentMethod === '') {
 }
 
 $trip = riderFetchOne("
-    SELECT trip_id, total_amount, total_seats, gained_point
-    FROM TRIP
-    WHERE trip_id = {$tripId} AND trip_status = 'scheduled'
+    SELECT
+        t.trip_id,
+        t.total_amount,
+        t.total_seats,
+        t.gained_point,
+        GREATEST(t.total_seats - COALESCE(bookings.booked_seats, 0), 0) AS seats_left
+    FROM TRIP t
+    LEFT JOIN (
+        SELECT trip_id, COALESCE(SUM(seats_requested), 0) AS booked_seats
+        FROM RIDE_REQUEST
+        WHERE request_status = 'approved'
+        GROUP BY trip_id
+    ) bookings ON bookings.trip_id = t.trip_id
+    WHERE t.trip_id = {$tripId} AND t.trip_status = 'scheduled'
     LIMIT 1
 ");
 
 if (!$trip) {
     riderError('Trip not found.', 404);
+}
+if ($seatsRequested > (int) $trip['seats_left']) {
+    riderError('Not enough seats available for this booking.');
 }
 
 $amountPaid = ((float) $trip['total_amount']) / max(1, (int) $trip['total_seats']) * $seatsRequested;

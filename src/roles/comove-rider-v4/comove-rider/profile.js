@@ -37,8 +37,7 @@ function renderProfile(profile) {
   document.getElementById('profilePhone').textContent = profile.phone_number || '-';
   document.getElementById('profilePoints').textContent = profile.green_points || 0;
   document.getElementById('profileTrips').textContent = profile.total_trips || 0;
-  document.getElementById('profileLevel').textContent = 'Lv. ' + (profile.level || 1);
-  document.getElementById('profileRole').textContent = '🚗 ' + (profile.level_title || 'Rider');
+  document.getElementById('profileRole').textContent = '🚗 Rider';
 }
 
 async function handleProfilePhotoUpload(e) {
