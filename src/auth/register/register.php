@@ -157,7 +157,7 @@ if ($role === 'rider') {
     $_SESSION['user_id'] = $riderId;
 
     echo "<script>alert('Registration completed successfully!');";
-    echo "window.location.href='../../roles/rider/dashboard.html';</script>";
+    echo "window.location.href='../../roles/comove-rider-v4/comove-rider/dashboard.html';</script>";
     exit;
 }
 

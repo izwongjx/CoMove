@@ -1,48 +1,100 @@
 /* Comove – My Trips JS */
-
 function initMyTrips() {
-  // Set default date for request form to today
   var d = document.getElementById('reqDate');
   if (d) d.value = new Date().toISOString().split('T')[0];
-
-  // Check URL hash to auto-open requests tab
-  if (window.location.hash === '#requests') {
-    var btn = document.getElementById('requestsTabBtn');
-    if (btn) switchTripsTab(btn, 'requests');
-  }
+  loadTrips();
 }
 
 function switchTripsTab(el, tab) {
   document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
   el.classList.add('active');
-  ['trip-history','requests'].forEach(function(t) {
+  ['trip-history'].forEach(function(t) {
     var s = document.getElementById('tab-' + t);
     if (s) s.style.display = (t === tab) ? 'block' : 'none';
   });
 }
 
+async function loadTrips() {
+  try {
+    var data = await apiGet('api/trips.php');
+    renderBookedTripCard(data.upcoming);
+    renderTripHistory(data.history || []);
+  } catch (err) {
+    showToast('⚠️ Unable to load trips');
+  }
+}
+
+function renderBookedTripCard(trip) {
+  var section = document.getElementById('upcomingRideSection');
+  var card = document.getElementById('upcomingRideCard');
+  if (!section || !card) return;
+
+  if (!trip) {
+    section.style.display = 'none';
+    return;
+  }
+
+  card.innerHTML = '<div class="trip-detail-card" style="border-color:rgba(200,241,53,0.18);background:linear-gradient(135deg,rgba(20,30,8,0.96),rgba(13,18,10,0.96));">'
+    + '<div class="trip-header">'
+    + '<span class="trip-type-tag tag-carpool">Upcoming Ride</span>'
+    + '<span style="font-size:12px;color:var(--lime);font-weight:600;">' + escapeHtml(trip.status) + '</span>'
+    + '</div>'
+    + '<div style="font-size:12px;color:var(--gray-400);margin-bottom:10px;">Driver: <strong style="color:var(--white);">' + escapeHtml(trip.driver_name) + '</strong> · <span style="color:var(--lime);">' + escapeHtml(trip.plate_number) + '</span> · ' + escapeHtml(trip.vehicle_model) + '</div>'
+    + '<div class="trip-route-display">'
+    + '<div class="route-dot from"></div><div class="route-loc">' + escapeHtml(trip.from) + '</div>'
+    + '<div class="route-line"></div>'
+    + '<div class="route-loc">' + escapeHtml(trip.to) + '</div><div class="route-dot to"></div>'
+    + '</div>'
+    + '<div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--gray-400);margin-bottom:12px;">'
+    + '<span>Pickup: <strong style="color:var(--white);font-weight:600;">' + escapeHtml(trip.date + ' · ' + trip.time) + '</strong></span>'
+    + '<span>ETA: <strong style="color:var(--lime);font-weight:600;">' + escapeHtml(trip.eta) + '</strong></span>'
+    + '</div>'
+    + '<div class="trip-footer">'
+    + '<div class="trip-stat"><div class="trip-stat-val">' + escapeHtml(trip.fare) + '</div><div class="trip-stat-lbl">Fare</div></div>'
+    + '<div class="trip-stat"><div class="trip-stat-val" style="font-size:15px;">' + escapeHtml(trip.payment_method) + '</div><div class="trip-stat-lbl">Payment</div></div>'
+    + '<div class="trip-stat"><div class="trip-stat-val" style="color:var(--lime);">+' + trip.points + ' pts</div><div class="trip-stat-lbl">Rewards</div></div>'
+    + '</div>'
+    + '</div>';
+
+  section.style.display = 'block';
+}
+
+function renderTripHistory(history) {
+  var list = document.getElementById('tripHistoryList');
+  if (!list) return;
+
+  if (!history.length) {
+    list.innerHTML = '<div class="form-card">No trips found yet.</div>';
+    return;
+  }
+
+  list.innerHTML = history.map(function(trip) {
+    return '<div class="trip-detail-card" onclick="openTripDetail('
+      + '\'' + escapeHtml(trip.driver_name) + '\','
+      + '\'' + escapeHtml(trip.vehicle_model) + '\','
+      + '\'' + escapeHtml(trip.plate_number) + '\','
+      + '\'' + escapeHtml(trip.from) + '\','
+      + '\'' + escapeHtml(trip.to) + '\','
+      + '\'' + escapeHtml(trip.label) + '\','
+      + '\'' + escapeHtml(trip.duration) + '\','
+      + '\'' + escapeHtml(trip.fare) + '\','
+      + '\'' + escapeHtml(trip.payment_method) + '\','
+      + '\'' + ('+' + trip.points) + '\''
+      + ')">'
+      + '<div class="trip-header"><span class="trip-type-tag tag-carpool">🚗 Carpool</span><span style="font-size:12px;color:var(--gray-400);">' + escapeHtml(trip.label) + '</span></div>'
+      + '<div style="font-size:12px;color:var(--gray-400);margin-bottom:10px;">Driver: <strong style="color:var(--white);">' + escapeHtml(trip.driver_name) + '</strong> · <span style="color:var(--lime);">' + escapeHtml(trip.plate_number) + '</span></div>'
+      + '<div class="trip-route-display"><div class="route-dot from"></div><div class="route-loc">' + escapeHtml(trip.from) + '</div><div class="route-line"></div><div class="route-loc">' + escapeHtml(trip.to) + '</div><div class="route-dot to"></div></div>'
+      + '<div class="trip-footer"><div class="trip-stat"><div class="trip-stat-val">' + escapeHtml(trip.duration) + '</div><div class="trip-stat-lbl">Duration</div></div><div class="trip-stat"><div class="trip-stat-val" style="color:var(--lime);">+' + trip.points + ' pts</div><div class="trip-stat-lbl">Earned</div></div><div class="trip-stat"><div class="trip-stat-val">' + escapeHtml(trip.fare) + '</div><div class="trip-stat-lbl">Paid</div></div></div>'
+      + '</div>';
+  }).join('');
+}
+
 function postRequest() {
-  var pickup = document.getElementById('reqPickup').value.trim();
-  var drop = document.getElementById('reqDrop').value.trim();
-  var date = document.getElementById('reqDate').value;
-  var time = document.getElementById('reqTime').value;
-  if (!pickup || !drop) { showToast('⚠️ Please enter pickup and destination'); return; }
-  if (!date || !time) { showToast('⚠️ Please select date and time'); return; }
-  showToast('📢 Ride request posted! Drivers will be notified.');
-  // Clear form
-  document.getElementById('reqPickup').value = '';
-  document.getElementById('reqDrop').value = '';
-  document.getElementById('reqTime').value = '';
+  showToast('Ride requests are not connected yet.');
 }
 
 function cancelRequest() {
-  var r = document.getElementById('myRequest');
-  if (r) {
-    r.style.transition = 'opacity 0.3s, transform 0.3s';
-    r.style.opacity = '0';
-    r.style.transform = 'translateX(20px)';
-    setTimeout(function(){ r.remove(); showToast('✅ Ride request cancelled.'); }, 300);
-  }
+  showToast('Ride request cancelled.');
 }
 
 function openTripDetail(driver, car, plate, from, to, date, duration, fare, payment, pts) {

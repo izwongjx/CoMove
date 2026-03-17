@@ -1,8 +1,11 @@
 /* Comove – Friends JS */
 var currentDeleteId = '';
-var currentViewId = '';
+var currentViewFriend = null;
+var friendsCache = [];
 
-function initRiderFriends() {}
+function initRiderFriends() {
+  loadFriends();
+}
 
 function switchFriendTab(el, tab) {
   document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
@@ -14,22 +17,87 @@ function switchFriendTab(el, tab) {
 }
 
 function searchFriends() {
-  var q = document.getElementById('friendSearch').value.trim();
-  if (!q) { showToast('⚠️ Please enter a name or student ID'); return; }
-  showToast('🔍 Searching for "' + q + '"...');
+  var q = document.getElementById('friendSearch').value.trim().toLowerCase();
+  if (!q) {
+    renderFriends(friendsCache);
+    return;
+  }
+
+  var filtered = friendsCache.filter(function(friend) {
+    return friend.name.toLowerCase().indexOf(q) !== -1 || friend.student_id.toLowerCase().indexOf(q) !== -1;
+  });
+  renderFriends(filtered);
 }
 
-function viewFriend(name, role, id, intake, trips, pts, phone, bg, initials, cardId) {
-  currentViewId = cardId;
-  document.getElementById('fdAva').textContent = initials;
-  document.getElementById('fdAva').style.background = bg;
-  document.getElementById('fdName').textContent = name;
-  document.getElementById('fdRole').textContent = '🚗 ' + role;
-  document.getElementById('fdID').textContent = id;
-  document.getElementById('fdIntake').textContent = intake;
-  document.getElementById('fdPhone').textContent = phone;
-  document.getElementById('fdTrips').textContent = trips + ' trips';
-  document.getElementById('fdPts').textContent = pts + ' pts';
+async function loadFriends() {
+  try {
+    var data = await apiGet('api/friends.php');
+    friendsCache = data.friends || [];
+    renderFriends(friendsCache);
+    renderPending(data.pending || []);
+  } catch (err) {
+    showToast('⚠️ Unable to load friends');
+  }
+}
+
+function renderFriends(friends) {
+  var tab = document.getElementById('tab-my-friends');
+  document.getElementById('friendCount').textContent = friends.length;
+
+  if (!friends.length) {
+    tab.innerHTML = '<div class="form-card">No friends found yet.</div>';
+    return;
+  }
+
+  tab.innerHTML = friends.map(function(friend) {
+    return '<div class="friend-card" id="friend-' + friend.friend_id + '">'
+      + '<div class="friend-ava"><img src="' + escapeHtml(friend.photo_url) + '" alt="' + escapeHtml(friend.name) + ' profile photo"></div>'
+      + '<div class="friend-info">'
+      + '<div class="friend-name">' + escapeHtml(friend.name) + '</div>'
+      + '<div class="friend-meta">🚗 ' + escapeHtml(friend.role) + ' · ' + friend.trips_together + ' trips together</div>'
+      + '</div>'
+      + '<div style="display:flex;gap:8px;align-items:center;">'
+      + '<div class="friend-pts">' + friend.green_points + ' pts</div>'
+      + '<button class="btn-sm primary" onclick="viewFriendById(' + friend.friend_id + ')">View</button>'
+      + '<button class="btn-sm ghost" style="color:var(--danger);border-color:rgba(239,68,68,0.3);" onclick="confirmDelete(' + friend.friend_id + ')">✕</button>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+function renderPending(pending) {
+  var tab = document.getElementById('tab-requests');
+  document.getElementById('friendRequestCount').textContent = pending.length;
+
+  if (!pending.length) {
+    tab.innerHTML = '<div class="form-card">No pending requests right now.</div>';
+    return;
+  }
+
+  tab.innerHTML = pending.map(function(friend) {
+    return '<div class="friend-card">'
+      + '<div class="friend-ava"><img src="' + escapeHtml(friend.photo_url) + '" alt="' + escapeHtml(friend.name) + ' profile photo"></div>'
+      + '<div class="friend-info"><div class="friend-name">' + escapeHtml(friend.name) + '</div><div class="friend-meta">' + escapeHtml(friend.meta) + '</div></div>'
+      + '<div style="display:flex;gap:8px;">'
+      + '<button class="btn-sm primary" onclick="acceptFriend(\'' + escapeHtml(friend.name) + '\')">Accept</button>'
+      + '<button class="btn-sm ghost" onclick="showToast(\'Request declined\')">Decline</button>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+function viewFriendById(friendId) {
+  var friend = friendsCache.find(function(item) { return item.friend_id === friendId; });
+  if (!friend) return;
+  currentViewFriend = friend;
+  document.getElementById('fdAvaImg').src = friend.photo_url;
+  document.getElementById('fdName').textContent = friend.name;
+  document.getElementById('fdRole').textContent = '🚗 ' + friend.role;
+  document.getElementById('fdID').textContent = friend.student_id;
+  document.getElementById('fdIntake').textContent = friend.intake;
+  document.getElementById('fdPhone').textContent = friend.phone_number || '-';
+  document.getElementById('fdTrips').textContent = friend.trips_together + ' trips';
+  document.getElementById('fdPts').textContent = friend.green_points + ' pts';
   document.getElementById('friendModal').classList.add('open');
 }
 
@@ -39,12 +107,13 @@ function closeFriendModal() {
 
 function deleteFriendFromModal() {
   closeFriendModal();
-  if (currentViewId) removeCard(currentViewId);
+  if (currentViewFriend) confirmDelete(currentViewFriend.friend_id);
 }
 
-function confirmDelete(name, cardId) {
-  currentDeleteId = cardId;
-  document.getElementById('deleteModalSub').textContent = 'Remove ' + name + ' from your friends list?';
+function confirmDelete(friendId) {
+  currentDeleteId = friendId;
+  var friend = friendsCache.find(function(item) { return item.friend_id === friendId; });
+  document.getElementById('deleteModalSub').textContent = 'Remove ' + (friend ? friend.name : 'this friend') + ' from your friends list?';
   document.getElementById('deleteModal').classList.add('open');
 }
 
@@ -54,23 +123,19 @@ function closeDeleteModal() {
 
 function doDelete() {
   closeDeleteModal();
-  removeCard(currentDeleteId);
-}
-
-function removeCard(cardId) {
-  var card = document.getElementById(cardId);
+  var card = document.getElementById('friend-' + currentDeleteId);
+  friendsCache = friendsCache.filter(function(item) { return item.friend_id !== currentDeleteId; });
   if (card) {
     card.style.transition = 'opacity 0.3s, transform 0.3s';
     card.style.opacity = '0';
     card.style.transform = 'translateX(30px)';
     setTimeout(function() {
-      card.remove();
-      var remaining = document.querySelectorAll('#tab-my-friends .friend-card').length;
-      var countEl = document.getElementById('friendCount');
-      if (countEl) countEl.textContent = remaining;
+      renderFriends(friendsCache);
       showToast('✅ Friend removed');
     }, 300);
+    return;
   }
+  renderFriends(friendsCache);
 }
 
 function acceptFriend(name) {
@@ -82,6 +147,5 @@ document.addEventListener('DOMContentLoaded', function() {
     var m = document.getElementById(id);
     if (m) m.addEventListener('click', function(e){ if(e.target===m) m.classList.remove('open'); });
   });
+  initRiderFriends();
 });
-
-initRiderFriends();

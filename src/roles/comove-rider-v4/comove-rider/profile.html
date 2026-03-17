@@ -29,17 +29,18 @@
     <h1 class="page-title">Profile</h1>
 
     <div class="profile-hero">
-      <div class="profile-ava">
-        JL
-        <div class="ava-edit" onclick="showToast('📷 Photo upload coming soon!')">✏️</div>
+      <div class="profile-ava" id="profileAvatar">
+        <img id="profileAvatarImg" src="assets/avatars/default-profile.svg" alt="Your profile picture">
+        <button class="ava-edit" type="button" onclick="triggerProfileUpload()" aria-label="Upload profile photo">✏️</button>
       </div>
-      <div class="profile-name">Jun Lin</div>
-      <div style="color:var(--gray-400);font-size:13px;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5339263d3f3a3d133e323a3f7d3223267d3637267d3e2a">[email&#160;protected]</a></div>
-      <div class="profile-role">🚗 Rider</div>
+      <input type="file" id="profilePhotoInput" accept="image/*" style="display:none;">
+      <div class="profile-name" id="profileName">Jun Lin</div>
+      <div style="color:var(--gray-400);font-size:13px;" id="profileEmailHero">junlin.tan@apu.edu.my</div>
+      <div class="profile-role" id="profileRole">🚗 Rider</div>
       <div class="profile-stats">
-        <div class="profile-stat"><div class="profile-stat-val">1,240</div><div class="profile-stat-lbl">Green Pts</div></div>
-        <div class="profile-stat"><div class="profile-stat-val">38</div><div class="profile-stat-lbl">Trips</div></div>
-        <div class="profile-stat"><div class="profile-stat-val">Lv. 3</div><div class="profile-stat-lbl">Level</div></div>
+        <div class="profile-stat"><div class="profile-stat-val" id="profilePoints">0</div><div class="profile-stat-lbl">Green Pts</div></div>
+        <div class="profile-stat"><div class="profile-stat-val" id="profileTrips">0</div><div class="profile-stat-lbl">Trips</div></div>
+        <div class="profile-stat"><div class="profile-stat-val" id="profileLevel">Lv. 1</div><div class="profile-stat-lbl">Level</div></div>
       </div>
     </div>
 
@@ -49,17 +50,17 @@
       <div class="setting-row">
         <div class="setting-icon">👤</div>
         <div class="setting-label">Full Name</div>
-        <div class="setting-value">Jun Lin Tan</div>
+        <div class="setting-value" id="profileFullName">Jun Lin Tan</div>
       </div>
       <div class="setting-row">
         <div class="setting-icon">📱</div>
         <div class="setting-label">Phone Number</div>
-        <div class="setting-value">+60 12-345 6789</div>
+        <div class="setting-value" id="profilePhone">+60 12-345 6789</div>
       </div>
       <div class="setting-row">
         <div class="setting-icon">✉️</div>
         <div class="setting-label">Email</div>
-        <div class="setting-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9df7e8f3f1f4f3ddf0fcf4f1b3fcede8b3f8f9e8b3f0e4">[email&#160;protected]</a></div>
+        <div class="setting-value" id="profileEmail">junlin.tan@apu.edu.my</div>
       </div>
     </div>
 
@@ -131,4 +132,10 @@
     <a href="my-trips.html"><img src="icons/map.svg" width="24" height="24" class="icon-img" alt=""></a>
     <a href="friends.html"><img src="icons/users.svg" width="24" height="24" class="icon-img" alt=""></a>
     <a href="rewards.html"><img src="icons/gift.svg" width="24" height="24" class="icon-img" alt=""></a>
-    <a 
+    <a href="profile.html" class="active"><img src="icons/user.svg" width="24" height="24" class="icon-img" alt=""></a>
+  </nav>
+  <div class="toast" id="toast"></div>
+  <script src="script.js"></script>
+  <script src="profile.js"></script>
+</body>
+</html>

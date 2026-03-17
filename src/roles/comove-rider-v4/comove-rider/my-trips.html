@@ -44,84 +44,17 @@
     <!-- ── TABS ── -->
     <div class="tabs-row">
       <button class="tab-btn active" onclick="switchTripsTab(this,'trip-history')">Trip History</button>
-      <button class="tab-btn" id="requestsTabBtn" onclick="switchTripsTab(this,'requests')">Ride Requests <span class="tab-badge">1</span></button>
     </div>
 
     <!-- ── TRIP HISTORY TAB ── -->
     <div id="tab-trip-history">
+      <div id="upcomingRideSection" style="display:none;margin-bottom:20px;">
+        <div class="section-title" style="margin-top:4px;">Upcoming Ride <span style="font-size:12px;color:var(--gray-400);font-family:var(--font-body);font-weight:400;text-transform:none;letter-spacing:0;">estimated info only, not live tracking</span></div>
+        <div id="upcomingRideCard"></div>
+      </div>
+
       <div class="section-title" style="margin-top:4px;">All Trips <span style="font-size:12px;color:var(--gray-400);font-family:var(--font-body);font-weight:400;text-transform:none;letter-spacing:0;">tap to view details</span></div>
-
-      <div class="trip-detail-card" onclick="openTripDetail('Ahmad Hakim','Toyota Vios','WXY 1234','APU Campus','Mid Valley Megamall','Today · 8:42 AM','28 min','RM 4.50','Touch n Go','+45')">
-        <div class="trip-header">
-          <span class="trip-type-tag tag-carpool">🚗 Carpool</span>
-          <span style="font-size:12px;color:var(--gray-400);">Today · 8:42 AM</span>
-        </div>
-        <div style="font-size:12px;color:var(--gray-400);margin-bottom:10px;">Driver: <strong style="color:var(--white);">Ahmad Hakim</strong> · <span style="color:var(--lime);">WXY 1234</span></div>
-        <div class="trip-route-display">
-          <div class="route-dot from"></div><div class="route-loc">APU Campus</div>
-          <div class="route-line"></div>
-          <div class="route-loc">Mid Valley Megamall</div><div class="route-dot to"></div>
-        </div>
-        <div class="trip-footer">
-          <div class="trip-stat"><div class="trip-stat-val">28 min</div><div class="trip-stat-lbl">Duration</div></div>
-          <div class="trip-stat"><div class="trip-stat-val" style="color:var(--lime);">+45 pts</div><div class="trip-stat-lbl">Earned</div></div>
-          <div class="trip-stat"><div class="trip-stat-val">RM 4.50</div><div class="trip-stat-lbl">Paid</div></div>
-        </div>
-      </div>
-
-      <div class="trip-detail-card" onclick="openTripDetail('Siti Rahimah','Honda Jazz','VKL 5678','Bukit Jalil','The Curve','Yesterday · 11:00 AM','35 min','RM 5.00','Cash','+45')">
-        <div class="trip-header">
-          <span class="trip-type-tag tag-carpool">🚗 Carpool</span>
-          <span style="font-size:12px;color:var(--gray-400);">Yesterday · 11:00 AM</span>
-        </div>
-        <div style="font-size:12px;color:var(--gray-400);margin-bottom:10px;">Driver: <strong style="color:var(--white);">Siti Rahimah</strong> · <span style="color:var(--lime);">VKL 5678</span></div>
-        <div class="trip-route-display">
-          <div class="route-dot from"></div><div class="route-loc">Bukit Jalil</div>
-          <div class="route-line"></div>
-          <div class="route-loc">The Curve</div><div class="route-dot to"></div>
-        </div>
-        <div class="trip-footer">
-          <div class="trip-stat"><div class="trip-stat-val">35 min</div><div class="trip-stat-lbl">Duration</div></div>
-          <div class="trip-stat"><div class="trip-stat-val" style="color:var(--lime);">+45 pts</div><div class="trip-stat-lbl">Earned</div></div>
-          <div class="trip-stat"><div class="trip-stat-val">RM 5.00</div><div class="trip-stat-lbl">Paid</div></div>
-        </div>
-      </div>
-
-      <div class="trip-detail-card" onclick="openTripDetail('Kai Wei','Proton X50','BMT 9012','Sri Petaling','APU Campus','Mon, 9 Mar · 9:00 AM','22 min','RM 3.80','GrabPay','+45')">
-        <div class="trip-header">
-          <span class="trip-type-tag tag-carpool">🚗 Carpool</span>
-          <span style="font-size:12px;color:var(--gray-400);">Mon, 9 Mar · 9:00 AM</span>
-        </div>
-        <div style="font-size:12px;color:var(--gray-400);margin-bottom:10px;">Driver: <strong style="color:var(--white);">Kai Wei</strong> · <span style="color:var(--lime);">BMT 9012</span></div>
-        <div class="trip-route-display">
-          <div class="route-dot from"></div><div class="route-loc">Sri Petaling</div>
-          <div class="route-line"></div>
-          <div class="route-loc">APU Campus</div><div class="route-dot to"></div>
-        </div>
-        <div class="trip-footer">
-          <div class="trip-stat"><div class="trip-stat-val">22 min</div><div class="trip-stat-lbl">Duration</div></div>
-          <div class="trip-stat"><div class="trip-stat-val" style="color:var(--lime);">+45 pts</div><div class="trip-stat-lbl">Earned</div></div>
-          <div class="trip-stat"><div class="trip-stat-val">RM 3.80</div><div class="trip-stat-lbl">Paid</div></div>
-        </div>
-      </div>
-
-      <div class="trip-detail-card" onclick="openTripDetail('Ahmad Hakim','Toyota Vios','WXY 1234','APU Campus','Pavilion Bukit Jalil','Sat, 7 Mar · 2:00 PM','18 min','RM 4.50','Touch n Go','+45')">
-        <div class="trip-header">
-          <span class="trip-type-tag tag-carpool">🚗 Carpool</span>
-          <span style="font-size:12px;color:var(--gray-400);">Sat, 7 Mar · 2:00 PM</span>
-        </div>
-        <div style="font-size:12px;color:var(--gray-400);margin-bottom:10px;">Driver: <strong style="color:var(--white);">Ahmad Hakim</strong> · <span style="color:var(--lime);">WXY 1234</span></div>
-        <div class="trip-route-display">
-          <div class="route-dot from"></div><div class="route-loc">APU Campus</div>
-          <div class="route-line"></div>
-          <div class="route-loc">Pavilion Bukit Jalil</div><div class="route-dot to"></div>
-        </div>
-        <div class="trip-footer">
-          <div class="trip-stat"><div class="trip-stat-val">18 min</div><div class="trip-stat-lbl">Duration</div></div>
-          <div class="trip-stat"><div class="trip-stat-val" style="color:var(--lime);">+45 pts</div><div class="trip-stat-lbl">Earned</div></div>
-          <div class="trip-stat"><div class="trip-stat-val">RM 4.50</div><div class="trip-stat-lbl">Paid</div></div>
-        </div>
-      </div>
+      <div id="tripHistoryList"></div>
     </div>
 
     <!-- ── RIDE REQUESTS TAB ── -->
