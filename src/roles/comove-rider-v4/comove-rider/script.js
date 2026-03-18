@@ -47,3 +47,28 @@ function escapeHtml(value) {
     }[ch];
   });
 }
+
+// Rider-only access guard. Shared here so admin status changes immediately
+// apply across rider pages without relying on temporary client-side data.
+(function enforceRiderAccess() {
+  async function verifyRiderSession() {
+    try {
+      const response = await fetch('../../../auth/session-status.php?role=rider', {
+        credentials: 'same-origin',
+        cache: 'no-store'
+      });
+      const payload = await response.json();
+
+      if (!response.ok || !payload.ok || !payload.authenticated || !payload.active) {
+        const reason = payload && payload.message ? payload.message : 'Please log in as an active rider.';
+        window.alert(reason);
+        window.location.href = '../../../auth/login/login.html';
+      }
+    } catch (error) {
+      window.alert('Unable to verify rider access right now. Please log in again.');
+      window.location.href = '../../../auth/login/login.html';
+    }
+  }
+
+  verifyRiderSession();
+})();

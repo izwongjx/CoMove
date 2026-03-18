@@ -1,112 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0;url=profile.php">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EcoRide - Admin Profile</title>
-  <link rel="stylesheet" href="../../public-assets/style.css">
-  <link rel="stylesheet" href="admin.css">
+  <title>Redirecting...</title>
 </head>
-
 <body>
-  <nav class="top-nav admin-nav-bg">
-    <div class="nav-inner">
-      <a href="../../../index.html" class="logo">ECO<span>RIDE</span> <span
-          >Admin</span></a>
-      <div class="nav-items">
-        <a href="dashboard.html" class="nav-item"><img src="../../public-assets/icons/layout-dashboard.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true">
-          Overview</a>
-        <a href="users.html" class="nav-item"><img src="../../public-assets/icons/users.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Users</a>
-        <a href="rewards.html" class="nav-item"><img src="../../public-assets/icons/gift.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Rewards</a>
-        <a href="logs.html" class="nav-item"><img src="../../public-assets/icons/activity.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Logs</a>        <a href="settings.html" class="nav-item"><img src="../../public-assets/icons/settings.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Settings</a>
-        <a href="profile.html" class="nav-item active"><img src="../../public-assets/icons/user.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Profile</a>
-      </div>
-      <a href="../../../index.html" class="nav-logout"><img src="../../public-assets/icons/log-out.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"></a>
-    </div>
-  </nav>
-
-  <main class="dashboard-main">
-      <h1 class="page-title">Admin Profile</h1>
-  <p class="page-subtitle">Your account information and credentials</p>
-
-  <div class="card" style="max-width:640px">
-    <div class="card-body">
-      <!-- Avatar + name -->
-      <div style="display:flex;align-items:center;gap:18px;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border)">
-        <div class="profile-avatar-lg">AD</div>
-        <div>
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;text-transform:uppercase;letter-spacing:-0.02em">Admin User</div>
-          <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gray-500);margin-top:2px">#ADMIN-001 · System Administrator</div>
-          <div style="margin-top:8px"><span class="badge b-lime">Super Admin</span></div>
-        </div>
-      </div>
-
-      <!-- Info grid -->
-      <div class="info-grid" style="margin-bottom:20px">
-        <div class="info-block"><div class="info-block-label">Email</div><div class="info-block-val">admin@comove.app</div></div>
-        <div class="info-block"><div class="info-block-label">Phone</div><div class="info-block-val">+60 3-8888 0000</div></div>
-        <div class="info-block"><div class="info-block-label">Role</div><div class="info-block-val">Super Admin</div></div>
-        <div class="info-block"><div class="info-block-label">Last Login</div><div class="info-block-val" style="font-family:'DM Mono',monospace;font-size:12px">2026-03-10 09:14</div></div>
-        <div class="info-block"><div class="info-block-label">Account Created</div><div class="info-block-val" style="font-family:'DM Mono',monospace;font-size:12px">2025-01-01</div></div>
-        <div class="info-block"><div class="info-block-label">Status</div><div class="info-block-val"><span class="badge b-lime"><span class="bdot"></span> Active</span></div></div>
-      </div>
-
-      <!-- Actions -->
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn btn-lime" onclick="openModal('profileEditModal')">Edit Profile</button>
-        <button class="btn" onclick="toast('Password reset email sent', 'info')">Change Password</button>
-      </div>
-    </div>
-  </div>
-  </main>
-
-  <div class="modal-overlay" id="profileEditModal">
-  <div class="modal">
-    <div class="modal-header"><span class="modal-title">Edit Profile</span><div class="modal-close" onclick="closeModal('profileEditModal')">✕</div></div>
-    <div class="modal-body">
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Name</label><input class="form-input" value="Admin User"></div>
-        <div class="form-group"><label class="form-label">Phone</label><input class="form-input" value="+60 3-8888 0000"></div>
-      </div>
-      <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" value="admin@comove.app"></div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn" onclick="closeModal('profileEditModal')">Cancel</button>
-      <button class="btn btn-lime" onclick="toast('Profile updated', 'success'); closeModal('profileEditModal')">Save Changes</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══ CONFIRM MODAL ══ -->
-<div class="modal-overlay" id="confirmModal">
-  <div class="modal modal-sm">
-    <div class="modal-header"><span class="modal-title">Confirm</span><div class="modal-close" onclick="closeModal('confirmModal')">✕</div></div>
-    <div class="modal-body"><p id="confirmText" style="font-size:14px;color:var(--gray-300);line-height:1.6"></p></div>
-    <div class="modal-footer"><button class="btn" onclick="closeModal('confirmModal')">Cancel</button><button class="btn btn-danger" id="confirmBtn">Confirm</button></div>
-  </div>
-</div>
-<div class="toast-container" id="toastContainer"></div>
-
-  <nav class="bottom-nav admin-bottom-nav">
-    <a href="dashboard.html"><img src="../../public-assets/icons/layout-dashboard.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
-    <a href="users.html"><img src="../../public-assets/icons/users.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
-    <a href="rewards.html"><img src="../../public-assets/icons/gift.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
-    <a href="logs.html"><img src="../../public-assets/icons/activity.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
-    <a href="settings.html"><img src="../../public-assets/icons/settings.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
-    <a href="profile.html" class="active"><img src="../../public-assets/icons/user.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
-  </nav>
-
-  <script src="admin.js"></script>
-  <script src="../../public-assets/script.js"></script>
-  <script src="profile.js"></script>
+  <p>Redirecting to <a href="profile.php">profile.php</a>...</p>
 </body>
-
 </html>
-
-
-
-
-
-
-

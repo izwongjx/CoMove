@@ -41,7 +41,37 @@ function riderCurrentId(): int
         return (int) $_SESSION['user_id'];
     }
 
-    return 1;
+    riderError('Please log in as a rider first.', 401);
+}
+
+function riderRequireActiveSession(): int
+{
+    global $dbConn;
+
+    $riderId = riderCurrentId();
+    $stmt = mysqli_prepare($dbConn, 'SELECT rider_status FROM RIDER WHERE rider_id = ? LIMIT 1');
+    if (!$stmt) {
+        riderError('Unable to verify rider access.', 500);
+    }
+
+    mysqli_stmt_bind_param($stmt, 'i', $riderId);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $row = $result ? mysqli_fetch_assoc($result) : null;
+
+    if ($result) {
+        mysqli_free_result($result);
+    }
+    mysqli_stmt_close($stmt);
+
+    $status = strtolower(trim((string) ($row['rider_status'] ?? '')));
+    if ($status !== 'active') {
+        session_unset();
+        session_destroy();
+        riderError('Your rider account is not active.', 403);
+    }
+
+    return $riderId;
 }
 
 function riderEsc(string $value): string
@@ -97,3 +127,5 @@ function riderInitials(string $name): string
     }
     return substr($initials, 0, 2);
 }
+
+riderRequireActiveSession();

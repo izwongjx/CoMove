@@ -10,6 +10,30 @@ if ($role !== 'driver' || $driverId === '') {
     die("window.location.href='../../auth/login/login.html';</script>");
 }
 
+$driverStatusStmt = mysqli_prepare($dbConn, 'SELECT driver_status FROM DRIVER WHERE driver_id = ? LIMIT 1');
+if (!$driverStatusStmt) {
+    echo "<script>alert('Unable to verify your account right now.');";
+    die("window.location.href='../../auth/login/login.html';</script>");
+}
+
+$driverIdInt = (int) $driverId;
+mysqli_stmt_bind_param($driverStatusStmt, 'i', $driverIdInt);
+mysqli_stmt_execute($driverStatusStmt);
+$driverStatusResult = mysqli_stmt_get_result($driverStatusStmt);
+$driverStatusRow = $driverStatusResult ? mysqli_fetch_assoc($driverStatusResult) : null;
+if ($driverStatusResult) {
+    mysqli_free_result($driverStatusResult);
+}
+mysqli_stmt_close($driverStatusStmt);
+
+$driverStatus = strtolower(trim((string) ($driverStatusRow['driver_status'] ?? '')));
+if ($driverStatus !== 'active') {
+    session_unset();
+    session_destroy();
+    echo "<script>alert('This driver account is currently banned. Please contact an admin.');";
+    die("window.location.href='../../auth/login/login.html';</script>");
+}
+
 $driverIdSafe = mysqli_real_escape_string($dbConn, $driverId);
 
 $viewTripId = isset($_GET['view']) ? trim((string) $_GET['view']) : '';
