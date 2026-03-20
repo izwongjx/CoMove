@@ -108,7 +108,7 @@
   color: white;
   padding: 20px 24px;
   border-radius: 16px;
-  width: min(420px, 100%);
+  width: min(1100px,100%);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -169,20 +169,9 @@
 }
 
 .stock {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
-}
-
-.stock.ok {
-  color: #16a34a;
-}
-
-.stock.low {
-  color: #ca8a04;
-}
-
-.stock.out {
-  color: #dc2626;
+  color: #111827;
 }
 
 .rewardTable {
@@ -241,23 +230,27 @@
   color: white;
 }
 
-.historyTable {
+.historyTableWrap {
   border: 1px solid #e5e7eb;
   border-radius: 16px;
   overflow-x: auto;
   background: white;
 }
 
-.historyRow {
-  display: grid;
-  grid-template-columns: 1.6fr 0.6fr 0.9fr;
-  gap: 12px;
-  padding: 14px 18px;
-  align-items: center;
+.historyTable {
+  width: 100%;
+  border-collapse: collapse;
   min-width: 520px;
 }
 
-.historyRow.header {
+.historyTable th,
+.historyTable td {
+  padding: 14px 18px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.historyTable thead th {
   background: #f9fafb;
   font-size: 12px;
   text-transform: uppercase;
@@ -266,7 +259,7 @@
   color: #6b7280;
 }
 
-.historyRow + .historyRow {
+.historyTable tbody tr + tr {
   border-top: 1px solid #e5e7eb;
 }
 
@@ -293,5 +286,72 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+}
+
+@media (max-width: 767px) {
+  .rewardTableWrap,
+  .historyTableWrap {
+    overflow-x: visible;
+    border: 0;
+    background: transparent;
+  }
+
+  .rewardTable,
+  .rewardTable thead,
+  .rewardTable tbody,
+  .rewardTable tr,
+  .rewardTable th,
+  .rewardTable td,
+  .historyTable,
+  .historyTable thead,
+  .historyTable tbody,
+  .historyTable tr,
+  .historyTable th,
+  .historyTable td {
+    display: block;
+    width: 100%;
+  }
+
+  .rewardTable thead,
+  .historyTable thead {
+    display: none;
+  }
+
+  .rewardTable tr,
+  .historyTable tr {
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    margin-bottom: 12px;
+    background: white;
+    padding: 6px 0;
+  }
+
+  .rewardTable td,
+  .historyTable td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 12px;
+  }
+
+  .rewardTable td:last-child,
+  .historyTable td:last-child {
+    border-bottom: 0;
+  }
+
+  .rewardTable td::before,
+  .historyTable td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: #6b7280;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .rewardTable td:last-child .btn {
+    width: 100%;
   }
 }

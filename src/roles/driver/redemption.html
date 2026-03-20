@@ -57,44 +57,44 @@
           </thead>
           <tbody>
             <tr>
-              <td>
+              <td data-label="Reward">
                 <div class="rewardName">RM20 Petrol Voucher</div>
                 <div class="rewardDesc">Valid at partner stations nationwide.</div>
               </td>
-              <td><span class="rewardBadge">Fuel</span></td>
-              <td class="mono">1,200</td>
-              <td><span class="stock ok">In Stock</span></td>
-              <td><button class="btn">Redeem</button></td>
+              <td data-label="Category"><span class="rewardBadge">Fuel</span></td>
+              <td data-label="Points" class="mono">1,200</td>
+              <td data-label="Stock" class="stock mono">18</td>
+              <td data-label="Action"><button class="btn">Redeem</button></td>
             </tr>
             <tr>
-              <td>
+              <td data-label="Reward">
                 <div class="rewardName">RM15 Cafe Voucher</div>
                 <div class="rewardDesc">Grab a quick bite between trips.</div>
               </td>
-              <td><span class="rewardBadge">Food</span></td>
-              <td class="mono">900</td>
-              <td><span class="stock ok">In Stock</span></td>
-              <td><button class="btn">Redeem</button></td>
+              <td data-label="Category"><span class="rewardBadge">Food</span></td>
+              <td data-label="Points" class="mono">900</td>
+              <td data-label="Stock" class="stock mono">42</td>
+              <td data-label="Action"><button class="btn">Redeem</button></td>
             </tr>
             <tr>
-              <td>
+              <td data-label="Reward">
                 <div class="rewardName">EcoRide Windbreaker</div>
                 <div class="rewardDesc">Limited edition driver gear.</div>
               </td>
-              <td><span class="rewardBadge">Merch</span></td>
-              <td class="mono">2,500</td>
-              <td><span class="stock low">Low Stock</span></td>
-              <td><button class="btn">Redeem</button></td>
+              <td data-label="Category"><span class="rewardBadge">Merch</span></td>
+              <td data-label="Points" class="mono">2,500</td>
+              <td data-label="Stock" class="stock mono">6</td>
+              <td data-label="Action"><button class="btn">Redeem</button></td>
             </tr>
             <tr>
-              <td>
+              <td data-label="Reward">
                 <div class="rewardName">RM50 Petrol Voucher</div>
                 <div class="rewardDesc">High value voucher for long trips.</div>
               </td>
-              <td><span class="rewardBadge">Fuel</span></td>
-              <td class="mono">3,800</td>
-              <td><span class="stock out">Out of Stock</span></td>
-              <td><button class="btn" disabled>Unavailable</button></td>
+              <td data-label="Category"><span class="rewardBadge">Fuel</span></td>
+              <td data-label="Points" class="mono">3,800</td>
+              <td data-label="Stock" class="stock mono">0</td>
+              <td data-label="Action"><button class="btn" disabled>Unavailable</button></td>
             </tr>
           </tbody>
         </table>
@@ -105,27 +105,33 @@
       <div class="sectionHeader">
         <h2>Recent Redemptions</h2>
       </div>
-      <div class="historyTable">
-        <div class="historyRow header">
-          <span>Reward</span>
-          <span>Points</span>
-          <span>Date</span>
-        </div>
-        <div class="historyRow">
-          <span>RM15 Cafe Voucher</span>
-          <span class="mono">900</span>
-          <span class="mono">Mar 18, 2026</span>
-        </div>
-        <div class="historyRow">
-          <span>EcoRide Windbreaker</span>
-          <span class="mono">2,500</span>
-          <span class="mono">Mar 10, 2026</span>
-        </div>
-        <div class="historyRow">
-          <span>RM20 Petrol Voucher</span>
-          <span class="mono">1,200</span>
-          <span class="mono">Feb 28, 2026</span>
-        </div>
+      <div class="historyTableWrap">
+        <table class="historyTable">
+          <thead>
+            <tr>
+              <th>Reward</th>
+              <th>Points</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-label="Reward">RM15 Cafe Voucher</td>
+              <td data-label="Points" class="mono">900</td>
+              <td data-label="Date" class="mono">Mar 18, 2026</td>
+            </tr>
+            <tr>
+              <td data-label="Reward">EcoRide Windbreaker</td>
+              <td data-label="Points" class="mono">2,500</td>
+              <td data-label="Date" class="mono">Mar 10, 2026</td>
+            </tr>
+            <tr>
+              <td data-label="Reward">RM20 Petrol Voucher</td>
+              <td data-label="Points" class="mono">1,200</td>
+              <td data-label="Date" class="mono">Feb 28, 2026</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
   </main>
