@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoRide - Driver Redemption</title>
+  <link rel="stylesheet" href="../../public-assets/style.css">
+  <link rel="stylesheet" href="redemption.css">
+</head>
+
+<body>
+  <nav class="mainNav">
+    <div class="insideNav">
+      <a href="dashboard.html" class="logo">ECO<span>RIDE</span></a>
+      <div class="navContents">
+        <a href="dashboard.html" class="navContent"><img src="../../public-assets/icons/home.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true">
+          Dashboard</a>
+        <a href="my-rides.php" class="navContent"><img src="../../public-assets/icons/car.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> My Rides</a>
+        <a href="earnings.html" class="navContent"><img src="../../public-assets/icons/dollar-sign.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Earnings</a>
+        <a href="redemption.html" class="currentNav"><img src="../../public-assets/icons/gift.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Redemption</a>
+        <a href="vehicle.html" class="navContent"><img src="../../public-assets/icons/file-text.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Vehicle</a>
+        <a href="profile.html" class="navContent"><img src="../../public-assets/icons/user.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Profile</a>
+      </div>
+      <div class="nav-actions"><a href="../../../index.php" class="nav-logout" title="Log out"><img src="../../public-assets/icons/log-out.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"></a></div>
+    </div>
+  </nav>
+
+  <main class="dashboardMain">
+    <div class="pageHeader">
+      <div class="pageTitleBlock">
+        <h1 class="pageTitle">Reward <span>Redemption</span></h1>
+        <p class="pageSubtitle">Use your points to claim driver perks and partner vouchers.</p>
+      </div>
+      <div class="pointsCard">
+        <p class="pointsLabel">AVAILABLE POINTS</p>
+        <p class="pointsValue">3,480</p>
+        <p class="pointsHint">Earn more points by completing eco-friendly rides.</p>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="sectionHeader">
+        <h2>Reward Catalogue</h2>
+      </div>
+
+      <div class="rewardTableWrap">
+        <table class="rewardTable">
+          <thead>
+            <tr>
+              <th>Reward</th>
+              <th>Category</th>
+              <th>Points</th>
+              <th>Stock</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="rewardName">RM20 Petrol Voucher</div>
+                <div class="rewardDesc">Valid at partner stations nationwide.</div>
+              </td>
+              <td><span class="rewardBadge">Fuel</span></td>
+              <td class="mono">1,200</td>
+              <td><span class="stock ok">In Stock</span></td>
+              <td><button class="btn">Redeem</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="rewardName">RM15 Cafe Voucher</div>
+                <div class="rewardDesc">Grab a quick bite between trips.</div>
+              </td>
+              <td><span class="rewardBadge">Food</span></td>
+              <td class="mono">900</td>
+              <td><span class="stock ok">In Stock</span></td>
+              <td><button class="btn">Redeem</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="rewardName">EcoRide Windbreaker</div>
+                <div class="rewardDesc">Limited edition driver gear.</div>
+              </td>
+              <td><span class="rewardBadge">Merch</span></td>
+              <td class="mono">2,500</td>
+              <td><span class="stock low">Low Stock</span></td>
+              <td><button class="btn">Redeem</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="rewardName">RM50 Petrol Voucher</div>
+                <div class="rewardDesc">High value voucher for long trips.</div>
+              </td>
+              <td><span class="rewardBadge">Fuel</span></td>
+              <td class="mono">3,800</td>
+              <td><span class="stock out">Out of Stock</span></td>
+              <td><button class="btn" disabled>Unavailable</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="sectionHeader">
+        <h2>Recent Redemptions</h2>
+      </div>
+      <div class="historyTable">
+        <div class="historyRow header">
+          <span>Reward</span>
+          <span>Points</span>
+          <span>Date</span>
+        </div>
+        <div class="historyRow">
+          <span>RM15 Cafe Voucher</span>
+          <span class="mono">900</span>
+          <span class="mono">Mar 18, 2026</span>
+        </div>
+        <div class="historyRow">
+          <span>EcoRide Windbreaker</span>
+          <span class="mono">2,500</span>
+          <span class="mono">Mar 10, 2026</span>
+        </div>
+        <div class="historyRow">
+          <span>RM20 Petrol Voucher</span>
+          <span class="mono">1,200</span>
+          <span class="mono">Feb 28, 2026</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav driver-bottom-nav">
+    <a href="dashboard.html"><img src="../../public-assets/icons/home.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
+    <a href="my-rides.php"><img src="../../public-assets/icons/car.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
+    <a href="earnings.html"><img src="../../public-assets/icons/dollar-sign.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
+    <a href="redemption.html" class="active"><img src="../../public-assets/icons/gift.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
+    <a href="vehicle.html"><img src="../../public-assets/icons/file-text.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
+    <a href="profile.html"><img src="../../public-assets/icons/user.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
+  </nav>
+
+  <script src="../../public-assets/script.js"></script>
+  <script src="access-guard.js"></script>
+</body>
+
+</html>
