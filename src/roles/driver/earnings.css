@@ -293,6 +293,10 @@
     text-decoration:underline;
 }
 
+.driver-bottom-nav {
+  background: var(--forest);
+  border-color: rgba(255, 255, 255, 0.1);
+}
 
 /* responsive */
 @media (max-width: 767px){

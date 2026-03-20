@@ -75,12 +75,12 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  align-items: center;
-  text-align: center;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
-  padding: 0 16px;
+  align-items: flex-start;
+  text-align: left;
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
 }
 
 .pageTitle {
@@ -113,7 +113,7 @@
   flex-direction: column;
   justify-content: center;
   box-shadow: 0 10px 25px rgba(15, 42, 29, 0.2);
-  text-align: center;
+  text-align: left;
 }
 
 .pointsLabel {
@@ -268,11 +268,9 @@
   font-size: 13px;
 }
 
-@media (max-width: 900px) {
-  .pageHeader {
-    text-align: left;
-    align-items: flex-start;
-  }
+.driver-bottom-nav {
+  background: var(--forest);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 @media (max-width: 767px) {
@@ -286,6 +284,17 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+}
+
+@media (max-width: 767px) {
+  .pageTitle {
+    font-size: 32px;
+  }
+
+  .pointsCard {
+    width: 100%;
+    padding: 18px 20px;
   }
 }
 
@@ -311,6 +320,11 @@
   .historyTable td {
     display: block;
     width: 100%;
+  }
+
+  .rewardTable,
+  .historyTable {
+    min-width: 0;
   }
 
   .rewardTable thead,
