@@ -21,13 +21,13 @@
 
     <section class="panel">
       <nav class="top-nav" aria-label="Page Navigation">
-        <a href="register.html" class="back-link">
+        <a href="register.php" class="back-link">
           <img src="../../public-assets/icons/arrow-left.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> BACK TO ROLE SELECTION
         </a>
       </nav>
 
       <div class="form-wrapper">
-        <form id="riderRegisterForm" class="account-form" method="post" action="register.php" enctype="multipart/form-data">
+        <form id="riderRegisterForm" class="account-form" method="post" action="register-handler.php" enctype="multipart/form-data">
           <input type="hidden" name="role" value="rider">
           <input type="hidden" name="otp_code" id="otpCode" value="">
           <header class="section-header">
@@ -131,7 +131,7 @@
         </section>
 
         <footer class="section-footer">
-          <p>Already have an account? <a href="../login/login-as-rider.html"><strong>Log in</strong></a></p>
+          <p>Already have an account? <a href="../login/login-as-rider.php"><strong>Log in</strong></a></p>
         </footer>
       </div>
     </section>
@@ -142,3 +142,5 @@
 </body>
 
 </html>
+
+

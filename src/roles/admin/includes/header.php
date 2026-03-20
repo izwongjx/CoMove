@@ -36,6 +36,7 @@ function adminBottomNavClass(string $page, string $activePage): string
         <a href="settings.php" class="<?php echo adminNavClass('settings', $activePage); ?>"><img src="../../public-assets/icons/settings.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Settings</a>
         <a href="profile.php" class="<?php echo adminNavClass('profile', $activePage); ?>"><img src="../../public-assets/icons/user.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Profile</a>
       </div>
-      <a href="../../../index.html" class="nav-logout"><img src="../../public-assets/icons/log-out.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"></a>
+      <a href="../../../index.php" class="nav-logout"><img src="../../public-assets/icons/log-out.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"></a>
     </div>
   </nav>
+

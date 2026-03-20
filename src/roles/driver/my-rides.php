@@ -7,13 +7,13 @@ $driverId = isset($_SESSION['user_id']) ? trim((string) $_SESSION['user_id']) : 
 
 if ($role !== 'driver' || $driverId === '') {
     echo "<script>alert('Please login as driver first.');";
-    die("window.location.href='../../auth/login/login.html';</script>");
+    die("window.location.href='../../auth/login/login.php';</script>");
 }
 
 $driverStatusStmt = mysqli_prepare($dbConn, 'SELECT driver_status FROM DRIVER WHERE driver_id = ? LIMIT 1');
 if (!$driverStatusStmt) {
     echo "<script>alert('Unable to verify your account right now.');";
-    die("window.location.href='../../auth/login/login.html';</script>");
+    die("window.location.href='../../auth/login/login.php';</script>");
 }
 
 $driverIdInt = (int) $driverId;
@@ -31,7 +31,7 @@ if ($driverStatus !== 'active') {
     session_unset();
     session_destroy();
     echo "<script>alert('This driver account is currently banned. Please contact an admin.');";
-    die("window.location.href='../../auth/login/login.html';</script>");
+    die("window.location.href='../../auth/login/login.php';</script>");
 }
 
 $driverIdSafe = mysqli_real_escape_string($dbConn, $driverId);
@@ -128,7 +128,7 @@ if ($deleteTripId !== '') {
         <a href="vehicle.html" class="navContent"><img src="../../public-assets/icons/file-text.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Vehicle</a>
         <a href="profile.html" class="navContent"><img src="../../public-assets/icons/user.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Profile</a>
       </div>
-      <div class="nav-actions"><a href="../../../index.html" class="nav-logout" title="Log out"><img src="../../public-assets/icons/log-out.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"></a></div>
+      <div class="nav-actions"><a href="../../../index.php" class="nav-logout" title="Log out"><img src="../../public-assets/icons/log-out.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"></a></div>
     </div>
   </nav>
 
@@ -360,6 +360,7 @@ if ($deleteTripId !== '') {
 </body>
 
 </html>
+
 
 
 

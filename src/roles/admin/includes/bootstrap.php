@@ -16,7 +16,7 @@ function adminRequireAccess(): void
 {
     // Admin-only guard for the dynamic admin module.
     if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-        header('Location: ../../../index.html');
+        header('Location: ../../../index.php');
         exit;
     }
 }
@@ -88,3 +88,4 @@ function adminRoleBadgeClass(string $role): string
 {
     return strtolower($role) === 'driver' ? 'b-purple' : 'b-blue';
 }
+

@@ -20,7 +20,7 @@
 
     <section class="panel">
       <nav class="top-nav" aria-label="Page Navigation">
-        <a href="login.html" class="back-link">
+        <a href="login.php" class="back-link">
           <img src="../../public-assets/icons/arrow-left.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> BACK TO ROLE SELECTION
         </a>
       </nav>
@@ -31,7 +31,7 @@
           <p>Sign in to continue your eco-friendly journey</p>
         </header>
 
-        <form class="login-form" method="post" action="login.php">
+        <form class="login-form" method="post" action="login-handler.php">
           <input type="hidden" name="role" value="rider">
           <table class="form-table" role="presentation">
             <tr>
@@ -61,7 +61,7 @@
           </button>
 
           <footer class="section-footer">
-            <p>Don't have an account? <a href="../register/register-as-rider.html"><strong>Sign up now</strong></a></p>
+            <p>Don't have an account? <a href="../register/register-as-rider.php"><strong>Sign up now</strong></a></p>
           </footer>
         </form>
       </div>
@@ -72,3 +72,5 @@
 </body>
 
 </html>
+
+

@@ -1,3 +1,22 @@
+<?php
+include __DIR__ . '/src/config/conn.php';
+
+function homeCount(mysqli $dbConn, string $sql): int
+{
+    $result = mysqli_query($dbConn, $sql);
+    if (!$result) {
+        return 0;
+    }
+    $row = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
+    return (int) ($row['total'] ?? 0);
+}
+
+$totalRiders = homeCount($dbConn, 'SELECT COUNT(*) AS total FROM RIDER');
+$totalDrivers = homeCount($dbConn, 'SELECT COUNT(*) AS total FROM DRIVER');
+$totalTrips = homeCount($dbConn, 'SELECT COUNT(*) AS total FROM TRIP');
+$completedTrips = homeCount($dbConn, "SELECT COUNT(*) AS total FROM TRIP WHERE trip_status = 'completed'");
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,8 +35,8 @@
         <nav class="hero-nav">
             <div class="hero-logo"><img src="" alt=""></div>
             <div class="hero-nav-links">
-                <a href="src/auth/login/login.html" class="nav-link-login">Log In</a>
-                <a href="src/auth/register/register.html" class="nav-link-signup">Sign Up</a>
+                <a href="src/auth/login/login.php" class="nav-link-login">Log In</a>
+                <a href="src/auth/register/register.php" class="nav-link-signup">Sign Up</a>
             </div>
         </nav>
 
@@ -29,21 +48,21 @@
 
             <div class="hero-stats">
                 <div class="hero-stat">
-                    <div class="hero-stat-value" >0</div>
+                    <div class="hero-stat-value"><?php echo number_format($totalRiders); ?></div>
                     <div class="hero-stat-label">Riders</div>
                 </div>
                 <div class="hero-stat">
-                    <div class="hero-stat-value" >0</div>
+                    <div class="hero-stat-value"><?php echo number_format($totalDrivers); ?></div>
                     <div class="hero-stat-label">Drivers</div>
                 </div>
                 <div class="hero-stat">
-                    <div class="hero-stat-value" >0</div>
+                    <div class="hero-stat-value"><?php echo number_format($totalTrips); ?></div>
                     <div class="hero-stat-label">Total Rides</div>
                 </div>
             </div>
 
             <div class="hero-cta">
-                <a href="src/auth/register/register.html" class="hero-cta-btn">
+                <a href="src/auth/register/register.php" class="hero-cta-btn">
                     START RIDING NOW
                     <img src="src/public-assets/icons/arrow-right.svg" width="24" height="24" class="icon-img" alt="this is an arrow icon">
                 </a>
@@ -93,15 +112,15 @@
             </div>
             <div class="stats-grid">
                 <div class="stat-item">
-                    <div class="stat-number">0</div>
+                    <div class="stat-number"><?php echo number_format($completedTrips); ?></div>
                     <div class="stat-label">Trips Completed</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number">0</div>
+                    <div class="stat-number"><?php echo number_format($totalRiders); ?></div>
                     <div class="stat-label">Total Riders</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number">0</div>
+                    <div class="stat-number"><?php echo number_format($totalTrips); ?></div>
                     <div class="stat-label">Rides Shared</div>
                 </div>
             </div>
@@ -117,7 +136,7 @@
             <p>Every empty seat is a missed opportunity to save our planet. Take action today and turn your commute into
                 a movement.</p>
             <div class="cta-buttons">
-                <a href="src/auth/register/register.html" class="cta-main-btn">JOIN THE MOVEMENT <img src="src/public-assets/icons/arrow-right.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
+                <a href="src/auth/register/register.php" class="cta-main-btn">JOIN THE MOVEMENT <img src="src/public-assets/icons/arrow-right.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
             </div>
         </div>
     </section>
@@ -134,6 +153,7 @@
 </body>
 
 </html>
+
 
 
 
