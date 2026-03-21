@@ -20,7 +20,8 @@ function adminBottomNavClass(string $page, string $activePage): string
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><?php echo adminEscape($pageTitle); ?> - EcoRide Admin</title>
+  <link rel="icon" type="image/svg+xml" href="../../public-assets/icons/site-icon.svg">
+  <title><?php echo adminEscape($pageTitle); ?> - CoMove Admin</title>
   <link rel="stylesheet" href="../../public-assets/style.css">
   <link rel="stylesheet" href="admin.css">
 </head>

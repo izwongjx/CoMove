@@ -124,13 +124,13 @@ INSERT INTO REWARD (reward_id, reward_pic, reward_name, points_required, categor
 (1, NULL, 'Coffee Voucher', 20, 'Food', 50),
 (2, NULL, 'Parking Coupon', 15, 'Transport', 30),
 (3, NULL, 'RM20 Fuel Voucher', 30, 'Fuel', 25),
-(4, NULL, 'EcoRide Windbreaker', 80, 'Merch', 10),
+(4, NULL, 'CoMove Windbreaker', 80, 'Merch', 10),
 (5, NULL, 'Car Wash Coupon', 25, 'Transport', 40),
 (6, NULL, 'Cafe Snack Voucher', 18, 'Food', 60),
 (7, NULL, 'RM10 Grab Voucher', 25, 'Food', 45),
 (8, NULL, 'Phone Holder', 12, 'Merch', 35),
 (9, NULL, 'RM30 Fuel Voucher', 45, 'Fuel', 20),
-(10, NULL, 'EcoRide Tote Bag', 22, 'Merch', 50);
+(10, NULL, 'CoMove Tote Bag', 22, 'Merch', 50);
 
 -- Redemptions
 INSERT INTO RIDER_REDEMPTION (redemption_id, rider_id, reward_id, redeemed_at) VALUES

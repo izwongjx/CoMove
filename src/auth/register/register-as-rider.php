@@ -5,14 +5,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EcoRide - Rider Sign Up</title>
+  <title>CoMove - Rider Sign Up</title>
   <link rel="icon" type="image/svg+xml" href="../../public-assets/icons/site-icon.svg">
   <link rel="stylesheet" href="register.css">
 </head>
 
 <body>
   <main class="page">
-    <aside class="hero" aria-label="EcoRide Message">
+    <aside class="hero" aria-label="CoMove Message">
       <div class="hero-content">
         <h2>JOIN THE<br><span>REVOLUTION</span></h2>
         <p>Every shared ride is a vote for a cleaner planet. Be part of the solution, not the pollution.</p>

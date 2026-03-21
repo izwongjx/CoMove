@@ -1,5 +1,5 @@
 <?php
-include __DIR__ . '/src/config/conn.php';
+include "src/config/conn.php";
 
 function homeCount(mysqli $dbConn, string $sql): int
 {
@@ -23,7 +23,7 @@ $completedTrips = homeCount($dbConn, "SELECT COUNT(*) AS total FROM TRIP WHERE t
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EcoRide - Every Ride Counts Towards Change</title>
+    <title>CoMove - Every Ride Counts Towards Change</title>
     <link rel="icon" type="image/svg+xml" href="src/public-assets/icons/site-icon.svg">
     <link rel="stylesheet" href="src/public-assets/style.css">
     <link rel="stylesheet" href="src/auth/index.css">
@@ -33,7 +33,7 @@ $completedTrips = homeCount($dbConn, "SELECT COUNT(*) AS total FROM TRIP WHERE t
     <!-- HERO SECTION -->
     <section class="hero" id="hero">
         <nav class="hero-nav">
-            <div class="hero-logo"><img src="" alt=""></div>
+            <div class="hero-logo">CO<span>MOVE</span></div>
             <div class="hero-nav-links">
                 <a href="src/auth/login/login.php" class="nav-link-login">Log In</a>
                 <a href="src/auth/register/register.php" class="nav-link-signup">Sign Up</a>
@@ -144,8 +144,8 @@ $completedTrips = homeCount($dbConn, "SELECT COUNT(*) AS total FROM TRIP WHERE t
     <!-- FOOTER -->
     <footer class="site-footer">
         <div class="footer-inner">
-            <div class="footer-logo">ECO<span>RIDE</span></div>
-            <div class="footer-copy">&copy; 2026 EcoRide Initiative. All rights reserved.</div>
+            <div class="footer-logo">CO<span>MOVE</span></div>
+            <div class="footer-copy">&copy; 2026 CoMove Initiative. All rights reserved.</div>
         </div>
     </footer>
 

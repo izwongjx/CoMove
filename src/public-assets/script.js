@@ -1,5 +1,5 @@
 /* ============================================
-   ECORIDE - Shared JavaScript Utilities
+   COMOVE - Shared JavaScript Utilities
    Pure Vanilla JS - No Frameworks
    ============================================ */
 
