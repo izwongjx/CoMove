@@ -27,7 +27,7 @@ function adminBottomNavClass(string $page, string $activePage): string
 <body>
   <nav class="top-nav admin-nav-bg">
     <div class="nav-inner">
-      <a href="dashboard.php" class="logo">ECO<span>RIDE</span> <span>Admin</span></a>
+      <a href="dashboard.php" class="logo">CO<span>MOVE</span> <span>Admin</span></a>
       <div class="nav-items">
         <a href="dashboard.php" class="<?php echo adminNavClass('dashboard', $activePage); ?>"><img src="../../public-assets/icons/layout-dashboard.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Overview</a>
         <a href="users.php" class="<?php echo adminNavClass('users', $activePage); ?>"><img src="../../public-assets/icons/users.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Users</a>

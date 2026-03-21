@@ -9,6 +9,8 @@
 }
 
 
+
+
 .logo{
   color: white;
   font-size: 25px; 
@@ -20,6 +22,7 @@
 .logo span{
   color: #c4f547;
 }
+
 .insideNav{
   display: flex;
   align-items: center;
