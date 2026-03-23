@@ -11,13 +11,12 @@ $tripLogs = adminFetchAll(
         COALESCE(GROUP_CONCAT(DISTINCT r.name ORDER BY r.name SEPARATOR ', '), 'No riders') AS rider_names,
         t.total_amount,
         t.estimated_duration,
-        t.gained_point,
-        t.trip_status
+        t.gained_point
      FROM TRIP t
      INNER JOIN DRIVER d ON d.driver_id = t.driver_id
      LEFT JOIN RIDE_REQUEST rq ON rq.trip_id = t.trip_id AND rq.request_status = 'approved'
      LEFT JOIN RIDER r ON r.rider_id = rq.rider_id
-     GROUP BY t.trip_id, d.name, t.total_amount, t.estimated_duration, t.gained_point, t.trip_status
+     GROUP BY t.trip_id, d.name, t.total_amount, t.estimated_duration, t.gained_point
      ORDER BY t.departure_time DESC"
 );
 
@@ -28,8 +27,7 @@ $requestLogs = adminFetchAll(
         r.name AS rider_name,
         t.start_location,
         t.end_location,
-        rq.requested_at,
-        rq.request_status
+        rq.requested_at
      FROM RIDE_REQUEST rq
      INNER JOIN RIDER r ON r.rider_id = rq.rider_id
      INNER JOIN TRIP t ON t.trip_id = rq.trip_id
@@ -72,7 +70,7 @@ $circulationPoints = $issuedPoints - $redeemedPoints;
         <div class="card-header"><span class="card-title">Trip Log</span><div class="card-actions"><input class="search-input" placeholder="Search..." oninput="filterTable('tripsTable',this.value)"></div></div>
         <div class="table-wrap">
           <table id="tripsTable">
-            <thead><tr><th>Trip ID</th><th>Driver</th><th>Rider</th><th>Fare</th><th>Duration</th><th>Green Pts</th><th>Status</th></tr></thead>
+            <thead><tr><th>Trip ID</th><th>Driver</th><th>Rider</th><th>Fare</th><th>Duration</th><th>Green Pts</th></tr></thead>
             <tbody>
               <?php foreach ($tripLogs as $trip) { ?>
                 <tr>
@@ -82,7 +80,6 @@ $circulationPoints = $issuedPoints - $redeemedPoints;
                   <td style="font-family:'DM Mono',monospace">RM <?php echo adminEscape(number_format((float) $trip['total_amount'], 2)); ?></td>
                   <td><?php echo adminEscape((int) $trip['estimated_duration']); ?> min</td>
                   <td><span class="badge b-lime">+<?php echo adminEscape((int) $trip['gained_point']); ?></span></td>
-                  <td><span class="badge <?php echo adminEscape(adminStatusBadgeClass($trip['trip_status'])); ?>"><span class="bdot"></span> <?php echo adminEscape(ucfirst($trip['trip_status'])); ?></span></td>
                 </tr>
               <?php } ?>
             </tbody>
@@ -96,7 +93,7 @@ $circulationPoints = $issuedPoints - $redeemedPoints;
         <div class="card-header"><span class="card-title">Ride Requests</span><div class="card-actions"><input class="search-input" placeholder="Search..." oninput="filterTable('requestsTable',this.value)"></div></div>
         <div class="table-wrap">
           <table id="requestsTable">
-            <thead><tr><th>Request ID</th><th>Rider</th><th>Pickup</th><th>Dropoff</th><th>Time</th><th>Status</th></tr></thead>
+            <thead><tr><th>Request ID</th><th>Rider</th><th>Pickup</th><th>Dropoff</th><th>Time</th></tr></thead>
             <tbody>
               <?php foreach ($requestLogs as $request) { ?>
                 <tr>
@@ -105,7 +102,6 @@ $circulationPoints = $issuedPoints - $redeemedPoints;
                   <td><?php echo adminEscape($request['start_location']); ?></td>
                   <td><?php echo adminEscape($request['end_location']); ?></td>
                   <td style="font-family:'DM Mono',monospace;font-size:11px"><?php echo adminEscape($request['requested_at']); ?></td>
-                  <td><span class="badge <?php echo adminEscape(adminStatusBadgeClass($request['request_status'])); ?>"><span class="bdot"></span> <?php echo adminEscape(ucfirst($request['request_status'])); ?></span></td>
                 </tr>
               <?php } ?>
             </tbody>

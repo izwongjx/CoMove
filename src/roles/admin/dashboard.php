@@ -17,7 +17,6 @@ $rewardTotal = (int) (adminFetchOne($dbConn, 'SELECT COALESCE(SUM(stock), 0) AS 
 
 $recentDrivers = adminFetchAll($dbConn, 'SELECT name, created_at FROM DRIVER ORDER BY created_at DESC LIMIT 3');
 $recentTrips = adminFetchAll($dbConn, 'SELECT trip_id, total_amount, departure_time, trip_status FROM TRIP ORDER BY departure_time DESC LIMIT 3');
-$recentRatings = adminFetchAll($dbConn, 'SELECT r.rating_score, r.created_at, rd.name FROM RATING r INNER JOIN RIDER rd ON rd.rider_id = r.rider_id ORDER BY r.created_at DESC LIMIT 2');
 
 $tripDays = ['Mon' => 0, 'Tue' => 0, 'Wed' => 0, 'Thu' => 0, 'Fri' => 0, 'Sat' => 0, 'Sun' => 0];
 $tripStats = adminFetchAll(
@@ -84,9 +83,6 @@ if ($maxTrips < 1) {
         <?php } ?>
         <?php foreach ($recentTrips as $trip) { ?>
           <div class="activity-item"><div class="activity-dot" style="background:var(--info)"></div><div><div class="activity-text">Trip <strong>#TRP-<?php echo adminEscape($trip['trip_id']); ?></strong> recorded with status <strong><?php echo adminEscape($trip['trip_status']); ?></strong> and fare RM <?php echo adminEscape(number_format((float) $trip['total_amount'], 2)); ?></div><div class="activity-time"><?php echo adminEscape($trip['departure_time']); ?></div></div></div>
-        <?php } ?>
-        <?php foreach ($recentRatings as $rating) { ?>
-          <div class="activity-item"><div class="activity-dot" style="background:var(--warn)"></div><div><div class="activity-text">Rider <strong><?php echo adminEscape($rating['name']); ?></strong> left a <strong><?php echo adminEscape($rating['rating_score']); ?>-star</strong> rating</div><div class="activity-time"><?php echo adminEscape($rating['created_at']); ?></div></div></div>
         <?php } ?>
       </div>
     </div>

@@ -60,6 +60,23 @@ function adminFetchOne(mysqli $dbConn, string $sql, string $types = '', array $p
     return isset($rows[0]) ? $rows[0] : null;
 }
 
+function adminExecuteStatement(mysqli $dbConn, string $sql, string $types = '', array $params = []): bool
+{
+    $stmt = mysqli_prepare($dbConn, $sql);
+    if (!$stmt) {
+        return false;
+    }
+
+    if ($types !== '' && !empty($params)) {
+        mysqli_stmt_bind_param($stmt, $types, ...$params);
+    }
+
+    $success = mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+
+    return $success;
+}
+
 function adminAvatarSrc(?string $blob): string
 {
     if ($blob !== null && $blob !== '') {
@@ -87,4 +104,21 @@ function adminStatusBadgeClass(string $status): string
 function adminRoleBadgeClass(string $role): string
 {
     return strtolower($role) === 'driver' ? 'b-purple' : 'b-blue';
+}
+
+function adminLoadAssetBlob(string $relativePath): ?string
+{
+    $assetPath = realpath(__DIR__ . '/' . $relativePath);
+    if ($assetPath === false || !is_file($assetPath)) {
+        return null;
+    }
+
+    $content = file_get_contents($assetPath);
+    return $content === false ? null : $content;
+}
+
+function adminCurrentAdminId(): ?int
+{
+    $userId = $_SESSION['user_id'] ?? null;
+    return is_numeric($userId) ? (int) $userId : null;
 }
