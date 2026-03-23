@@ -106,19 +106,3 @@ function adminRoleBadgeClass(string $role): string
     return strtolower($role) === 'driver' ? 'b-purple' : 'b-blue';
 }
 
-function adminLoadAssetBlob(string $relativePath): ?string
-{
-    $assetPath = realpath(__DIR__ . '/' . $relativePath);
-    if ($assetPath === false || !is_file($assetPath)) {
-        return null;
-    }
-
-    $content = file_get_contents($assetPath);
-    return $content === false ? null : $content;
-}
-
-function adminCurrentAdminId(): ?int
-{
-    $userId = $_SESSION['user_id'] ?? null;
-    return is_numeric($userId) ? (int) $userId : null;
-}
