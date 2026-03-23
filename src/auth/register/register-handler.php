@@ -1,62 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+session_start();
+include "../../config/conn.php";
+date_default_timezone_set('asia/kuala_lumpur');
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CoMove - Sign Up</title>
-  <link rel="icon" type="image/svg+xml" href="../../public-assets/icons/site-icon.svg">
-  <link rel="stylesheet" href="register.css">
-</head>
+function failBack(string $message): void
+{
+    echo "<script>alert('" . $message . "');";
+    die("window.history.go(-1);</script>");
+}
 
-<body>
-  <main class="page">
-    <aside class="hero" aria-label="CoMove Message">
-      <div class="hero-content">
-        <h2>JOIN THE<br><span>REVOLUTION</span></h2>
-        <p>Every shared ride is a vote for a cleaner planet. Be part of the solution, not the pollution.</p>
-      </div>
-    </aside>
+function readUpload(mysqli $dbConn, string $fieldName, bool $required): ?string
+{
+    if (!isset($_FILES[$fieldName]) || !is_array($_FILES[$fieldName])) {
+        if ($required) {
+            failBack('Missing required file upload.');
+        }
+        return null;
+    }
 
-    <section class="panel">
-      <nav class="top-nav" aria-label="Page Navigation">
-        <a href="../../../index.php" class="back-link">
-          <img src="../../public-assets/icons/arrow-left.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> BACK TO HOME
-        </a>
-      </nav>
+    $file = $_FILES[$fieldName];
 
-      <div class="form-wrapper">
-        <header class="section-header">
-          <h1>Join CoMove</h1>
-          <p>Choose how you want to contribute to a greener future</p>
-        </header>
+    if (!isset($file['error']) || (int) $file['error'] === UPLOAD_ERR_NO_FILE) {
+        if ($required) {
+            failBack('Missing required file upload.');
+        }
+        return null;
+    }
 
-        <div class="role-list">
-          <button class="role-card" onclick="window.location.href='register-as-rider.php'">
-            <div class="role-icon"><img src="../../public-assets/icons/user.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></div>
-            <span class="role-text">Register as a Rider</span>
-            <img src="../../public-assets/icons/arrow-right.svg" width="20" height="20" class="role-arrow icon-img" alt="" aria-hidden="true">
-          </button>
-          <button class="role-card" onclick="window.location.href='register-as-driver.php'">
-            <div class="role-icon"><img src="../../public-assets/icons/car.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></div>
-            <span class="role-text">Register as a Driver</span>
-            <img src="../../public-assets/icons/arrow-right.svg" width="20" height="20" class="role-arrow icon-img" alt="" aria-hidden="true">
-          </button>
-        </div>
-        <footer class="section-footer">
-          <p>Already have an account? <a href="../login/login.php"><strong>Log in</strong></a></p>
-        </footer>
-      </div>
-    </section>
-  </main>
+    if ((int) $file['error'] !== UPLOAD_ERR_OK) {
+        failBack('File upload failed. Please try again.');
+    }
 
-  <script src="../../public-assets/script.js"></script>
-</body>
+    if (!isset($file['tmp_name']) || !is_uploaded_file((string) $file['tmp_name'])) {
+        failBack('Invalid uploaded file.');
+    }
 
-</html>
+    $rawContent = file_get_contents((string) $file['tmp_name']);
+    if ($rawContent === false) {
+        failBack('Unable to read uploaded file.');
+    }
 
-<<<<<<< HEAD
-=======
     return mysqli_real_escape_string($dbConn, $rawContent);
 }
 
@@ -174,7 +157,7 @@ if ($role === 'rider') {
     $_SESSION['user_id'] = $riderId;
 
     echo "<script>alert('Registration completed successfully!');";
-    echo "window.location.href='../../roles/comove-rider-v4/comove-rider/dashboard.php';</script>";
+    echo "window.location.href='../../roles/comove-rider-v4/comove-rider/dashboard.html';</script>";
     exit;
 }
 
@@ -239,4 +222,3 @@ $_SESSION['user_id'] = $driverId;
 echo "<script>alert('Registration completed successfully!');";
 echo "window.location.href='../../roles/driver/dashboard.html';</script>";
 ?>
->>>>>>> bf9252d (edit)

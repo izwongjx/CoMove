@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require_once __DIR__ . '/../config/conn.php';
+include "../config/conn.php";
 
 header('Content-Type: application/json; charset=utf-8');
 

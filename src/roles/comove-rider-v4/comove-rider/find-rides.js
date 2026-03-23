@@ -46,7 +46,7 @@ function renderRideResults(rides) {
 
   list.innerHTML = rides.map(function(ride) {
     return '<div class="ride-offer-card">'
-      + '<div class="driver-ava">' + escapeHtml(ride.driver_initials) + '</div>'
+      + '<div class="driver-ava"><img src="' + escapeHtml(ride.driver_photo_url) + '" alt="' + escapeHtml(ride.driver_name) + ' profile photo"></div>'
       + '<div class="ride-details">'
       + '<div class="ride-driver-name">' + escapeHtml(ride.driver_name) + '</div>'
       + '<div class="ride-info">' + escapeHtml(ride.time) + ' · ' + escapeHtml(ride.vehicle_model) + ' · ' + escapeHtml(ride.plate_number) + ' · ' + ride.seats_left + ' seats left <span class="ride-pts-tag">+' + ride.points + ' pts</span></div>'
@@ -74,23 +74,27 @@ function goToBooking(tripId) {
     plate: ride.plate_number,
     price: ride.price,
     unit_price: ride.unit_price,
+    points: ride.points,
+    seats_left: ride.seats_left,
     time: ride.time,
     from: ride.from,
     to: ride.to,
     date: ride.date,
+    photo_url: ride.driver_photo_url,
     seats_requested: getSelectedSeatCount()
   };
 
-  document.getElementById('bkAva').textContent = ride.driver_initials;
+  document.getElementById('bkAva').innerHTML = '<img src="' + escapeHtml(ride.driver_photo_url) + '" alt="' + escapeHtml(ride.driver_name) + ' profile photo">';
   document.getElementById('bkName').textContent = ride.driver_name;
   document.getElementById('bkCar').textContent = ride.vehicle_model + ' · ' + ride.plate_number;
-  document.getElementById('bkRating').textContent = 'Driver available';
+  document.getElementById('bkRating').textContent = ride.seats_left + ' seat' + (ride.seats_left > 1 ? 's' : '') + ' left';
   document.getElementById('bkPrice').textContent = 'RM ' + (Number(ride.unit_price || 0) * currentBooking.seats_requested).toFixed(2);
   document.getElementById('bkPriceNote').textContent = currentBooking.seats_requested + ' seat' + (currentBooking.seats_requested > 1 ? 's' : '') + ' total';
   document.getElementById('bkFrom').textContent = ride.from;
   document.getElementById('bkTo').textContent = ride.to;
   document.getElementById('bkDate').textContent = ride.date;
   document.getElementById('bkTime').textContent = ride.time;
+  document.getElementById('bkPointsReward').textContent = '+' + (ride.points || 0) + ' green points';
   document.getElementById('searchForm').style.display = 'none';
   document.getElementById('availableRides').style.display = 'none';
   document.getElementById('bookingPanel').style.display = 'block';
@@ -121,22 +125,24 @@ async function confirmBooking() {
   try {
     var result = await apiPost('api/book-ride.php', formData);
     document.getElementById('bookingPanel').style.display = 'none';
-    showReceiptPanel(currentBooking, labels[selectedPayment], result.reference, result.amount_paid);
+    showReceiptPanel(currentBooking, labels[selectedPayment], result.request_id, result.amount_paid, result.status);
   } catch (err) {
     showToast('⚠️ ' + err.message);
   }
 }
 
-function showReceiptPanel(ride, payMethod, ref, amountPaid) {
+function showReceiptPanel(ride, payMethod, requestId, amountPaid, status) {
   var now = new Date();
   var timeStr = now.toLocaleTimeString('en-MY', { hour:'2-digit', minute:'2-digit' });
   var dateStr = now.toLocaleDateString('en-MY', { day:'numeric', month:'long', year:'numeric' });
+  var bookingStatus = status === 'pending' ? 'Pending Driver Approval' : 'Booked';
+  var pointsMessage = status === 'pending' ? 'Points will be added after driver approval' : 'Booking saved to database';
   var panel = document.getElementById('receiptPanel');
   panel.innerHTML = '<div class="section-title">Payment Receipt</div>'
     + '<div class="receipt-card">'
     + '<div class="receipt-stamp">✅</div>'
-    + '<div class="receipt-title">Payment Confirmed</div>'
-    + '<div class="receipt-sub">Your ride has been booked successfully</div>'
+    + '<div class="receipt-title">Booking Submitted</div>'
+    + '<div class="receipt-sub">Your ride request is now waiting for driver approval</div>'
     + '<div class="receipt-row"><span class="lbl">Driver</span><span class="val">' + escapeHtml(ride.name) + '</span></div>'
     + '<div class="receipt-row"><span class="lbl">Vehicle</span><span class="val">' + escapeHtml(ride.car) + '</span></div>'
     + '<div class="receipt-row"><span class="lbl">Plate No.</span><span class="val">' + escapeHtml(ride.plate) + '</span></div>'
@@ -147,12 +153,13 @@ function showReceiptPanel(ride, payMethod, ref, amountPaid) {
     + '<div class="receipt-row"><span class="lbl">Seats</span><span class="val">' + (ride.seats_requested || 1) + '</span></div>'
     + '<div class="receipt-row"><span class="lbl">Amount Paid</span><span class="val" style="color:var(--lime);">' + escapeHtml(amountPaid || ride.price) + '</span></div>'
     + '<div class="receipt-row"><span class="lbl">Payment Method</span><span class="val">' + escapeHtml(payMethod) + '</span></div>'
+    + '<div class="receipt-row"><span class="lbl">Status</span><span class="val">' + escapeHtml(bookingStatus) + '</span></div>'
     + '<div class="receipt-row"><span class="lbl">Confirmed At</span><span class="val">' + dateStr + ' ' + timeStr + '</span></div>'
-    + '<div class="receipt-row" style="border-bottom:none;"><span class="lbl">Green Points</span><span class="val" style="color:var(--lime);">Booking saved to database</span></div>'
-    + '<div class="receipt-ref">Reference No: <span>' + escapeHtml(ref) + '</span></div>'
+    + '<div class="receipt-row" style="border-bottom:none;"><span class="lbl">Green Points</span><span class="val" style="color:var(--lime);">' + escapeHtml(pointsMessage) + '</span></div>'
+    + '<div class="receipt-ref">Ride Request ID: <span>' + escapeHtml(String(requestId || '')) + '</span></div>'
     + '</div>'
     + '<div style="display:flex;gap:12px;">'
-    + '<a href="my-trips.html" class="btn-outline" style="flex:1;text-align:center;display:flex;align-items:center;justify-content:center;">View My Trips</a>'
+    + '<a href="my-trips.php" class="btn-outline" style="flex:1;text-align:center;display:flex;align-items:center;justify-content:center;">View My Trips</a>'
     + '<button class="btn-primary" style="flex:1;justify-content:center;" onclick="bookAnother()">Book Another</button>'
     + '</div>';
   panel.style.display = 'block';

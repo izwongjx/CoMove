@@ -25,11 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         mysqli_query($dbConn, "UPDATE RIDE_REQUEST SET request_status = 'rejected' WHERE request_id = {$requestId} LIMIT 1");
 
-        $points = isset($requestRow['gained_point']) ? (int) $requestRow['gained_point'] : 0;
-        if ($points > 0) {
-            mysqli_query($dbConn, "INSERT INTO RIDER_GREEN_POINT_LOG (rider_id, points_change, source) VALUES ({$riderId}, -" . $points . ", 'Trip cancellation {$requestId}')");
-        }
-
         riderSuccess([
             'message' => 'Trip booking cancelled.',
         ]);
@@ -75,6 +70,7 @@ $historyRaw = riderFetchAll("
         t.start_location,
         t.end_location,
         DATE_FORMAT(t.departure_time, '%b %e · %l:%i %p') AS trip_label,
+        d.driver_id,
         d.name AS driver_name,
         d.vehicle_model,
         d.plate_number
@@ -112,6 +108,7 @@ foreach ($historyRaw as $trip) {
     $history[] = [
         'request_id' => (int) $trip['request_id'],
         'driver_name' => $trip['driver_name'],
+        'driver_photo_url' => riderPhotoUrl('driver', (int) $trip['driver_id']),
         'vehicle_model' => $trip['vehicle_model'],
         'plate_number' => $trip['plate_number'],
         'from' => $trip['start_location'],

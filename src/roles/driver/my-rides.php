@@ -7,13 +7,13 @@ $driverId = isset($_SESSION['user_id']) ? trim((string) $_SESSION['user_id']) : 
 
 if ($role !== 'driver' || $driverId === '') {
     echo "<script>alert('Please login as driver first.');";
-    die("window.location.href='../../auth/login/login.html';</script>");
+    die("window.location.href='../../auth/login/login.php';</script>");
 }
 
 $driverStatusStmt = mysqli_prepare($dbConn, 'SELECT driver_status FROM DRIVER WHERE driver_id = ? LIMIT 1');
 if (!$driverStatusStmt) {
     echo "<script>alert('Unable to verify your account right now.');";
-    die("window.location.href='../../auth/login/login.html';</script>");
+    die("window.location.href='../../auth/login/login.php';</script>");
 }
 
 $driverIdInt = (int) $driverId;
@@ -31,7 +31,7 @@ if ($driverStatus !== 'active') {
     session_unset();
     session_destroy();
     echo "<script>alert('This driver account is currently banned. Please contact an admin.');";
-    die("window.location.href='../../auth/login/login.html';</script>");
+    die("window.location.href='../../auth/login/login.php';</script>");
 }
 
 $driverIdSafe = mysqli_real_escape_string($dbConn, $driverId);
@@ -111,7 +111,8 @@ if ($deleteTripId !== '') {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EcoRide - Driver My Rides</title>
+  <title>CoMove - Driver My Rides</title>
+  <link rel="icon" type="image/svg+xml" href="../../public-assets/icons/site-icon.svg">
   <link rel="stylesheet" href="../../public-assets/style.css">
   <link rel="stylesheet" href="my-rides.css">
 </head>
@@ -119,16 +120,17 @@ if ($deleteTripId !== '') {
 <body>
   <nav class="mainNav">
     <div class="insideNav">
-      <a href="dashboard.html" class="logo">ECO<span>RIDE</span></a>
+      <a href="dashboard.html" class="logo">CO<span>MOVE</span></a>
       <div class="navContents">
         <a href="dashboard.html" class="navContent"><img src="../../public-assets/icons/home.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true">
           Dashboard</a>
         <a href="my-rides.php" class="currentNav"><img src="../../public-assets/icons/car.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> My Rides</a>
         <a href="earnings.html" class="navContent"><img src="../../public-assets/icons/dollar-sign.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Earnings</a>
+        <a href="redemption.php" class="navContent"><img src="../../public-assets/icons/gift.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Redemption</a>
         <a href="vehicle.html" class="navContent"><img src="../../public-assets/icons/file-text.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Vehicle</a>
         <a href="profile.html" class="navContent"><img src="../../public-assets/icons/user.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Profile</a>
       </div>
-      <div class="nav-actions"><a href="../../../index.html" class="nav-logout" title="Log out"><img src="../../public-assets/icons/log-out.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"></a></div>
+      <div class="nav-actions"><a href="../../../index.php" class="nav-logout" title="Log out"><img src="../../public-assets/icons/log-out.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"></a></div>
     </div>
   </nav>
 
@@ -352,6 +354,7 @@ if ($deleteTripId !== '') {
     <a href="dashboard.html"><img src="../../public-assets/icons/home.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
     <a href="my-rides.php" class="active"><img src="../../public-assets/icons/car.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
     <a href="earnings.html"><img src="../../public-assets/icons/dollar-sign.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
+    <a href="redemption.php"><img src="../../public-assets/icons/gift.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
     <a href="vehicle.html"><img src="../../public-assets/icons/file-text.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
     <a href="profile.html"><img src="../../public-assets/icons/user.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
   </nav>
@@ -360,6 +363,8 @@ if ($deleteTripId !== '') {
 </body>
 
 </html>
+
+
 
 
 

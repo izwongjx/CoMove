@@ -125,7 +125,6 @@ function viewFriendById(friendId) {
   document.getElementById('fdName').textContent = friend.name;
   document.getElementById('fdRole').textContent = '🚗 ' + friend.role;
   document.getElementById('fdID').textContent = friend.student_id;
-  document.getElementById('fdIntake').textContent = friend.intake;
   document.getElementById('fdPhone').textContent = friend.phone_number || '-';
   document.getElementById('fdTrips').textContent = friend.trips_together + ' trips';
   document.getElementById('fdPts').textContent = friend.green_points + ' pts';

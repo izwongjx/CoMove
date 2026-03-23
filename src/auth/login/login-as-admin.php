@@ -4,14 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EcoRide - Admin Login</title>
+  <title>CoMove - Admin Login</title>
   <link rel="icon" type="image/svg+xml" href="../../public-assets/icons/site-icon.svg">
   <link rel="stylesheet" href="login.css">
 </head>
 
 <body>
   <main class="page">
-    <aside class="hero" aria-label="EcoRide Message">
+    <aside class="hero" aria-label="CoMove Message">
       <div class="hero-content">
         <h2>STEER THE<br><span>MISSION</span></h2>
         <p>Support every shared ride by keeping the platform safe, fair, and sustainable.</p>
@@ -22,18 +22,18 @@
       <div class="form-wrapper">
         <header class="section-header">
           <h1>Admin Access</h1>
-          <p>Sign in with your admin ID to manage the EcoRide platform.</p>
+          <p>Sign in with your admin email to manage the CoMove platform.</p>
         </header>
 
         <form class="login-form" method="post" action="login-admin.php">
           <table class="form-table" role="presentation">
             <tr>
               <th class="field-label-cell" scope="row">
-                <label class="form-label" for="adminId">Admin ID</label>
+                <label class="form-label" for="adminEmail">Admin Email</label>
               </th>
               <td class="field-input-cell">
                 <div class="input-wrap">
-                  <input type="text" class="input-control" id="adminId" name="admin_id" placeholder="A00001" required>
+                  <input type="email" class="input-control" id="adminEmail" name="email" placeholder="admin@comove.local" required>
                 </div>
               </td>
             </tr>

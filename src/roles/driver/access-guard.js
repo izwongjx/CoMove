@@ -12,13 +12,14 @@
       if (!response.ok || !payload.ok || !payload.authenticated || !payload.active) {
         const reason = payload && payload.message ? payload.message : 'Please log in as an active driver.';
         window.alert(reason);
-        window.location.href = '../../auth/login/login.html';
+        window.location.href = '../../auth/login/login.php';
       }
     } catch (error) {
       window.alert('Unable to verify driver access right now. Please log in again.');
-      window.location.href = '../../auth/login/login.html';
+      window.location.href = '../../auth/login/login.php';
     }
   }
 
   enforceDriverAccess();
 })();
+

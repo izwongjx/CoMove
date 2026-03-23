@@ -4,14 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EcoRide - Log In</title>
+  <title>CoMove - Log In</title>
   <link rel="icon" type="image/svg+xml" href="../../public-assets/icons/site-icon.svg">
   <link rel="stylesheet" href="login.css">
 </head>
 
 <body>
   <main class="page">
-    <aside class="hero" aria-label="EcoRide Message">
+    <aside class="hero" aria-label="CoMove Message">
       <div class="hero-content">
         <h2>JOIN THE<br><span>REVOLUTION</span></h2>
         <p>Every shared ride is a vote for a cleaner planet. Be part of the solution, not the pollution.</p>
@@ -20,7 +20,7 @@
 
     <section class="panel">
       <nav class="top-nav" aria-label="Page Navigation">
-        <a href="login.html" class="back-link">
+        <a href="login.php" class="back-link">
           <img src="../../public-assets/icons/arrow-left.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> BACK TO ROLE SELECTION
         </a>
       </nav>
@@ -31,8 +31,8 @@
           <p>Sign in to continue your eco-friendly journey</p>
         </header>
 
-        <form class="login-form" method="post" action="login.php">
-          <input type="hidden" name="role" value="rider">
+        <form class="login-form" method="post" action="login-handler.php">
+          <input type="hidden" name="role" value="driver">
           <table class="form-table" role="presentation">
             <tr>
               <th class="field-label-cell" scope="row">
@@ -57,11 +57,11 @@
           </table>
 
           <button type="submit" class="submit-button">
-            LOG IN AS RIDER
+            LOG IN AS DRIVER
           </button>
 
           <footer class="section-footer">
-            <p>Don't have an account? <a href="../register/register-as-rider.html"><strong>Sign up now</strong></a></p>
+            <p>Don't have an account? <a href="../register/register-as-driver.php"><strong>Sign up now</strong></a></p>
           </footer>
         </form>
       </div>
@@ -72,3 +72,5 @@
 </body>
 
 </html>
+
+

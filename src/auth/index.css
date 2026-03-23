@@ -1,5 +1,5 @@
 /* ============================================
-   ECORIDE - Landing Page Styles
+   COMOVE - Landing Page Styles
    ============================================ */
 
 @keyframes fadeInUp {
@@ -31,10 +31,13 @@
 }
 
 .hero-logo {
-   font-size: 24px;
-   font-weight: 900;
-   color: var(--white);
-   letter-spacing: -0.05em;
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--white);
+    letter-spacing: -0.05em;
+}
+.hero-logo span {
+    color: var(--lime);
 }
 
 .hero-nav-links {

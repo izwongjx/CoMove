@@ -14,6 +14,12 @@ $idColumn = $type === 'driver' ? 'driver_id' : 'rider_id';
 $row = riderFetchOne("SELECT profile_photo FROM {$table} WHERE {$idColumn} = {$id} LIMIT 1");
 
 if (!$row || !isset($row['profile_photo']) || $row['profile_photo'] === null) {
+    $fallbackPath = realpath(__DIR__ . '/../assets/avatars/default-profile.svg');
+    if ($fallbackPath && is_file($fallbackPath)) {
+        header('Content-Type: image/svg+xml');
+        readfile($fallbackPath);
+        exit;
+    }
     http_response_code(404);
     exit;
 }

@@ -44,22 +44,17 @@ $paymentSql = riderEsc($paymentMethod);
 mysqli_query(
     $dbConn,
     "INSERT INTO RIDE_REQUEST (trip_id, rider_id, seats_requested, request_status, amount_paid, payment_method, gained_point)
-     VALUES ({$tripId}, {$riderId}, {$seatsRequested}, 'approved', " . number_format($amountPaid, 2, '.', '') . ", '{$paymentSql}', " . (int) ($trip['gained_point'] ?? 0) . ")"
+     VALUES ({$tripId}, {$riderId}, {$seatsRequested}, 'pending', " . number_format($amountPaid, 2, '.', '') . ", '{$paymentSql}', " . (int) ($trip['gained_point'] ?? 0) . ")"
 );
 
 if (mysqli_affected_rows($dbConn) <= 0) {
     riderError('Unable to create booking.', 500);
 }
 
-mysqli_query(
-    $dbConn,
-    "INSERT INTO RIDER_GREEN_POINT_LOG (rider_id, points_change, source)
-     VALUES ({$riderId}, " . (int) ($trip['gained_point'] ?? 0) . ", 'Trip {$tripId}')"
-);
-
-$reference = 'CMV-' . strtoupper(substr(md5((string) microtime(true) . '-' . (string) $tripId . '-' . (string) $riderId), 0, 8));
+$requestId = (int) mysqli_insert_id($dbConn);
 
 riderSuccess([
-    'reference' => $reference,
+    'request_id' => $requestId,
+    'status' => 'pending',
     'amount_paid' => 'RM ' . number_format($amountPaid, 2),
 ]);

@@ -1,65 +1,66 @@
-<?php
-session_start();
+<!DOCTYPE html>
+<html lang="en">
 
-include "../../config/conn.php";
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoMove - Log In</title>
+  <link rel="icon" type="image/svg+xml" href="../../public-assets/icons/site-icon.svg">
+  <link rel="stylesheet" href="login.css">
+</head>
 
-$email = trim((string) ($_POST['user'] ?? ''));
-$password = (string) ($_POST['pass'] ?? '');
-$role = strtolower(trim(isset($_POST['role']) ? (string) $_POST['role'] : ''));
+<body>
+  <main class="page">
+    <aside class="hero" aria-label="CoMove Message">
+      <div class="hero-content">
+        <h2>JOIN THE<br><span>REVOLUTION</span></h2>
+        <p>Every shared ride is a vote for a cleaner planet. Be part of the solution, not the pollution.</p>
+      </div>
+    </aside>
 
-if ($email === '' || $password === '' || ($role !== 'rider' && $role !== 'driver')) {
-    echo "<script>alert('Invalid login request! Please try again.');";
-    die("window.history.go(-1);</script>");
-}
+    <section class="panel">
+      <nav class="top-nav" aria-label="Page Navigation">
+        <a href="../../../index.php" class="back-link">
+          <img src="../../public-assets/icons/arrow-left.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> BACK TO HOME
+        </a>
+      </nav>
 
+<<<<<<< HEAD
+      <div class="form-wrapper">
+        <header class="section-header">
+          <h1>Welcome Back</h1>
+          <p>Choose your role to continue your eco-friendly journey</p>
+        </header>
+=======
 $tableName = $role === 'driver' ? 'DRIVER' : 'RIDER';
 $idColumn = $role === 'driver' ? 'driver_id' : 'rider_id';
 $dashboardPath = $role === 'driver'
     ? '../../roles/driver/dashboard.html'
-    : '../../roles/comove-rider-v4/comove-rider/dashboard.html';
-$statusColumn = $role === 'driver' ? 'driver_status' : 'rider_status';
+    : '../../roles/comove-rider-v4/comove-rider/dashboard.php';
+>>>>>>> bf9252d (edit)
 
-// Rider and driver login stays separate so admin status changes immediately affect access.
-$sql = "SELECT * FROM " . $tableName . " WHERE email = ? AND password = ? LIMIT 1";
-$stmt = mysqli_prepare($dbConn, $sql);
+        <div class="role-list">
+          <button class="role-card" onclick="window.location.href='login-as-rider.php'">
+            <div class="role-icon"><img src="../../public-assets/icons/user.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></div>
+            <span class="role-text">Log in as a Rider</span>
+            <img src="../../public-assets/icons/arrow-right.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">
+          </button>
+          <button class="role-card" onclick="window.location.href='login-as-driver.php'">
+            <div class="role-icon"><img src="../../public-assets/icons/car.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></div>
+            <span class="role-text">Log in as a Driver</span>
+            <img src="../../public-assets/icons/arrow-right.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">
+          </button>
+        </div>
 
-if (!$stmt) {
-    echo "<script>alert('Login service is unavailable right now. Please try again.');";
-    die("window.history.go(-1);</script>");
-}
+        <footer class="section-footer">
+          <p>Don't have an account? <a href="../register/register.php"><strong>Sign up now</strong></a></p>
+        </footer>
+      </div>
+    </section>
+  </main>
 
-mysqli_stmt_bind_param($stmt, 'ss', $email, $password);
-mysqli_stmt_execute($stmt);
-$result = mysqli_stmt_get_result($stmt);
+  <script src="../../public-assets/script.js"></script>
+</body>
 
-if (!$result || mysqli_num_rows($result) <= 0) {
-    mysqli_stmt_close($stmt);
-    echo "<script>alert('Wrong email / password !Please Try Again!');";
-    die("window.history.go(-1);</script>");
-}
+</html>
 
-if ($row = mysqli_fetch_array($result)) {
-    $status = strtolower(trim((string) ($row[$statusColumn] ?? 'active')));
-    if ($status !== 'active') {
-        mysqli_free_result($result);
-        mysqli_stmt_close($stmt);
-        session_unset();
-        session_destroy();
-        echo "<script>alert('This account is currently banned. Please contact an admin.');";
-        die("window.history.go(-1);</script>");
-    }
-
-    $_SESSION['user'] = isset($row['name']) ? (string) $row['name'] : '';
-    $_SESSION['email'] = isset($row['email']) ? (string) $row['email'] : '';
-    $_SESSION['password'] = isset($row['password']) ? (string) $row['password'] : '';
-    $_SESSION['role'] = $role;
-    $_SESSION['user_id'] = isset($row[$idColumn]) ? (string) $row[$idColumn] : '';
-}
-
-mysqli_free_result($result);
-mysqli_stmt_close($stmt);
-
-$safeName = isset($_SESSION['user']) ? str_replace("'", "\\'", (string) $_SESSION['user']) : 'User';
-echo "<script>alert('Welcome back! " . $safeName . "');";
-echo "window.location.href='" . $dashboardPath . "';</script>";
-?>
