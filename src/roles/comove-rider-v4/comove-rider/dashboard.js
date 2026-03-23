@@ -29,7 +29,7 @@ function renderDashboard(data) {
 
   document.getElementById('dashAvailableRides').innerHTML = (data.available_rides || []).map(function(ride) {
     return '<div class="dash-ride-card">'
-      + '<div class="driver-ava" style="flex-shrink:0;">' + escapeHtml(ride.driver_initials) + '</div>'
+      + '<div class="driver-ava" style="flex-shrink:0;"><img src="' + escapeHtml(ride.photo_url) + '" alt="' + escapeHtml(ride.driver_name) + ' profile photo"></div>'
       + '<div class="ride-details" style="flex:1;">'
       + '<div class="ride-driver-name">' + escapeHtml(ride.driver_name) + '</div>'
       + '<div class="ride-info">' + escapeHtml(ride.from) + ' → ' + escapeHtml(ride.to) + ' · ' + escapeHtml(ride.departure_time) + ' · ' + ride.seats_left + ' seats left <span class="ride-pts-tag">+' + ride.points + ' pts</span></div>'
@@ -43,7 +43,7 @@ function renderDashboard(data) {
   }).join('') || '<div class="form-card">No rides available right now.</div>';
 
   document.getElementById('dashRecentTrips').innerHTML = (data.recent_trips || []).map(function(trip) {
-    return '<a href="my-trips.html" class="trip-card">'
+    return '<a href="my-trips.php" class="trip-card">'
       + '<div class="trip-icon">🚗</div>'
       + '<div class="trip-info"><div class="trip-route">' + escapeHtml(trip.route) + '</div><div class="trip-meta">' + escapeHtml(trip.meta) + '</div></div>'
       + '<div class="trip-pts">+' + trip.points + ' pts</div>'
@@ -60,7 +60,7 @@ function dashBook(tripId) {
 
   dbCurrentRide = ride;
   dbCurrentRide.selected_seats = 1;
-  document.getElementById('dbAva').textContent = ride.driver_initials;
+  document.getElementById('dbAva').innerHTML = '<img src="' + escapeHtml(ride.photo_url) + '" alt="' + escapeHtml(ride.driver_name) + ' profile photo" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">';
   document.getElementById('dbName').textContent = ride.driver_name;
   document.getElementById('dbCarPlate').textContent = ride.vehicle_model + ' · ' + ride.plate_number;
   document.getElementById('dbFrom').textContent = ride.from;
@@ -116,22 +116,24 @@ async function dbConfirmBooking() {
 
   try {
     var result = await apiPost('api/book-ride.php', formData);
-    showReceipt(dbCurrentRide, labels[dbSelectedPayment], result.reference, result.amount_paid);
+    showReceipt(dbCurrentRide, labels[dbSelectedPayment], result.request_id, result.amount_paid, result.status);
     loadDashboard();
   } catch (err) {
     showToast('⚠️ ' + err.message);
   }
 }
 
-function showReceipt(ride, payMethod, ref, amountPaid) {
+function showReceipt(ride, payMethod, requestId, amountPaid, status) {
   var now = new Date();
   var timeStr = now.toLocaleTimeString('en-MY', { hour:'2-digit', minute:'2-digit' });
   var dateStr = now.toLocaleDateString('en-MY', { day:'numeric', month:'long', year:'numeric' });
+  var bookingStatus = status === 'pending' ? 'Pending Driver Approval' : 'Booked';
+  var pointsMessage = status === 'pending' ? 'Points will be added after driver approval' : 'Saved to database';
   document.getElementById('receiptContent').innerHTML =
     '<div class="receipt-card">'
     + '<div class="receipt-stamp">✅</div>'
-    + '<div class="receipt-title">Payment Confirmed</div>'
-    + '<div class="receipt-sub">Your ride has been booked successfully</div>'
+    + '<div class="receipt-title">Booking Submitted</div>'
+    + '<div class="receipt-sub">Your ride request is now waiting for driver approval</div>'
     + '<div class="receipt-row"><span class="lbl">Driver</span><span class="val">' + escapeHtml(ride.driver_name) + '</span></div>'
     + '<div class="receipt-row"><span class="lbl">Vehicle</span><span class="val">' + escapeHtml(ride.vehicle_model) + '</span></div>'
     + '<div class="receipt-row"><span class="lbl">Plate No.</span><span class="val" style="color:var(--lime);font-family:monospace;">' + escapeHtml(ride.plate_number) + '</span></div>'
@@ -141,9 +143,10 @@ function showReceipt(ride, payMethod, ref, amountPaid) {
     + '<div class="receipt-row"><span class="lbl">Seats</span><span class="val">' + (ride.selected_seats || 1) + '</span></div>'
     + '<div class="receipt-row"><span class="lbl">Amount Paid</span><span class="val" style="color:var(--lime);">' + escapeHtml(amountPaid || ride.price) + '</span></div>'
     + '<div class="receipt-row"><span class="lbl">Payment</span><span class="val">' + escapeHtml(payMethod) + '</span></div>'
+    + '<div class="receipt-row"><span class="lbl">Status</span><span class="val">' + escapeHtml(bookingStatus) + '</span></div>'
     + '<div class="receipt-row"><span class="lbl">Date & Time</span><span class="val">' + dateStr + ' ' + timeStr + '</span></div>'
-    + '<div class="receipt-row" style="border-bottom:none;"><span class="lbl">Green Points</span><span class="val" style="color:var(--lime);">Saved to database</span></div>'
-    + '<div class="receipt-ref">Reference: <span>' + escapeHtml(ref) + '</span></div>'
+    + '<div class="receipt-row" style="border-bottom:none;"><span class="lbl">Green Points</span><span class="val" style="color:var(--lime);">' + escapeHtml(pointsMessage) + '</span></div>'
+    + '<div class="receipt-ref">Ride Request ID: <span>' + escapeHtml(String(requestId || '')) + '</span></div>'
     + '</div>'
     + '<button class="btn-primary" style="width:100%;justify-content:center;" onclick="closeReceipt()">Done</button>';
   document.getElementById('receiptModal').classList.add('open');

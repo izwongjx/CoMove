@@ -222,7 +222,6 @@ foreach ($friendsRaw as $friend) {
         'name' => $friend['name'],
         'role' => 'Rider',
         'student_id' => 'RIDER-' . str_pad((string) $friend['rider_id'], 4, '0', STR_PAD_LEFT),
-        'intake' => 'APU Student',
         'phone_number' => $friend['phone_number'],
         'trips_together' => (int) $friend['total_trips'],
         'green_points' => (int) $friend['total_points'],

@@ -45,7 +45,10 @@ function renderBookedTripCard(trip) {
     + '<span class="trip-type-tag tag-carpool">Upcoming Ride</span>'
     + '<span style="font-size:12px;color:var(--lime);font-weight:600;">' + escapeHtml(trip.status) + '</span>'
     + '</div>'
-    + '<div style="font-size:12px;color:var(--gray-400);margin-bottom:10px;">Driver: <strong style="color:var(--white);">' + escapeHtml(trip.driver_name) + '</strong> · <span style="color:var(--lime);">' + escapeHtml(trip.plate_number) + '</span> · ' + escapeHtml(trip.vehicle_model) + '</div>'
+    + '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">'
+    + '<div class="driver-ava" style="width:42px;height:42px;"><img src="' + escapeHtml(trip.driver_photo_url) + '" alt="' + escapeHtml(trip.driver_name) + ' profile photo"></div>'
+    + '<div style="font-size:12px;color:var(--gray-400);">Driver: <strong style="color:var(--white);">' + escapeHtml(trip.driver_name) + '</strong> · <span style="color:var(--lime);">' + escapeHtml(trip.plate_number) + '</span> · ' + escapeHtml(trip.vehicle_model) + '</div>'
+    + '</div>'
     + '<div class="trip-route-display">'
     + '<div class="route-dot from"></div><div class="route-loc">' + escapeHtml(trip.from) + '</div>'
     + '<div class="route-line"></div>'
@@ -80,6 +83,7 @@ function renderTripHistory(history) {
   list.innerHTML = history.map(function(trip) {
     return '<div class="trip-detail-card"'
       + ' data-driver="' + escapeHtml(trip.driver_name) + '"'
+      + ' data-photo="' + escapeHtml(trip.driver_photo_url || '') + '"'
       + ' data-car="' + escapeHtml(trip.vehicle_model) + '"'
       + ' data-plate="' + escapeHtml(trip.plate_number) + '"'
       + ' data-from="' + escapeHtml(trip.from) + '"'
@@ -102,6 +106,7 @@ function openTripDetailFromCard(el) {
   if (!el || !el.dataset) return;
   openTripDetail(
     el.dataset.driver || '',
+    el.dataset.photo || '',
     el.dataset.car || '',
     el.dataset.plate || '',
     el.dataset.from || '',
@@ -114,8 +119,7 @@ function openTripDetailFromCard(el) {
   );
 }
 
-function openTripDetail(driver, car, plate, from, to, date, duration, fare, payment, pts) {
-  var initials = driver.split(' ').map(function(w){ return w[0]; }).join('').slice(0,2).toUpperCase();
+function openTripDetail(driver, photoUrl, car, plate, from, to, date, duration, fare, payment, pts) {
   document.getElementById('md-from').textContent = from;
   document.getElementById('md-to').textContent = to;
   document.getElementById('md-duration').textContent = duration;
@@ -125,7 +129,7 @@ function openTripDetail(driver, car, plate, from, to, date, duration, fare, paym
   document.getElementById('md-driver').textContent = driver;
   document.getElementById('md-car').textContent = car;
   document.getElementById('md-plate').textContent = plate;
-  document.getElementById('md-ava').textContent = initials;
+  document.getElementById('md-ava').innerHTML = '<img src="' + escapeHtml(photoUrl) + '" alt="' + escapeHtml(driver) + ' profile photo" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">';
   document.getElementById('md-date').textContent = '📅 ' + date;
   document.getElementById('tripModal').classList.add('open');
 }

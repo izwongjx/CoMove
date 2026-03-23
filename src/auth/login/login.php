@@ -25,11 +25,19 @@
         </a>
       </nav>
 
+<<<<<<< HEAD
       <div class="form-wrapper">
         <header class="section-header">
           <h1>Welcome Back</h1>
           <p>Choose your role to continue your eco-friendly journey</p>
         </header>
+=======
+$tableName = $role === 'driver' ? 'DRIVER' : 'RIDER';
+$idColumn = $role === 'driver' ? 'driver_id' : 'rider_id';
+$dashboardPath = $role === 'driver'
+    ? '../../roles/driver/dashboard.html'
+    : '../../roles/comove-rider-v4/comove-rider/dashboard.php';
+>>>>>>> bf9252d (edit)
 
         <div class="role-list">
           <button class="role-card" onclick="window.location.href='login-as-rider.php'">
