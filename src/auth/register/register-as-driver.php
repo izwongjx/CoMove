@@ -1,4 +1,21 @@
+<?php
+include "../../config/conn.php";
 
+$driverRegistration = 1;
+$systemResult = mysqli_query($dbConn, 'SELECT driver_registration FROM SYSTEM_CONFIG LIMIT 1');
+if ($systemResult && ($systemRow = mysqli_fetch_assoc($systemResult))) {
+  $driverRegistration = (int) $systemRow['driver_registration'];
+}
+if ($systemResult) {
+  mysqli_free_result($systemResult);
+}
+
+if (!$driverRegistration) {
+  echo "<script>alert('Driver registration is currently closed by the admin.');";
+  echo "window.location.href='register.php';</script>";
+  exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 

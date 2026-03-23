@@ -1,3 +1,15 @@
+<?php
+include "../../config/conn.php";
+
+$driverRegistration = 1;
+$systemResult = mysqli_query($dbConn, 'SELECT driver_registration FROM SYSTEM_CONFIG LIMIT 1');
+if ($systemResult && ($systemRow = mysqli_fetch_assoc($systemResult))) {
+  $driverRegistration = (int) $systemRow['driver_registration'];
+}
+if ($systemResult) {
+  mysqli_free_result($systemResult);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -37,9 +49,9 @@
             <span class="role-text">Register as a Rider</span>
             <img src="../../public-assets/icons/arrow-right.svg" width="20" height="20" class="role-arrow icon-img" alt="" aria-hidden="true">
           </button>
-          <button class="role-card" onclick="window.location.href='register-as-driver.php'">
+          <button class="role-card" onclick="window.location.href='register-as-driver.php'" <?php echo $driverRegistration ? '' : 'disabled'; ?>>
             <div class="role-icon"><img src="../../public-assets/icons/car.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></div>
-            <span class="role-text">Register as a Driver</span>
+            <span class="role-text"><?php echo $driverRegistration ? 'Register as a Driver' : 'Driver Registration Closed'; ?></span>
             <img src="../../public-assets/icons/arrow-right.svg" width="20" height="20" class="role-arrow icon-img" alt="" aria-hidden="true">
           </button>
         </div>

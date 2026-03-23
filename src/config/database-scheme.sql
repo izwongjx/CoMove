@@ -165,7 +165,6 @@ CREATE TABLE GREEN_POINT_CONFIG (
 -- =====================
 CREATE TABLE SYSTEM_CONFIG (
     driver_registration BOOLEAN COMMENT 'TRUE = registration open, FALSE = closed',
-    system_maintenance BOOLEAN COMMENT 'TRUE = maintenance on, FALSE = normal operation'
 );
 
 -- =====================

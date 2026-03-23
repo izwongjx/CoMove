@@ -13,8 +13,8 @@ SET @license_front = LOAD_FILE('C:/xampp/htdocs/APU-Comove/src/public-assets/ima
 INSERT INTO GREEN_POINT_CONFIG (multiplier_value)
 VALUES (1);
 
-INSERT INTO SYSTEM_CONFIG (driver_registration, system_maintenance)
-VALUES (TRUE, FALSE);
+INSERT INTO SYSTEM_CONFIG (driver_registration)
+VALUES (TRUE);
 
 -- Admin
 INSERT INTO ADMIN (admin_id, name, email, password, created_at) VALUES

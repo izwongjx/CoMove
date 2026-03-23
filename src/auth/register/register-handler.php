@@ -161,6 +161,19 @@ if ($role === 'rider') {
     exit;
 }
 
+$driverRegistration = 1;
+$systemResult = mysqli_query($dbConn, 'SELECT driver_registration FROM SYSTEM_CONFIG LIMIT 1');
+if ($systemResult && ($systemRow = mysqli_fetch_assoc($systemResult))) {
+    $driverRegistration = (int) $systemRow['driver_registration'];
+}
+if ($systemResult) {
+    mysqli_free_result($systemResult);
+}
+
+if (!$driverRegistration) {
+    failBack('Driver registration is currently closed by the admin.');
+}
+
 $name = mysqli_real_escape_string($dbConn, isset($_POST['name']) ? trim((string) $_POST['name']) : '');
 $emailRaw = isset($_POST['email']) ? trim((string) $_POST['email']) : '';
 $email = mysqli_real_escape_string($dbConn, strtolower($emailRaw));

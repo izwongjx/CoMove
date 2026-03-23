@@ -137,7 +137,6 @@ erDiagram
 
 	SYSTEM_CONFIG {
 		BOOLEAN driver_registration  "TRUE = registration open, FALSE = closed"  
-		BOOLEAN system_maintenance  "TRUE = maintenance on, FALSE = normal operation"  
 	}
 
 	RIDER||--o{RIDER_FRIEND:"sends_request"
