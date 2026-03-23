@@ -106,19 +106,6 @@ INSERT INTO RIDE_REQUEST (
 (27, 12, 2, 1, 'approved', '2026-03-26 20:20:00', 20.00, 'Card', NULL, 1),
 (28, 13, 3, 1, 'approved', '2026-03-27 10:10:00', 12.50, 'Card', NULL, 1);
 
--- Ratings (optional, none of the trips are completed yet)
-INSERT INTO RATING (
-    rating_id, trip_id, rider_id, rating_score, comment, created_at
-) VALUES
-(1, 1, 1, 5, 'Smooth ride!', '2026-03-20 12:00:00'),
-(2, 1, 2, 4, 'Nice driver', '2026-03-20 12:05:00'),
-(3, 9, 1, 5, 'On-time and friendly.', '2026-03-15 10:00:00'),
-(4, 10, 1, 4, 'Comfortable ride.', '2026-03-16 20:30:00'),
-(5, 11, 1, 5, 'Great conversation.', '2026-03-19 19:30:00'),
-(6, 9, 2, 4, 'Smooth traffic.', '2026-03-15 10:05:00'),
-(7, 18, 2, 4, 'Quick and easy.', '2026-03-17 20:00:00'),
-(8, 18, 1, 5, 'Friendly driver.', '2026-03-17 20:05:00');
-
 -- Rewards
 INSERT INTO REWARD (reward_id, reward_pic, reward_name, points_required, category, stock) VALUES
 (1, NULL, 'Coffee Voucher', 20, 'Food', 50),
@@ -171,17 +158,6 @@ INSERT INTO DRIVER_GREEN_POINT_LOG (log_id, driver_id, points_change, source, cr
 (8, 5, 8, 'Trip 16', '2026-03-21 19:20:00'),
 (9, 2, 9, 'Trip 18', '2026-03-17 20:10:00');
 
--- Social links and friends
-INSERT INTO RIDER_SOCIAL_LINK (link_id, rider_id, title, link_url) VALUES
-(1, 1, 'LinkedIn', 'https://www.linkedin.com/'),
-(2, 2, 'GitHub', 'https://github.com/'),
-(3, 1, 'Instagram', 'https://www.instagram.com/'),
-(4, 1, 'GitHub', 'https://github.com/'),
-(5, 1, 'Portfolio', 'https://example.com/'),
-(6, 6, 'Instagram', 'https://www.instagram.com/'),
-(7, 7, 'LinkedIn', 'https://www.linkedin.com/'),
-(8, 8, 'GitHub', 'https://github.com/');
-
 INSERT INTO RIDER_FRIEND (friend_id, rider_id, friend_rider_id, status) VALUES
 (1, 1, 2, 'accepted'),
 (2, 1, 3, 'accepted'),
@@ -189,15 +165,6 @@ INSERT INTO RIDER_FRIEND (friend_id, rider_id, friend_rider_id, status) VALUES
 (4, 1, 5, 'accepted'),
 (5, 6, 7, 'accepted'),
 (6, 6, 8, 'pending');
-
--- Trip share
-INSERT INTO TRIP_SHARE (share_id, trip_id, rider_id, visibility, shared_at) VALUES
-(1, 1, 1, 'friends', '2026-03-19 08:00:00'),
-(2, 9, 1, 'friends', '2026-03-15 07:50:00'),
-(3, 10, 1, 'private', '2026-03-16 17:30:00'),
-(4, 11, 1, 'friends', '2026-03-19 17:20:00'),
-(5, 14, 6, 'friends', '2026-03-21 07:45:00'),
-(6, 16, 8, 'private', '2026-03-21 18:00:00');
 
 -- OTP (example)
 INSERT INTO OTP (otp_id, email_address, otp_code, is_used, expires_at, created_at) VALUES

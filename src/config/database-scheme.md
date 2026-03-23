@@ -27,10 +27,6 @@ erDiagram
 		DATETIME created_at  "NOT NULL, DEFAULT CURRENT_TIMESTAMP"  
 		INT approved_by FK "ADMIN"  
 		VARCHAR(20) driver_status  "NOT NULL, DEFAULT 'pending', CHECK (driver_status IN ('pending','active','rejected','banned'))"  
-		DECIMAL(10,2) driver_rating  "DERIVED: AVG(RATING.rating_score)
-                                        FROM RATING
-                                        JOIN TRIP ON RATING.trip_id = TRIP.trip_id
-                                        WHERE TRIP.driver_id = DRIVER.driver_id"  
 		CHAR(12) nric_number  "NOT NULL, UNIQUE"  
 		MEDIUMBLOB nric_front_image  "NOT NULL"  
 		MEDIUMBLOB nric_back_image  "NOT NULL"  
@@ -63,7 +59,7 @@ erDiagram
                                     AND request_status = 'approved')"  
 		INT estimated_duration  ""  
 		DECIMAL(10,2) total_amount  "NOT NULL, DEFAULT 0"  
-		INT gained_point  ""  
+		FLOAT gained_point  ""  
 		VARCHAR(20) trip_status  "NOT NULL, DEFAULT 'scheduled', CHECK (trip_status IN ('scheduled','ongoing','completed'))"  
 	}
 
@@ -77,16 +73,7 @@ erDiagram
 		DECIMAL(10,2) amount_paid  ""  
 		VARCHAR(20) payment_method  ""  
 		MEDIUMBLOB proof_of_payment  ""  
-		INT gained_point  ""  
-	}
-
-	RATING {
-		INT rating_id PK "AUTO_INCREMENT"  
-		INT trip_id FK "NOT NULL"  
-		INT rider_id FK "NOT NULL"  
-		INT rating_score  "NOT NULL, CHECK (rating_score >=1 AND rating_score <=5)"  
-		NVARCHAR(255) comment  ""  
-		DATETIME created_at  "NOT NULL, DEFAULT CURRENT_TIMESTAMP"  
+		FLOAT gained_point  ""  
 	}
 
 	REWARD {
@@ -115,7 +102,7 @@ erDiagram
 	RIDER_GREEN_POINT_LOG {
 		INT log_id PK "AUTO_INCREMENT"  
 		INT rider_id FK "NOT NULL"  
-		INT points_change  "NOT NULL, DEFAULT 0"  
+		FLOAT points_change  "NOT NULL, DEFAULT 0"  
 		VARCHAR(50) source  "NOT NULL"  
 		DATETIME created_at  "NOT NULL, DEFAULT CURRENT_TIMESTAMP"  
 	}
@@ -123,16 +110,9 @@ erDiagram
 	DRIVER_GREEN_POINT_LOG {
 		INT log_id PK "AUTO_INCREMENT"  
 		INT driver_id FK "NOT NULL"  
-		INT points_change  "NOT NULL, DEFAULT 0"  
+		FLOAT points_change  "NOT NULL, DEFAULT 0"  
 		VARCHAR(50) source  "NOT NULL"  
 		DATETIME created_at  "NOT NULL, DEFAULT CURRENT_TIMESTAMP"  
-	}
-
-	RIDER_SOCIAL_LINK {
-		INT link_id PK "AUTO_INCREMENT"  
-		INT rider_id FK "NOT NULL"  
-		NVARCHAR(50) title  "NOT NULL"  
-		VARCHAR(255) link_url  "NOT NULL"  
 	}
 
 	RIDER_FRIEND {
@@ -140,14 +120,6 @@ erDiagram
 		INT rider_id FK "NOT NULL"  
 		INT friend_rider_id FK "NOT NULL"  
 		VARCHAR(20) status  "NOT NULL, DEFAULT 'pending', CHECK (status IN ('pending','accepted','rejected'))"  
-	}
-
-	TRIP_SHARE {
-		INT share_id PK "AUTO_INCREMENT"  
-		INT trip_id FK "NOT NULL"  
-		INT rider_id FK "NOT NULL"  
-		VARCHAR(20) visibility  "NOT NULL, DEFAULT 'private', CHECK (visibility IN ('private','friends'))"  
-		DATETIME shared_at  "NOT NULL, DEFAULT CURRENT_TIMESTAMP"  
 	}
 
 	OTP {
@@ -168,16 +140,11 @@ erDiagram
 		BOOLEAN system_maintenance  "TRUE = maintenance on, FALSE = normal operation"  
 	}
 
-	RIDER||--o{RIDER_SOCIAL_LINK:"has"
 	RIDER||--o{RIDER_FRIEND:"sends_request"
 	RIDER||--o{RIDER_FRIEND:"receives_request"
-	RIDER||--o{TRIP_SHARE:"shares"
-	TRIP||--o{TRIP_SHARE:"is_shared"
 	DRIVER||--o{TRIP:"creates"
 	RIDER||--o{RIDE_REQUEST:"makes"
 	TRIP||--o{RIDE_REQUEST:"has"
-	TRIP||--o{RATING:"receives"
-	RIDER||--o{RATING:"gives"
 	RIDER||--o{RIDER_GREEN_POINT_LOG:"has"
 	DRIVER||--o{DRIVER_GREEN_POINT_LOG:"has"
 	RIDER||--o{RIDER_REDEMPTION:"redeems"

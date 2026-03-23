@@ -91,8 +91,6 @@ if ($deleteTripId !== '') {
 
     if ($checkResult && mysqli_num_rows($checkResult) > 0) {
         mysqli_query($dbConn, "DELETE FROM RIDE_REQUEST WHERE trip_id = '" . $deleteIdSafe . "'");
-        mysqli_query($dbConn, "DELETE FROM RATING WHERE trip_id = '" . $deleteIdSafe . "'");
-        mysqli_query($dbConn, "DELETE FROM TRIP_SHARE WHERE trip_id = '" . $deleteIdSafe . "'");
         mysqli_query($dbConn, "DELETE FROM TRIP WHERE trip_id = '" . $deleteIdSafe . "' AND driver_id = '" . $driverIdSafe . "'");
         if (mysqli_affected_rows($dbConn) > 0) {
             echo "<script>alert('Ride deleted successfully.');";
@@ -130,7 +128,11 @@ if ($deleteTripId !== '') {
         <a href="vehicle.html" class="navContent"><img src="../../public-assets/icons/file-text.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Vehicle</a>
         <a href="profile.html" class="navContent"><img src="../../public-assets/icons/user.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Profile</a>
       </div>
-      <div class="nav-actions"><a href="../../../index.php" class="nav-logout" title="Log out"><img src="../../public-assets/icons/log-out.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"></a></div>
+      <div class="nav-actions">
+        <a href="../../../index.php" class="nav-logout" title="Log out">
+          <img src="../../public-assets/icons/log-out.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">
+        </a>
+      </div>
     </div>
   </nav>
 

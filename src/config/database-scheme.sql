@@ -4,7 +4,7 @@
 CREATE DATABASE COMOVE;
 USE COMOVE;
 -- Drop tables if they exist (to avoid conflicts)
-DROP TABLE IF EXISTS OTP, TRIP_SHARE, RIDER_FRIEND, RIDER_SOCIAL_LINK, SYSTEM_CONFIG, GREEN_POINT_CONFIG, DRIVER_REDEMPTION, RIDER_REDEMPTION, DRIVER_GREEN_POINT_LOG, RIDER_GREEN_POINT_LOG, REWARD, RATING, RIDE_REQUEST, TRIP, DRIVER, RIDER, ADMIN;
+DROP TABLE IF EXISTS OTP, RIDER_FRIEND, SYSTEM_CONFIG, GREEN_POINT_CONFIG, DRIVER_REDEMPTION, RIDER_REDEMPTION, DRIVER_GREEN_POINT_LOG, RIDER_GREEN_POINT_LOG, REWARD, RIDE_REQUEST, TRIP, DRIVER, RIDER, ADMIN;
 
 -- =====================
 -- Admin Table
@@ -55,7 +55,7 @@ CREATE TABLE DRIVER (
     plate_number CHAR(10) NOT NULL UNIQUE,
     color VARCHAR(20),
     FOREIGN KEY (approved_by) REFERENCES ADMIN(admin_id)
-    -- green_points & driver_rating are derived
+    -- green_points is derived
 );
 
 -- =====================
@@ -70,7 +70,7 @@ CREATE TABLE TRIP (
     total_seats INT NOT NULL DEFAULT 0,
     estimated_duration INT,
     total_amount DECIMAL(10,2) NOT NULL DEFAULT 0,
-    gained_point INT,
+    gained_point FLOAT,
     trip_status VARCHAR(20) NOT NULL DEFAULT 'scheduled' CHECK (trip_status IN ('scheduled','ongoing','completed')),
     FOREIGN KEY (driver_id) REFERENCES DRIVER(driver_id)
 );
@@ -88,21 +88,7 @@ CREATE TABLE RIDE_REQUEST (
     amount_paid DECIMAL(10,2),
     payment_method VARCHAR(20),
     proof_of_payment MEDIUMBLOB,
-    gained_point INT,
-    FOREIGN KEY (trip_id) REFERENCES TRIP(trip_id),
-    FOREIGN KEY (rider_id) REFERENCES RIDER(rider_id)
-);
-
--- =====================
--- Rating Table
--- =====================
-CREATE TABLE RATING (
-    rating_id INT AUTO_INCREMENT PRIMARY KEY,
-    trip_id INT NOT NULL,
-    rider_id INT NOT NULL,
-    rating_score INT NOT NULL CHECK (rating_score BETWEEN 1 AND 5),
-    comment NVARCHAR(255),
-    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    gained_point FLOAT,
     FOREIGN KEY (trip_id) REFERENCES TRIP(trip_id),
     FOREIGN KEY (rider_id) REFERENCES RIDER(rider_id)
 );
@@ -149,7 +135,7 @@ CREATE TABLE DRIVER_REDEMPTION (
 CREATE TABLE RIDER_GREEN_POINT_LOG (
     log_id INT AUTO_INCREMENT PRIMARY KEY,
     rider_id INT NOT NULL,
-    points_change INT NOT NULL DEFAULT 0,
+    points_change FLOAT NOT NULL DEFAULT 0,
     source VARCHAR(50) NOT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (rider_id) REFERENCES RIDER(rider_id)
@@ -161,7 +147,7 @@ CREATE TABLE RIDER_GREEN_POINT_LOG (
 CREATE TABLE DRIVER_GREEN_POINT_LOG (
     log_id INT AUTO_INCREMENT PRIMARY KEY,
     driver_id INT NOT NULL,
-    points_change INT NOT NULL DEFAULT 0,
+    points_change FLOAT NOT NULL DEFAULT 0,
     source VARCHAR(50) NOT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (driver_id) REFERENCES DRIVER(driver_id)
@@ -183,17 +169,6 @@ CREATE TABLE SYSTEM_CONFIG (
 );
 
 -- =====================
--- Rider Social Link
--- =====================
-CREATE TABLE RIDER_SOCIAL_LINK (
-    link_id INT AUTO_INCREMENT PRIMARY KEY,
-    rider_id INT NOT NULL,
-    title NVARCHAR(50) NOT NULL,
-    link_url VARCHAR(255) NOT NULL,
-    FOREIGN KEY (rider_id) REFERENCES RIDER(rider_id)
-);
-
--- =====================
 -- Rider Friend
 -- =====================
 CREATE TABLE RIDER_FRIEND (
@@ -203,19 +178,6 @@ CREATE TABLE RIDER_FRIEND (
     status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','accepted','rejected')),
     FOREIGN KEY (rider_id) REFERENCES RIDER(rider_id),
     FOREIGN KEY (friend_rider_id) REFERENCES RIDER(rider_id)
-);
-
--- =====================
--- Trip Share
--- =====================
-CREATE TABLE TRIP_SHARE (
-    share_id INT AUTO_INCREMENT PRIMARY KEY,
-    trip_id INT NOT NULL,
-    rider_id INT NOT NULL,
-    visibility VARCHAR(20) NOT NULL DEFAULT 'private' CHECK (visibility IN ('private','friends')),
-    shared_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (trip_id) REFERENCES TRIP(trip_id),
-    FOREIGN KEY (rider_id) REFERENCES RIDER(rider_id)
 );
 
 -- =====================
