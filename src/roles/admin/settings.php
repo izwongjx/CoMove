@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
       <div class="section-block">
         <div class="section-title">Green Point Multiplier</div>
         <div class="multiplier-box">
-          <p style="font-size:13px;color:var(--gray-400);margin-bottom:4px">Adjust the reward multiplier applied to rides. This writes to `GREEN_POINT_CONFIG`.</p>
+          <p style="font-size:13px;color:var(--gray-400);margin-bottom:4px">Adjust the reward multiplier applied to rides.</p>
           <div class="multiplier-display" id="multiplierDisplay"><?php echo adminEscape(number_format($currentMultiplier, 1)); ?>x</div>
           <input type="range" class="multiplier-range" id="multiplierRange" name="multiplier_value" min="0.5" max="5" step="0.1" value="<?php echo adminEscape(number_format($currentMultiplier, 1, '.', '')); ?>" oninput="updateMultiplier(this.value)">
           <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--gray-500);font-family:'DM Mono',monospace;margin-bottom:6px">
