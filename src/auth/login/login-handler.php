@@ -16,7 +16,7 @@ $tableName = $role === 'driver' ? 'DRIVER' : 'RIDER';
 $idColumn = $role === 'driver' ? 'driver_id' : 'rider_id';
 $dashboardPath = $role === 'driver'
     ? '../../roles/driver/dashboard.html'
-    : '../../roles/comove-rider-v4/comove-rider/dashboard.html';
+    : '../../roles/comove-rider-v4/comove-rider/dashboard.php';
 $statusColumn = $role === 'driver' ? 'driver_status' : 'rider_status';
 
 // Rider and driver login stays separate so admin status changes immediately affect access.

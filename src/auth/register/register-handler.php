@@ -157,8 +157,21 @@ if ($role === 'rider') {
     $_SESSION['user_id'] = $riderId;
 
     echo "<script>alert('Registration completed successfully!');";
-    echo "window.location.href='../../roles/comove-rider-v4/comove-rider/dashboard.html';</script>";
+    echo "window.location.href='../../roles/comove-rider-v4/comove-rider/dashboard.php';</script>";
     exit;
+}
+
+$driverRegistration = 1;
+$systemResult = mysqli_query($dbConn, 'SELECT driver_registration FROM SYSTEM_CONFIG LIMIT 1');
+if ($systemResult && ($systemRow = mysqli_fetch_assoc($systemResult))) {
+    $driverRegistration = (int) $systemRow['driver_registration'];
+}
+if ($systemResult) {
+    mysqli_free_result($systemResult);
+}
+
+if (!$driverRegistration) {
+    failBack('Driver registration is currently closed by the admin.');
 }
 
 $name = mysqli_real_escape_string($dbConn, isset($_POST['name']) ? trim((string) $_POST['name']) : '');

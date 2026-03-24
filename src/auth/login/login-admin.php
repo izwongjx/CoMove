@@ -41,5 +41,5 @@ mysqli_stmt_close($stmt);
 
 $safeName = isset($_SESSION['user']) ? str_replace("'", "\\'", (string) $_SESSION['user']) : 'Admin';
 echo "<script>alert('Welcome back! " . $safeName . "');";
-echo "window.location.href='../../roles/admin/dashboard.html';</script>";
+echo "window.location.href='../../roles/admin/dashboard.php';</script>";
 ?>
