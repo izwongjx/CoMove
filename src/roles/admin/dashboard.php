@@ -38,7 +38,7 @@ if ($maxTrips < 1) {
 ?>
   <main class="dashboard-main">
     <h1 class="page-title">Dashboard</h1>
-    <p class="page-subtitle">System overview powered by live database data.</p>
+    <p class="page-subtitle">System overview powered by live database data</p>
 
     <div class="stats-grid">
       <div class="stat-card"><div class="stat-card-accent" style="background:var(--lime)"></div><div class="stat-icon">Users</div><div class="stat-value" style="color:var(--lime)"><?php echo adminEscape((int) ($totalUsersRow['total_users'] ?? 0)); ?></div><div class="stat-label">Total Users</div></div>

@@ -114,6 +114,46 @@ function riderPhotoUrl(string $type, int $id): string
     return 'api/photo.php?type=' . rawurlencode($type) . '&id=' . $id . '&v=' . time();
 }
 
+function riderBuildPhotoSrc($photoBlob): string
+{
+    if ($photoBlob === null || $photoBlob === '') {
+        return 'assets/avatars/default-profile.svg';
+    }
+
+    $mime = null;
+    $header = substr($photoBlob, 0, 16);
+    if (strncmp($header, "\x89PNG\r\n\x1a\n", 8) === 0) {
+        $mime = 'image/png';
+    } elseif (strncmp($header, "\xFF\xD8\xFF", 3) === 0) {
+        $mime = 'image/jpeg';
+    } elseif (strncmp($header, 'GIF87a', 6) === 0 || strncmp($header, 'GIF89a', 6) === 0) {
+        $mime = 'image/gif';
+    } elseif (strncmp($header, 'RIFF', 4) === 0 && substr($header, 8, 4) === 'WEBP') {
+        $mime = 'image/webp';
+    } elseif (substr($header, 4, 4) === 'ftyp' && (substr($header, 8, 4) === 'avif' || substr($header, 8, 4) === 'avis')) {
+        $mime = 'image/avif';
+    }
+
+    if ($mime === null && class_exists('finfo')) {
+        static $finfo = null;
+        if ($finfo === null) {
+            $finfo = new finfo(FILEINFO_MIME_TYPE);
+        }
+        if ($finfo) {
+            $detected = $finfo->buffer($photoBlob);
+            if (is_string($detected) && $detected !== '') {
+                $mime = $detected;
+            }
+        }
+    }
+
+    if ($mime === null || $mime === '') {
+        $mime = 'image/jpeg';
+    }
+
+    return 'data:' . $mime . ';base64,' . base64_encode($photoBlob);
+}
+
 function riderInitials(string $name): string
 {
     $parts = preg_split('/\s+/', trim($name));

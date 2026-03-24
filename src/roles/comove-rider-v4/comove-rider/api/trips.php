@@ -50,6 +50,7 @@ $upcomingRaw = riderFetchOne("
         t.estimated_duration,
         d.driver_id,
         d.name AS driver_name,
+        d.profile_photo,
         d.vehicle_model,
         d.plate_number
     FROM RIDE_REQUEST rr
@@ -72,6 +73,7 @@ $historyRaw = riderFetchAll("
         DATE_FORMAT(t.departure_time, '%b %e · %l:%i %p') AS trip_label,
         d.driver_id,
         d.name AS driver_name,
+        d.profile_photo,
         d.vehicle_model,
         d.plate_number
     FROM RIDE_REQUEST rr
@@ -87,7 +89,7 @@ if ($upcomingRaw) {
         'request_id' => (int) $upcomingRaw['request_id'],
         'driver_name' => $upcomingRaw['driver_name'],
         'driver_initials' => riderInitials($upcomingRaw['driver_name']),
-        'driver_photo_url' => riderPhotoUrl('driver', (int) $upcomingRaw['driver_id']),
+        'driver_photo_url' => riderBuildPhotoSrc($upcomingRaw['profile_photo'] ?? null),
         'vehicle_model' => $upcomingRaw['vehicle_model'],
         'plate_number' => $upcomingRaw['plate_number'],
         'from' => $upcomingRaw['start_location'],
@@ -108,7 +110,7 @@ foreach ($historyRaw as $trip) {
     $history[] = [
         'request_id' => (int) $trip['request_id'],
         'driver_name' => $trip['driver_name'],
-        'driver_photo_url' => riderPhotoUrl('driver', (int) $trip['driver_id']),
+        'driver_photo_url' => riderBuildPhotoSrc($trip['profile_photo'] ?? null),
         'vehicle_model' => $trip['vehicle_model'],
         'plate_number' => $trip['plate_number'],
         'from' => $trip['start_location'],

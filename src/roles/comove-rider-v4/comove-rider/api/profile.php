@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     riderSuccess([
-        'photo_url' => riderPhotoUrl('rider', $riderId),
+        'photo_url' => riderBuildPhotoSrc($raw),
     ]);
 }
 
@@ -40,6 +40,7 @@ $row = riderFetchOne("
         name,
         email,
         phone_number,
+        profile_photo,
         created_at
     FROM RIDER
     WHERE rider_id = {$riderId}
@@ -63,5 +64,5 @@ riderSuccess([
     'phone_number' => $row['phone_number'],
     'green_points' => $points,
     'total_trips' => $trips,
-    'photo_url' => riderPhotoUrl('rider', $riderId),
+    'photo_url' => riderBuildPhotoSrc($row['profile_photo'] ?? null),
 ]);

@@ -138,7 +138,8 @@ if ($search !== '') {
         SELECT
             r.rider_id,
             r.name,
-            r.email
+            r.email,
+            r.profile_photo
         FROM RIDER r
         WHERE r.rider_id <> {$riderId}
           AND (
@@ -167,7 +168,7 @@ if ($search !== '') {
             'name' => $row['name'],
             'student_id' => 'RIDER-' . str_pad((string) $row['rider_id'], 4, '0', STR_PAD_LEFT),
             'meta' => $row['email'],
-            'photo_url' => riderPhotoUrl('rider', (int) $row['rider_id']),
+            'photo_url' => riderBuildPhotoSrc($row['profile_photo'] ?? null),
         ];
     }
 
@@ -183,6 +184,7 @@ $friendsRaw = riderFetchAll("
         r.name,
         r.email,
         r.phone_number,
+        r.profile_photo,
         COALESCE(points.total_points, 0) AS total_points,
         COALESCE(trips.total_trips, 0) AS total_trips
     FROM RIDER_FRIEND rf
@@ -207,7 +209,8 @@ $pendingRaw = riderFetchAll("
         rf.friend_id,
         r.rider_id,
         r.name,
-        r.email
+        r.email,
+        r.profile_photo
     FROM RIDER_FRIEND rf
     INNER JOIN RIDER r ON r.rider_id = rf.friend_rider_id
     WHERE rf.rider_id = {$riderId} AND rf.status = 'pending'
@@ -225,7 +228,7 @@ foreach ($friendsRaw as $friend) {
         'phone_number' => $friend['phone_number'],
         'trips_together' => (int) $friend['total_trips'],
         'green_points' => (int) $friend['total_points'],
-        'photo_url' => riderPhotoUrl('rider', (int) $friend['rider_id']),
+        'photo_url' => riderBuildPhotoSrc($friend['profile_photo'] ?? null),
     ];
 }
 
@@ -236,7 +239,7 @@ foreach ($pendingRaw as $friend) {
         'rider_id' => (int) $friend['rider_id'],
         'name' => $friend['name'],
         'meta' => $friend['email'],
-        'photo_url' => riderPhotoUrl('rider', (int) $friend['rider_id']),
+        'photo_url' => riderBuildPhotoSrc($friend['profile_photo'] ?? null),
     ];
 }
 

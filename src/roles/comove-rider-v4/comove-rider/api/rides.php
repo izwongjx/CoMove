@@ -18,6 +18,7 @@ $sql = "
         t.gained_point,
         d.driver_id,
         d.name AS driver_name,
+        d.profile_photo,
         d.vehicle_model,
         d.plate_number
     FROM TRIP t
@@ -50,7 +51,7 @@ foreach ($ridesRaw as $ride) {
         'driver_id' => (int) $ride['driver_id'],
         'driver_name' => $ride['driver_name'],
         'driver_initials' => riderInitials($ride['driver_name']),
-        'driver_photo_url' => riderPhotoUrl('driver', (int) $ride['driver_id']),
+        'driver_photo_url' => riderBuildPhotoSrc($ride['profile_photo'] ?? null),
         'vehicle_model' => $ride['vehicle_model'],
         'plate_number' => $ride['plate_number'],
         'from' => $ride['start_location'],
