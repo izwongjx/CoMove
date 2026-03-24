@@ -41,11 +41,15 @@ if ($seatsRequested > (int) $trip['seats_left']) {
 
 $amountPaid = ((float) $trip['total_amount']) / max(1, (int) $trip['total_seats']) * $seatsRequested;
 $paymentSql = riderEsc($paymentMethod);
-mysqli_query(
+$insertResult = mysqli_query(
     $dbConn,
     "INSERT INTO RIDE_REQUEST (trip_id, rider_id, seats_requested, request_status, amount_paid, payment_method, gained_point)
      VALUES ({$tripId}, {$riderId}, {$seatsRequested}, 'pending', " . number_format($amountPaid, 2, '.', '') . ", '{$paymentSql}', " . (int) ($trip['gained_point'] ?? 0) . ")"
 );
+
+if (!$insertResult) {
+    riderError('Unable to create booking: ' . mysqli_error($dbConn), 500);
+}
 
 if (mysqli_affected_rows($dbConn) <= 0) {
     riderError('Unable to create booking.', 500);

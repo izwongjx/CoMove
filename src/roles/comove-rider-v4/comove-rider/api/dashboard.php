@@ -24,6 +24,7 @@ $availableRidesRaw = riderFetchAll("
         GREATEST(t.total_seats - COALESCE(bookings.booked_seats, 0), 0) AS seats_left,
         d.driver_id,
         d.name AS driver_name,
+        d.profile_photo,
         d.vehicle_model,
         d.plate_number
     FROM TRIP t
@@ -47,7 +48,7 @@ foreach ($availableRidesRaw as $ride) {
         'driver_id' => (int) $ride['driver_id'],
         'driver_name' => $ride['driver_name'],
         'driver_initials' => riderInitials($ride['driver_name']),
-        'photo_url' => riderPhotoUrl('driver', (int) $ride['driver_id']),
+        'photo_url' => riderBuildPhotoSrc($ride['profile_photo'] ?? null),
         'from' => $ride['start_location'],
         'to' => $ride['end_location'],
         'departure_time' => $ride['departure_label'],
