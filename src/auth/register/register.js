@@ -1,5 +1,5 @@
 /* ============================================
-   ECORIDE - Role Registration With OTP
+   COMOVE - Role Registration With OTP
    ============================================ */
 
 (function initRegisterRolePage() {

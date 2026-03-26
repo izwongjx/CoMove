@@ -70,6 +70,22 @@
   height: 1px;
   background: rgba(255,255,255,0.08);
 }
+.centered-section-title {
+  max-width: 920px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.section-note {
+  max-width: 920px;
+  margin: -12px auto 16px;
+  font-size: 13px;
+  color: var(--gray-400);
+  text-align: center;
+}
+.dashboard-feed {
+  max-width: 920px;
+  margin: 0 auto;
+}
 
 /* Cards */
 .form-card {
@@ -276,16 +292,19 @@
   border: 1px solid rgba(200,241,53,0.15);
   border-radius: 20px;
   padding: 32px;
-  margin-bottom: 28px;
+  margin: 0 auto 28px;
+  max-width: 920px;
   position: relative;
   overflow: hidden;
+  text-align: center;
 }
 .dash-hero::before {
   content: '';
   position: absolute;
-  top: -60px; right: -60px;
+  top: -70px; left: 50%;
   width: 200px; height: 200px;
   background: radial-gradient(circle, rgba(200,241,53,0.15), transparent 70%);
+  transform: translateX(-50%);
   pointer-events: none;
 }
 .dash-greeting {
@@ -298,12 +317,18 @@
   margin-bottom: 6px;
 }
 .dash-greeting span { color: var(--lime); }
-.dash-hero-sub { color: var(--gray-400); font-size: 14px; margin-bottom: 24px; }
+.dash-hero-sub {
+  color: var(--gray-400);
+  font-size: 14px;
+  margin: 0 auto 24px;
+  max-width: 520px;
+}
 
 .dash-stats-row {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, minmax(160px, 220px));
   gap: 14px;
+  justify-content: center;
 }
 .stat-card {
   background: rgba(255,255,255,0.05);
@@ -324,9 +349,15 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
-  margin-bottom: 28px;
+  margin: 0 auto 28px;
+  max-width: 100%;
 }
-@media(min-width:600px){ .quick-actions { grid-template-columns: repeat(4, 1fr); } }
+@media(min-width:600px){
+  .quick-actions {
+    grid-template-columns: repeat(3, minmax(160px, 220px));
+    justify-content: center;
+  }
+}
 
 .qa-btn {
   background: var(--black3);
@@ -430,6 +461,15 @@
   font-weight: 700; font-size: 16px;
   flex-shrink: 0;
   color: var(--black);
+  overflow: hidden;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.driver-ava img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 .ride-details { flex: 1; }
 .ride-driver-name { font-weight: 600; font-size: 14px; }
@@ -675,9 +715,16 @@
   width: 46px; height: 46px;
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: 17px;
   flex-shrink: 0;
-  color: var(--black);
+  overflow: hidden;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.friend-ava img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 .friend-info { flex: 1; min-width: 0; }
 .friend-name { font-weight: 600; font-size: 14px; }
@@ -717,23 +764,30 @@
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  margin-bottom: 24px;
+  margin: 0 auto 24px;
   text-align: center;
+  max-width: 620px;
 }
 .profile-ava {
   width: 88px; height: 88px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--lime), var(--lime-dark));
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-display);
-  font-size: 36px;
-  font-weight: 900;
-  color: var(--black);
   position: relative;
+  overflow: visible;
+  border: 2px solid rgba(255,255,255,0.08);
+}
+.profile-ava img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 50%;
 }
 .ava-edit {
   position: absolute;
-  bottom: 0; right: 0;
+  right: -2px;
+  bottom: -2px;
   width: 26px; height: 26px;
   background: var(--black);
   border: 2px solid var(--black2);
@@ -741,6 +795,9 @@
   display: flex; align-items: center; justify-content: center;
   font-size: 11px;
   cursor: pointer;
+  color: var(--white);
+  padding: 0;
+  z-index: 1;
 }
 .profile-name {
   font-family: var(--font-display);
@@ -761,13 +818,15 @@
 }
 .profile-stats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, minmax(140px, 180px));
   gap: 1px;
   background: rgba(255,255,255,0.08);
   border-radius: 10px;
   overflow: hidden;
-  width: 100%;
+  width: fit-content;
+  max-width: 100%;
   margin-top: 8px;
+  justify-content: center;
 }
 .profile-stat { background: var(--black3); padding: 14px; text-align: center; }
 .profile-stat-val { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--lime); }
@@ -778,7 +837,12 @@
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 20px;
   overflow: hidden;
-  margin-bottom: 16px;
+  margin: 0 auto 16px;
+  max-width: 620px;
+}
+.profile-main .page-title {
+  text-align: center;
+  margin-bottom: 18px;
 }
 .settings-section-title {
   padding: 14px 20px;

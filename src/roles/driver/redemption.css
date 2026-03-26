@@ -1,0 +1,371 @@
+.mainNav {
+  background-color: #0f2a1d;
+  border-color: rgba(255, 255, 255, 0.1);
+  padding: 20px 20px 20px 20px;
+}
+
+.logo {
+  color: white;
+  font-size: 25px;
+  font-weight: 800;
+  gap: -10px;
+  margin-left: 1%;
+}
+
+.logo span {
+  color: #c4f547;
+}
+
+.insideNav {
+  display: flex;
+  align-items: center;
+}
+
+.navContents {
+  display: flex;
+  align-self: center;
+  margin: 0 auto;
+  gap: 32px;
+  color: var(--gray-400);
+}
+
+.navContents a {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  gap: 10px;
+}
+
+.navContents a:hover {
+  color: var(--white);
+}
+
+.navContents a img {
+  filter: brightness(0) saturate(100%) invert(60%);
+}
+
+.currentNav {
+  color: #c4f547;
+  background-color: rgb(9, 31, 8);
+  padding: 5px 15px 5px 15px;
+  border-radius: 8px;
+}
+
+.navContents a.currentNav img {
+  filter: brightness(0) saturate(100%) invert(83%) sepia(54%) saturate(516%) hue-rotate(34deg);
+}
+
+.nav-logout img {
+  filter: brightness(0) saturate(100%) invert(60%);
+  transition: filter 0.2s ease;
+}
+
+.nav-logout:hover img {
+  filter: brightness(0) saturate(100%) invert(100%);
+}
+
+.dashboardMain {
+  padding: 24px 16px 96px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pageHeader {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: flex-start;
+  text-align: left;
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
+}
+
+.pageTitle {
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: 0;
+  margin-bottom: 6px;
+  font-family: var(--font-sans);
+  text-transform: none;
+}
+
+.pageTitle span {
+  color: var(--lime);
+  background: var(--black);
+  padding: 0 8px;
+}
+
+.pageSubtitle {
+  color: #6b7280;
+  font-size: 16px;
+}
+
+.pointsCard {
+  background: #0f2a1d;
+  color: white;
+  padding: 20px 24px;
+  border-radius: 16px;
+  width: min(1100px,100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 10px 25px rgba(15, 42, 29, 0.2);
+  text-align: left;
+}
+
+.pointsLabel {
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(196, 245, 71, 0.85);
+  font-weight: 700;
+}
+
+.pointsValue {
+  font-size: 36px;
+  font-weight: 900;
+  margin: 6px 0;
+}
+
+.pointsHint {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.section {
+  margin-top: 32px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.sectionHeader h2 {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.rewardTableWrap {
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  overflow-x: auto;
+  background: white;
+}
+
+.rewardBadge {
+  background: #f3f4f6;
+  color: #111827;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.stock {
+  font-size: 13px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.rewardTable {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 720px;
+}
+
+.rewardTable th,
+.rewardTable td {
+  padding: 14px 18px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.rewardTable thead th {
+  background: #f9fafb;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: #6b7280;
+}
+
+.rewardTable tbody tr + tr {
+  border-top: 1px solid #e5e7eb;
+}
+
+.rewardName {
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.rewardDesc {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.btn {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 16px;
+  background: #c4f547;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  background: #e5e7eb;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.btn.secondary {
+  background: #111827;
+  color: white;
+}
+
+.historyTableWrap {
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  overflow-x: auto;
+  background: white;
+}
+
+.historyTable {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 520px;
+}
+
+.historyTable th,
+.historyTable td {
+  padding: 14px 18px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.historyTable thead th {
+  background: #f9fafb;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: #6b7280;
+}
+
+.historyTable tbody tr + tr {
+  border-top: 1px solid #e5e7eb;
+}
+
+.mono {
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.driver-bottom-nav {
+  background: var(--forest);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 767px) {
+  .navContents {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .insideNav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+@media (max-width: 767px) {
+  .pageTitle {
+    font-size: 32px;
+  }
+
+  .pointsCard {
+    width: 100%;
+    padding: 18px 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .rewardTableWrap,
+  .historyTableWrap {
+    overflow-x: visible;
+    border: 0;
+    background: transparent;
+  }
+
+  .rewardTable,
+  .rewardTable thead,
+  .rewardTable tbody,
+  .rewardTable tr,
+  .rewardTable th,
+  .rewardTable td,
+  .historyTable,
+  .historyTable thead,
+  .historyTable tbody,
+  .historyTable tr,
+  .historyTable th,
+  .historyTable td {
+    display: block;
+    width: 100%;
+  }
+
+  .rewardTable,
+  .historyTable {
+    min-width: 0;
+  }
+
+  .rewardTable thead,
+  .historyTable thead {
+    display: none;
+  }
+
+  .rewardTable tr,
+  .historyTable tr {
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    margin-bottom: 12px;
+    background: white;
+    padding: 6px 0;
+  }
+
+  .rewardTable td,
+  .historyTable td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 12px;
+  }
+
+  .rewardTable td:last-child,
+  .historyTable td:last-child {
+    border-bottom: 0;
+  }
+
+  .rewardTable td::before,
+  .historyTable td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: #6b7280;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .rewardTable td:last-child .btn {
+    width: 100%;
+  }
+}

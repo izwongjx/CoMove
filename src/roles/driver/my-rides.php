@@ -7,10 +7,28 @@ $driverId = isset($_SESSION['user_id']) ? trim((string) $_SESSION['user_id']) : 
 
 if ($role !== 'driver' || $driverId === '') {
     echo "<script>alert('Please login as driver first.');";
-    die("window.location.href='../../auth/login/login.html';</script>");
+    die("window.location.href='../../auth/login/login.php';</script>");
 }
 
 $driverIdSafe = mysqli_real_escape_string($dbConn, $driverId);
+
+$driverStatusSql = "SELECT driver_status FROM DRIVER WHERE driver_id = '" . $driverIdSafe . "' LIMIT 1";
+$driverStatusResult = mysqli_query($dbConn, $driverStatusSql);
+if (!$driverStatusResult) {
+    echo "<script>alert('Unable to verify your account right now.');";
+    die("window.location.href='../../auth/login/login.php';</script>");
+}
+
+$driverStatusRow = mysqli_fetch_array($driverStatusResult);
+mysqli_free_result($driverStatusResult);
+
+$driverStatus = strtolower(trim((string) ($driverStatusRow['driver_status'] ?? '')));
+if ($driverStatus !== 'active') {
+    session_unset();
+    session_destroy();
+    echo "<script>alert('This driver account is currently banned. Please contact an admin.');";
+    die("window.location.href='../../auth/login/login.php';</script>");
+}
 
 $viewTripId = isset($_GET['view']) ? trim((string) $_GET['view']) : '';
 $deleteTripId = isset($_GET['delete']) ? trim((string) $_GET['delete']) : '';
@@ -67,8 +85,6 @@ if ($deleteTripId !== '') {
 
     if ($checkResult && mysqli_num_rows($checkResult) > 0) {
         mysqli_query($dbConn, "DELETE FROM RIDE_REQUEST WHERE trip_id = '" . $deleteIdSafe . "'");
-        mysqli_query($dbConn, "DELETE FROM RATING WHERE trip_id = '" . $deleteIdSafe . "'");
-        mysqli_query($dbConn, "DELETE FROM TRIP_SHARE WHERE trip_id = '" . $deleteIdSafe . "'");
         mysqli_query($dbConn, "DELETE FROM TRIP WHERE trip_id = '" . $deleteIdSafe . "' AND driver_id = '" . $driverIdSafe . "'");
         if (mysqli_affected_rows($dbConn) > 0) {
             echo "<script>alert('Ride deleted successfully.');";
@@ -87,7 +103,8 @@ if ($deleteTripId !== '') {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EcoRide - Driver My Rides</title>
+  <title>CoMove - Driver My Rides</title>
+  <link rel="icon" type="image/svg+xml" href="../../public-assets/icons/site-icon.svg">
   <link rel="stylesheet" href="../../public-assets/style.css">
   <link rel="stylesheet" href="my-rides.css">
 </head>
@@ -104,7 +121,11 @@ if ($deleteTripId !== '') {
         <a href="vehicle.php" class="navContent"><img src="../../public-assets/icons/file-text.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Vehicle</a>
         <a href="profile.php" class="navContent"><img src="../../public-assets/icons/user.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Profile</a>
       </div>
-      <div class="nav-actions"><a href="../../../index.html" class="nav-logout" title="Log out"><img src="../../public-assets/icons/log-out.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"></a></div>
+      <div class="nav-actions">
+        <a href="../../../index.php" class="nav-logout" title="Log out">
+          <img src="../../public-assets/icons/log-out.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true">
+        </a>
+      </div>
     </div>
   </nav>
 
@@ -127,11 +148,11 @@ if ($deleteTripId !== '') {
                         LIMIT 1";
             $tripResult = mysqli_query($dbConn, $tripSql);
 
-            if ($tripResult && ($tripRow = mysqli_fetch_assoc($tripResult))) {
+            if ($tripResult && ($tripRow = mysqli_fetch_array($tripResult))) {
                 $booked = 0;
                 $bookedSql = "SELECT SUM(seats_requested) AS booked FROM RIDE_REQUEST WHERE trip_id = '" . $viewTripSafe . "' AND request_status = 'approved'";
                 $bookedResult = mysqli_query($dbConn, $bookedSql);
-                if ($bookedResult && ($bookedRow = mysqli_fetch_assoc($bookedResult))) {
+                if ($bookedResult && ($bookedRow = mysqli_fetch_array($bookedResult))) {
                     $booked = isset($bookedRow['booked']) ? (int) $bookedRow['booked'] : 0;
                 }
                 if ($bookedResult) {
@@ -192,7 +213,7 @@ if ($deleteTripId !== '') {
                           $hasPassenger = false;
 
                           if ($passengerResult) {
-                              while ($passengerRow = mysqli_fetch_assoc($passengerResult)) {
+                              while ($passengerRow = mysqli_fetch_array($passengerResult)) {
                                   $hasPassenger = true;
                                   $name = isset($passengerRow['name']) ? (string) $passengerRow['name'] : '';
                                   $initials = 'NA';
@@ -276,13 +297,13 @@ if ($deleteTripId !== '') {
                     </thead>
                     <tbody>
                     <?php
-                    while ($row = mysqli_fetch_assoc($listResult)) {
+                    while ($row = mysqli_fetch_array($listResult)) {
                         $tripId = (string) $row['trip_id'];
                         $tripIdSafe = mysqli_real_escape_string($dbConn, $tripId);
                         $booked = 0;
                         $bookedSql = "SELECT SUM(seats_requested) AS booked FROM RIDE_REQUEST WHERE trip_id = '" . $tripIdSafe . "' AND request_status = 'approved'";
                         $bookedResult = mysqli_query($dbConn, $bookedSql);
-                        if ($bookedResult && ($bookedRow = mysqli_fetch_assoc($bookedResult))) {
+                        if ($bookedResult && ($bookedRow = mysqli_fetch_array($bookedResult))) {
                             $booked = isset($bookedRow['booked']) ? (int) $bookedRow['booked'] : 0;
                         }
                         if ($bookedResult) {
@@ -328,6 +349,7 @@ if ($deleteTripId !== '') {
     <a href="dashboard.html"><img src="../../public-assets/icons/home.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
     <a href="my-rides.php" class="active"><img src="../../public-assets/icons/car.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
     <a href="earnings.html"><img src="../../public-assets/icons/dollar-sign.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
+    <a href="redemption.php"><img src="../../public-assets/icons/gift.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
     <a href="vehicle.html"><img src="../../public-assets/icons/file-text.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
     <a href="profile.html"><img src="../../public-assets/icons/user.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
   </nav>
@@ -336,6 +358,8 @@ if ($deleteTripId !== '') {
 </body>
 
 </html>
+
+
 
 
 

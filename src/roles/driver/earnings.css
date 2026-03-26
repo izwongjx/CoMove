@@ -6,15 +6,18 @@
 
 
 .logo{
-  color: white;
-  font-size: 25px; 
-  font-weight: 800; 
+  color: #ffffff;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 26px; 
+  font-weight: 900; 
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
   gap: -10px;
   margin-left: 1%;
 }
 
 .logo span{
-  color: #c4f547;
+  color: #c8f135;
 }
 .insideNav{
   display: flex;
@@ -293,6 +296,10 @@
     text-decoration:underline;
 }
 
+.driver-bottom-nav {
+  background: var(--forest);
+  border-color: rgba(255, 255, 255, 0.1);
+}
 
 /* responsive */
 @media (max-width: 767px){

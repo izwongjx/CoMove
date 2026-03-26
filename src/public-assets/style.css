@@ -1,5 +1,5 @@
 /* ============================================
-   ECORIDE - Shared Theme + Role Navigation
+   COMOVE - Shared Theme + Role Navigation
    ============================================ */
 *,
 *::before,
@@ -12,6 +12,7 @@
 :root {
   --forest: #0f2a1d;
   --lime: #c4f547;
+  --lime-50:#abd53f;
   --black: #000000;
   --white: #ffffff;
   --gray-50: #f9fafb;
@@ -196,5 +197,4 @@ img {
     display: none;
   }
 }
-
 

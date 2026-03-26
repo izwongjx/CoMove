@@ -195,10 +195,10 @@ function saveUser() {
   name = name.trim(); email = email.trim();
   if (!name || !email) { toast('Name and email are required', 'error'); return; }
 
-  var initials = name.split(' ').map(function (w) { return w[0]; }).join('').slice(0, 2);
   var roleB    = role === 'Rider' ? 'b-blue' : 'b-purple';
   var statB    = status === 'Active' ? 'b-lime' : status === 'Banned' ? 'b-red' : 'b-yellow';
-  var avatarHTML = '<div class="user-cell"><div class="user-avatar" style="background:linear-gradient(135deg,#c8f135,#a3e635);color:#000">' + initials + '</div><div><div class="user-name">' + name + '</div><div class="user-sub">#' + uid + '</div></div></div>';
+  var defaultAvatar = '../../public-assets/images/profile-icon.png';
+  var avatarHTML = '<div class="user-cell"><img class="user-avatar" src="' + defaultAvatar + '" alt="User avatar" onerror="this.src=\'' + defaultAvatar + '\'"><div><div class="user-name">' + name + '</div><div class="user-sub">#' + uid + '</div></div></div>';
 
   if (uid && document.querySelector('[data-uid="' + uid + '"]')) {
     var row = document.querySelector('[data-uid="' + uid + '"]');

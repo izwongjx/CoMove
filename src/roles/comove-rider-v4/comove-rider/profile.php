@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comove – Profile</title>
+  <link rel="icon" type="image/svg+xml" href="../../../public-assets/icons/site-icon.svg">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="rider.css">
+</head>
+<body>
+  <nav class="top-nav rider-nav-bg">
+    <div class="nav-inner">
+      <a href="../../index.php" class="logo">Co<span>move</span></a>
+      <div class="nav-items">
+        <a href="dashboard.php" class="nav-item"><img src="icons/home.svg" width="16" height="16" class="icon-img" alt=""> Dashboard</a>
+        <a href="find-rides.php" class="nav-item"><img src="icons/search.svg" width="16" height="16" class="icon-img" alt=""> Find Rides</a>
+        <a href="my-trips.php" class="nav-item"><img src="icons/map.svg" width="16" height="16" class="icon-img" alt=""> My Trips</a>
+        <a href="friends.php" class="nav-item"><img src="icons/users.svg" width="16" height="16" class="icon-img" alt=""> Friends</a>
+        <a href="rewards.php" class="nav-item"><img src="icons/gift.svg" width="16" height="16" class="icon-img" alt=""> Rewards</a>
+        <a href="profile.php" class="nav-item active"><img src="icons/user.svg" width="16" height="16" class="icon-img" alt=""> Profile</a>
+      </div>
+      <div class="nav-actions">
+        <a href="../../index.php" class="nav-logout-btn"><img src="icons/log-out.svg" width="16" height="16" class="icon-img" alt=""> Log out</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="dashboard-main profile-main" style="max-width:700px;">
+    <h1 class="page-title">Profile</h1>
+
+    <div class="profile-hero">
+      <div class="profile-ava" id="profileAvatar">
+        <img id="profileAvatarImg" src="assets/avatars/default-profile.svg" alt="Your profile picture">
+        <button class="ava-edit" type="button" onclick="triggerProfileUpload()" aria-label="Upload profile photo">✏️</button>
+      </div>
+      <input type="file" id="profilePhotoInput" accept="image/*" style="display:none;">
+      <div class="profile-name" id="profileName">Loading...</div>
+      <div style="color:var(--gray-400);font-size:13px;" id="profileEmailHero">Loading...</div>
+      <div class="profile-role" id="profileRole">🚗 Rider</div>
+      <div class="profile-stats">
+        <div class="profile-stat"><div class="profile-stat-val" id="profilePoints">0</div><div class="profile-stat-lbl">Green Pts</div></div>
+        <div class="profile-stat"><div class="profile-stat-val" id="profileTrips">0</div><div class="profile-stat-lbl">Trips</div></div>
+      </div>
+    </div>
+
+    <!-- Personal Info -->
+    <div class="settings-card">
+      <div class="settings-section-title">Personal Information</div>
+      <div class="setting-row">
+        <div class="setting-icon">👤</div>
+        <div class="setting-label">Full Name</div>
+        <div class="setting-value" id="profileFullName">Loading...</div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-icon">📱</div>
+        <div class="setting-label">Phone Number</div>
+        <div class="setting-value" id="profilePhone">Loading...</div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-icon">✉️</div>
+        <div class="setting-label">Email</div>
+        <div class="setting-value" id="profileEmail">Loading...</div>
+      </div>
+    </div>
+
+    <div class="settings-card">
+      <div class="settings-section-title">Session</div>
+      <div class="setting-row clickable danger" onclick="openLogoutModal()">
+        <div class="setting-icon">🚪</div>
+        <div class="setting-label">Log Out</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Logout Modal -->
+  <div class="modal-overlay" id="logoutModal">
+    <div class="modal">
+      <div class="modal-title">Log Out?</div>
+      <div class="modal-sub">You'll need to sign back in to access your Comove account.</div>
+      <div class="modal-btns">
+        <button class="btn-outline" onclick="closeLogoutModal()">Cancel</button>
+        <button class="btn-primary" style="justify-content:center;" onclick="showToast('👋 Logged out!');closeLogoutModal();">Log Out</button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav rider-nav-bg">
+    <a href="dashboard.php"><img src="icons/home.svg" width="24" height="24" class="icon-img" alt=""></a>
+    <a href="find-rides.php"><img src="icons/search.svg" width="24" height="24" class="icon-img" alt=""></a>
+    <a href="my-trips.php"><img src="icons/map.svg" width="24" height="24" class="icon-img" alt=""></a>
+    <a href="friends.php"><img src="icons/users.svg" width="24" height="24" class="icon-img" alt=""></a>
+    <a href="rewards.php"><img src="icons/gift.svg" width="24" height="24" class="icon-img" alt=""></a>
+    <a href="profile.php" class="active"><img src="icons/user.svg" width="24" height="24" class="icon-img" alt=""></a>
+  </nav>
+  <div class="toast" id="toast"></div>
+  <script src="script.js"></script>
+  <script src="profile.js"></script>
+</body>
+</html>
+

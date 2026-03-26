@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comove – My Trips</title>
+  <link rel="icon" type="image/svg+xml" href="../../../public-assets/icons/site-icon.svg">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="rider.css">
+</head>
+<body>
+  <nav class="top-nav rider-nav-bg">
+    <div class="nav-inner">
+      <a href="../../index.php" class="logo">Co<span>move</span></a>
+      <div class="nav-items">
+        <a href="dashboard.php" class="nav-item"><img src="icons/home.svg" width="16" height="16" class="icon-img" alt=""> Dashboard</a>
+        <a href="find-rides.php" class="nav-item"><img src="icons/search.svg" width="16" height="16" class="icon-img" alt=""> Find Rides</a>
+        <a href="my-trips.php" class="nav-item active"><img src="icons/map.svg" width="16" height="16" class="icon-img" alt=""> My Trips</a>
+        <a href="friends.php" class="nav-item"><img src="icons/users.svg" width="16" height="16" class="icon-img" alt=""> Friends</a>
+        <a href="rewards.php" class="nav-item"><img src="icons/gift.svg" width="16" height="16" class="icon-img" alt=""> Rewards</a>
+        <a href="profile.php" class="nav-item"><img src="icons/user.svg" width="16" height="16" class="icon-img" alt=""> Profile</a>
+      </div>
+      <div class="nav-actions">
+        <a href="../../index.php" class="nav-logout-btn"><img src="icons/log-out.svg" width="16" height="16" class="icon-img" alt=""> Log out</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="dashboard-main">
+    <h1 class="page-title">My Trips</h1>
+    <p class="page-subtitle">Your carpool history</p>
+
+    <!-- Stats -->
+    <div class="form-card" style="display:grid;grid-template-columns:repeat(2,1fr);gap:0;padding:0;overflow:hidden;margin-bottom:24px;">
+      <div style="padding:16px;text-align:center;border-right:1px solid rgba(255,255,255,0.06);">
+        <div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--lime);" id="myTripsTotal">0</div>
+        <div style="font-size:12px;color:var(--gray-400);">Total Trips</div>
+      </div>
+      <div style="padding:16px;text-align:center;">
+        <div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--lime);" id="myTripsPoints">0</div>
+        <div style="font-size:12px;color:var(--gray-400);">Pts Earned</div>
+      </div>
+    </div>
+
+    <!-- ── TABS ── -->
+    <div class="tabs-row">
+      <button class="tab-btn active" onclick="switchTripsTab(this,'trip-history')">Trip History</button>
+    </div>
+
+    <!-- ── TRIP HISTORY TAB ── -->
+    <div id="tab-trip-history">
+      <div id="upcomingRideSection" style="display:none;margin-bottom:20px;">
+        <div class="section-title" style="margin-top:4px;">Upcoming Ride <span style="font-size:12px;color:var(--gray-400);font-family:var(--font-body);font-weight:400;text-transform:none;letter-spacing:0;">estimated info only, not live tracking</span></div>
+        <div id="upcomingRideCard"></div>
+      </div>
+
+      <div class="section-title" style="margin-top:4px;">All Trips <span style="font-size:12px;color:var(--gray-400);font-family:var(--font-body);font-weight:400;text-transform:none;letter-spacing:0;">tap to view details</span></div>
+      <div id="tripHistoryList"></div>
+    </div>
+  </main>
+
+  <!-- Trip Detail Modal -->
+  <div class="modal-overlay" id="tripModal">
+    <div class="modal">
+      <div class="modal-title">Trip Details</div>
+      <div class="trip-modal-route">
+        <div class="trip-modal-loc"><div class="trip-modal-dot" style="background:var(--lime);"></div><span id="md-from"></span></div>
+        <div class="trip-modal-line"></div>
+        <div class="trip-modal-loc"><div class="trip-modal-dot" style="background:var(--danger);"></div><span id="md-to"></span></div>
+      </div>
+      <div class="trip-modal-stats">
+        <div class="trip-modal-stat"><div class="trip-modal-stat-val" id="md-duration"></div><div class="trip-modal-stat-lbl">Duration</div></div>
+        <div class="trip-modal-stat"><div class="trip-modal-stat-val" id="md-pts" style="color:var(--lime);"></div><div class="trip-modal-stat-lbl">Points Earned</div></div>
+        <div class="trip-modal-stat"><div class="trip-modal-stat-val" id="md-fare"></div><div class="trip-modal-stat-lbl">Fare Paid</div></div>
+        <div class="trip-modal-stat"><div class="trip-modal-stat-val" id="md-payment" style="font-size:14px;"></div><div class="trip-modal-stat-lbl">Payment</div></div>
+      </div>
+      <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:14px;">
+        <div style="font-size:12px;color:var(--gray-400);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">Driver & Vehicle</div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div id="md-ava" style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#c8f135,#a8d020);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:#000;"></div>
+          <div>
+            <div id="md-driver" style="font-weight:600;font-size:14px;"></div>
+            <div id="md-car" style="font-size:12px;color:var(--gray-400);margin-top:2px;"></div>
+            <div style="margin-top:4px;display:flex;align-items:center;gap:6px;">
+              <span style="font-size:11px;color:var(--gray-400);">Plate No.</span>
+              <span id="md-plate" style="font-size:13px;font-weight:700;color:var(--lime);background:rgba(200,241,53,0.1);border:1px solid rgba(200,241,53,0.25);border-radius:6px;padding:2px 8px;font-family:monospace;letter-spacing:1px;"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--gray-400);margin-top:12px;" id="md-date"></div>
+      <div class="modal-btns" style="margin-top:16px;">
+        <button class="btn-primary" style="justify-content:center;" onclick="closeTripModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav rider-nav-bg">
+    <a href="dashboard.php"><img src="icons/home.svg" width="24" height="24" class="icon-img" alt=""></a>
+    <a href="find-rides.php"><img src="icons/search.svg" width="24" height="24" class="icon-img" alt=""></a>
+    <a href="my-trips.php" class="active"><img src="icons/map.svg" width="24" height="24" class="icon-img" alt=""></a>
+    <a href="friends.php"><img src="icons/users.svg" width="24" height="24" class="icon-img" alt=""></a>
+    <a href="rewards.php"><img src="icons/gift.svg" width="24" height="24" class="icon-img" alt=""></a>
+    <a href="profile.php"><img src="icons/user.svg" width="24" height="24" class="icon-img" alt=""></a>
+  </nav>
+  <div class="toast" id="toast"></div>
+  <script src="script.js"></script>
+  <script src="my-trips.js"></script>
+</body>
+</html>
+

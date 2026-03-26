@@ -1,5 +1,5 @@
 /* ============================================
-   ECORIDE - Driver-Specific Styles
+   COMOVE - Driver-Specific Styles
    ============================================ */
 
 /* --- Driver Nav Colors --- */
@@ -38,7 +38,7 @@
 }
 
 .driver-bottom-nav {
-  background: var(--black);
+  background: var(--forest);
   border-color: rgba(255, 255, 255, 0.1);
 }
 
@@ -126,13 +126,13 @@
 }
 
 .driver-btn-muted {
-  background: var(--white);
-  color: var(--gray-700);
+  background: var(--lime);
+  color: var(--grey);
   border: 1px solid var(--gray-300);
 }
 
 .driver-btn-muted:hover {
-  background: var(--gray-50);
+  background: var(--lime-50);
 }
 
 .driver-btn-danger-outline {

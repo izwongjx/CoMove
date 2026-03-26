@@ -9,6 +9,8 @@
 }
 
 
+
+
 .logo{
   color: white;
   font-size: 25px; 
@@ -20,6 +22,7 @@
 .logo span{
   color: #c4f547;
 }
+
 .insideNav{
   display: flex;
   align-items: center;
@@ -741,7 +744,10 @@
   font-weight: 700;  
 }
 
-
+.driver-bottom-nav {
+  background: var(--forest);
+  border-color: rgba(255, 255, 255, 0.1);
+}
 
 
 

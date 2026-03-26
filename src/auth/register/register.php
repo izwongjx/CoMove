@@ -1,5 +1,4 @@
 <?php
-session_start();
 include "../../config/conn.php";
 date_default_timezone_set('asia/kuala_lumpur');
 
