@@ -118,6 +118,7 @@ if ($deleteTripId !== '') {
           Dashboard</a>
         <a href="my-rides.php" class="currentNav"><img src="../../public-assets/icons/car.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> My Rides</a>
         <a href="earnings.php" class="navContent"><img src="../../public-assets/icons/dollar-sign.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Earnings</a>
+        <a href="redemption.php" class="navContent"><img src="../../public-assets/icons/gift.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Redemption</a>
         <a href="vehicle.php" class="navContent"><img src="../../public-assets/icons/file-text.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Vehicle</a>
         <a href="profile.php" class="navContent"><img src="../../public-assets/icons/user.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Profile</a>
       </div>
@@ -346,12 +347,12 @@ if ($deleteTripId !== '') {
   </main> 
 
   <nav class="bottom-nav driver-bottom-nav">
-    <a href="dashboard.html"><img src="../../public-assets/icons/home.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
+    <a href="dashboard.php"><img src="../../public-assets/icons/home.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
     <a href="my-rides.php" class="active"><img src="../../public-assets/icons/car.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
-    <a href="earnings.html"><img src="../../public-assets/icons/dollar-sign.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
+    <a href="earnings.php"><img src="../../public-assets/icons/dollar-sign.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
     <a href="redemption.php"><img src="../../public-assets/icons/gift.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
-    <a href="vehicle.html"><img src="../../public-assets/icons/file-text.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
-    <a href="profile.html"><img src="../../public-assets/icons/user.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
+    <a href="vehicle.php"><img src="../../public-assets/icons/file-text.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
+    <a href="profile.php"><img src="../../public-assets/icons/user.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
   </nav>
 
   <script src="../../public-assets/script.js"></script>

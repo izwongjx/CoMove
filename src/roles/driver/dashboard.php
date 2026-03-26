@@ -10,7 +10,7 @@ require_once '../../config/conn.php';
 
 //  check if the user aka driver is logged in
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'driver') {
-    header('Location: ../../../index.html');
+    header('Location: ../../../index.php');
     exit();
 }
 
@@ -152,11 +152,12 @@ $vehicle = mysqli_fetch_assoc($result_vehicle);
         <a href="dashboard.php" class="currentNav"><img src="../../public-assets/icons/home.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true">
           Dashboard</a>
         <a href="my-rides.php" class="navContent"><img src="../../public-assets/icons/car.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> My Rides</a>
-        <a href="earnings.php " class="navContent"><img src="../../public-assets/icons/dollar-sign.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Earnings</a>
+        <a href="earnings.php" class="navContent"><img src="../../public-assets/icons/dollar-sign.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Earnings</a>
+        <a href="redemption.php" class="navContent"><img src="../../public-assets/icons/gift.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Redemption</a>
         <a href="vehicle.php" class="navContent"><img src="../../public-assets/icons/file-text.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Vehicle</a>
         <a href="profile.php" class="navContent"><img src="../../public-assets/icons/user.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Profile</a>
       </div>
-      <div class="nav-actions"><a href="../../../index.html" class="nav-logout" title="Log out"><img src="../../public-assets/icons/log-out.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"></a></div>
+      <div class="nav-actions"><a href="../../../index.php" class="nav-logout" title="Log out"><img src="../../public-assets/icons/log-out.svg" width="20" height="20" class="icon-img" alt="" aria-hidden="true"></a></div>
     </div>
   </nav>
 
@@ -403,6 +404,7 @@ $vehicle = mysqli_fetch_assoc($result_vehicle);
     <a href="dashboard.php" class="active"><img src="../../public-assets/icons/home.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
     <a href="my-rides.php"><img src="../../public-assets/icons/car.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
     <a href="earnings.php"><img src="../../public-assets/icons/dollar-sign.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
+    <a href="redemption.php"><img src="../../public-assets/icons/gift.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
     <a href="vehicle.php"><img src="../../public-assets/icons/file-text.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
     <a href="profile.php"><img src="../../public-assets/icons/user.svg" width="24" height="24" class="icon-img" alt="" aria-hidden="true"></a>
   </nav>

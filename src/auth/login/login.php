@@ -1,42 +1,57 @@
-<?php
-session_start();
+<!DOCTYPE html>
+<html lang="en">
 
-include "../../config/conn.php";
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoMove - Choose Login Role</title>
+  <link rel="icon" type="image/svg+xml" href="../../public-assets/icons/site-icon.svg">
+  <link rel="stylesheet" href="login.css">
+</head>
 
-$email = mysqli_real_escape_string($dbConn, isset($_POST['user']) ? trim((string) $_POST['user']) : '');
-$password = mysqli_real_escape_string($dbConn, isset($_POST['pass']) ? (string) $_POST['pass'] : '');
-$role = strtolower(trim(isset($_POST['role']) ? (string) $_POST['role'] : ''));
+<body>
+  <main class="page">
+    <aside class="hero" aria-label="CoMove Message">
+      <div class="hero-content">
+        <h2>WELCOME<br><span>BACK</span></h2>
+        <p>Pick how you want to ride with the CoMove community today.</p>
+      </div>
+    </aside>
 
-if ($email === '' || $password === '' || ($role !== 'rider' && $role !== 'driver')) {
-    echo "<script>alert('Invalid login request! Please try again.');";
-    die("window.history.go(-1);</script>");
-}
+    <section class="panel">
+      <nav class="top-nav" aria-label="Page Navigation">
+        <a href="../../../index.php" class="back-link">
+          <img src="../../public-assets/icons/arrow-left.svg" width="16" height="16" class="icon-img" alt=""
+            aria-hidden="true"> BACK TO HOME
+        </a>
+      </nav>
 
-$tableName = $role === 'driver' ? 'DRIVER' : 'RIDER';
-$idColumn = $role === 'driver' ? 'driver_id' : 'rider_id';
-$dashboardPath = $role === 'driver'
-    ? '../../roles/driver/dashboard.php'
-    : '../../roles/rider/dashboard.html';
+      <div class="form-wrapper">
+        <header class="section-header">
+          <h1>Choose Your Role</h1>
+          <p>Select the account type you want to sign in with.</p>
+        </header>
 
-// TODO: re-enable password hashing when ready (example: md5($password) or password_hash verify)
-// $hashedPassword = md5($password);
-$sql = "Select * from " . $tableName . " where email = '" . $email . "' and password = '" . $password . "'";
-$result = mysqli_query($dbConn, $sql);
+        <div class="role-list" role="list">
+          <a class="role-card" role="listitem" href="login-as-rider.php">
+            <span class="role-icon" aria-hidden="true">
+              <img src="../../public-assets/icons/user.svg" width="24" height="24" alt="">
+            </span>
+            <span class="role-text">Log in as Rider</span>
+          </a>
 
-if (mysqli_num_rows($result) <= 0) {
-    echo "<script>alert('Wrong email / password !Please Try Again!');";
-    die("window.history.go(-1);</script>");
-}
+          <a class="role-card" role="listitem" href="login-as-driver.php">
+            <span class="role-icon" aria-hidden="true">
+              <img src="../../public-assets/icons/car.svg" width="24" height="24" alt="">
+            </span>
+            <span class="role-text">Log in as Driver</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
 
-if ($row = mysqli_fetch_array($result)) {
-    $_SESSION['user'] = isset($row['name']) ? (string) $row['name'] : '';
-    $_SESSION['email'] = isset($row['email']) ? (string) $row['email'] : '';
-    $_SESSION['password'] = isset($row['password']) ? (string) $row['password'] : '';
-    $_SESSION['role'] = $role;
-    $_SESSION['user_id'] = isset($row[$idColumn]) ? (string) $row[$idColumn] : '';
-}
+  <script src="../../public-assets/script.js"></script>
+</body>
 
-$safeName = isset($_SESSION['user']) ? str_replace("'", "\\'", (string) $_SESSION['user']) : 'User';
-echo "<script>alert('Welcome back! " . $safeName . "');";
-echo "window.location.href='" . $dashboardPath . "';</script>";
-?>
+</html>

@@ -3,7 +3,7 @@ session_start();
 require_once '../../config/conn.php';
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'driver') {
-    header('Location: ../../../index.html');
+    header('Location: ../../../index.php');
     exit();
 }
 
