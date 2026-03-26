@@ -7,7 +7,7 @@ $settingsMessage = '';
 $settingsError = '';
 
 $currentMultiplier = (float) (adminFetchOne($dbConn, 'SELECT multiplier_value FROM GREEN_POINT_CONFIG LIMIT 1')['multiplier_value'] ?? 1.0);
-$systemConfig = adminFetchOne($dbConn, 'SELECT driver_registration, system_maintenance FROM SYSTEM_CONFIG LIMIT 1');
+$systemConfig = adminFetchOne($dbConn, 'SELECT driver_registration FROM SYSTEM_CONFIG LIMIT 1');
 $driverRegistration = isset($systemConfig['driver_registration']) ? (int) $systemConfig['driver_registration'] : 1;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
@@ -43,10 +43,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
             $settingsError = 'Unable to update system settings.';
         }
     } else {
-        $systemMaintenanceDefault = 0;
-        $stmt = mysqli_prepare($dbConn, 'INSERT INTO SYSTEM_CONFIG (driver_registration, system_maintenance) VALUES (?, ?)');
+        $stmt = mysqli_prepare($dbConn, 'INSERT INTO SYSTEM_CONFIG (driver_registration) VALUES (?)');
         if ($stmt) {
-            mysqli_stmt_bind_param($stmt, 'ii', $driverRegistration, $systemMaintenanceDefault);
+            mysqli_stmt_bind_param($stmt, 'i', $driverRegistration);
             mysqli_stmt_execute($stmt);
             mysqli_stmt_close($stmt);
             $settingsMessage = 'Settings saved successfully.';
