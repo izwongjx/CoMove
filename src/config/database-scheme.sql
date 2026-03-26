@@ -87,7 +87,7 @@ CREATE TABLE RIDE_REQUEST (
     requested_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     amount_paid DECIMAL(10,2),
     payment_method VARCHAR(20),
-    proof_of_payment MEDIUMBLOB,
+    proof_of_payment VARCHAR(255),
     gained_point FLOAT,
     FOREIGN KEY (trip_id) REFERENCES TRIP(trip_id),
     FOREIGN KEY (rider_id) REFERENCES RIDER(rider_id)
