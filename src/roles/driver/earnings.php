@@ -110,7 +110,6 @@ while($row = mysqli_fetch_assoc($result_history)){
         <h1 class="pageTitle">EARNINGS</h1>
         <p class="pageSub">Track your income and trip history</p>
       </div>
-      <button class="export">Export CSV</button>
     </div>
 
     <div class="secondContainer">
@@ -177,9 +176,6 @@ while($row = mysqli_fetch_assoc($result_history)){
         <?php endif; ?>
       </div>
 
-      <div class="view-history">
-          <a href="#">View All History</a>
-      </div>
   </main>
 
   <nav class="bottom-nav driver-bottom-nav">

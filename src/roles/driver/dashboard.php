@@ -389,8 +389,8 @@ $vehicle = mysqli_fetch_assoc($result_vehicle);
         <p class="platePlace">License Plate</p>
         <p class="vehiclePlate"><?php echo htmlspecialchars($vehicle['plate_number']); ?></p>
 
-        <p class="documentPlace">Documents</p>
-        <p class="uptoDate">All Documents Are Up To Date</p>
+        <p class="documentPlace">Driver Status</p>
+        <p class="uptoDate">VERIFIED</p>
 
       </div>
       <button class="updateVehicle" onclick="window.location.href='vehicle.php'">

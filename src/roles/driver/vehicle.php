@@ -51,11 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
     exit();
 }
   
-
 ?>
-
-
-
 
 
   <!DOCTYPE html>
@@ -160,58 +156,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
         </div>
       </div>
 
-      <div class="documentSection">
-        <div class="docTitle">
-          <img src="../../public-assets/icons/doc.png" alt="documents icon">
-          <h2>DOCUMENTS</h2>
-        </div>
-
-        <div class="docCont">
-          <div class="docCard">
-            <div class="docLeft">
-              <img src="../../public-assets/icons/doc.png" alt="">
-              <div class="docText">
-                <p class="docName">Driver's License</p>
-                <p class="docExpire">Expires Dec 2025</p>
-              </div>
-            </div>
-            <span class="docStatus">VALID</span>
-          </div>
-
-          <div class="docCard">
-            <div class="docLeft">
-              <img src="../../public-assets/icons/doc.png" alt="">
-              <div class="docText">
-                <p class="docName">Insurance Policy</p>
-                <p class="docExpire">Expires Aug 2024</p>
-              </div>
-            </div>
-            <span class="docStatus">VALID</span>
-          </div>
-
-          <div class="docCard">
-            <div class="docLeft">
-              <img src="../../public-assets/icons/doc.png" alt="">
-              <div class="docText">
-                <p class="docName">Road Tax</p>
-                <p class="docExpire">Expires Aug 2025</p>
-              </div>
-            </div>
-            <span class="docStatus">VALID</span>
-          </div>
-
-          <div class="docCard">
-            <div class="docLeft">
-              <img src="../../public-assets/icons/doc.png" alt="">
-              <div class="docText">
-                <p class="docName">Vehicle Ownership Cert</p>
-                <p class="docExpire">Verified</p>
-              </div>
-            </div>
-            <span class="docStatus">VALID</span>
-          </div>
-        </div>
-      </div>
 
       <div class="updateVehicleInfo">
         <!-- id="updateVehicleBtn" is what the JS will target to open the modal -->
