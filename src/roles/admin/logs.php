@@ -57,7 +57,7 @@ $circulationPoints = $issuedPoints - $redeemedPoints;
 ?>
   <main class="dashboard-main">
     <h1 class="page-title">Logs</h1>
-    <p class="page-subtitle">Trips, ride requests and green point activity from live database records.</p>
+    <p class="page-subtitle">Trips, ride requests and green point activity from live database records</p>
 
     <div class="sub-tabs">
       <button class="sub-tab active" id="ltab-trips" onclick="switchTab('ltab-','logsub-',['trips','requests','gpoints'],'trips')">Trips</button>
