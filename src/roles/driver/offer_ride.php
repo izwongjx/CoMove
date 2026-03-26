@@ -7,7 +7,7 @@ require_once '../../config/conn.php';
 
 //  check if the user aka driver is logged in
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'driver') {
-    header('Location: ../../../index.html');
+    header('Location: ../../../index.php');
     exit();
 }
 
