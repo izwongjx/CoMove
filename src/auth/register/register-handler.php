@@ -163,7 +163,7 @@ if ($role === 'rider') {
 
 $driverRegistration = 1;
 $systemResult = mysqli_query($dbConn, 'SELECT driver_registration FROM SYSTEM_CONFIG LIMIT 1');
-if ($systemResult && ($systemRow = mysqli_fetch_assoc($systemResult))) {
+if ($systemResult && ($systemRow = mysqli_fetch_array($systemResult))) {
     $driverRegistration = (int) $systemRow['driver_registration'];
 }
 if ($systemResult) {

@@ -10,21 +10,14 @@ if ($role !== 'driver' || $driverId === '') {
     die("window.location.href='../../auth/login/login.php';</script>");
 }
 
-$driverStatusStmt = mysqli_prepare($dbConn, 'SELECT driver_status FROM DRIVER WHERE driver_id = ? LIMIT 1');
-if (!$driverStatusStmt) {
-    echo "<script>alert('Unable to verify your account right now.');";
-    die("window.location.href='../../auth/login/login.php';</script>");
-}
+$driverIdSafe = mysqli_real_escape_string($dbConn, $driverId);
 
-$driverIdInt = (int) $driverId;
-mysqli_stmt_bind_param($driverStatusStmt, 'i', $driverIdInt);
-mysqli_stmt_execute($driverStatusStmt);
-$driverStatusResult = mysqli_stmt_get_result($driverStatusStmt);
-$driverStatusRow = $driverStatusResult ? mysqli_fetch_assoc($driverStatusResult) : null;
+$driverStatusSql = "SELECT driver_status FROM DRIVER WHERE driver_id = '" . $driverIdSafe . "' LIMIT 1";
+$driverStatusResult = mysqli_query($dbConn, $driverStatusSql);
+$driverStatusRow = $driverStatusResult ? mysqli_fetch_array($driverStatusResult) : null;
 if ($driverStatusResult) {
     mysqli_free_result($driverStatusResult);
 }
-mysqli_stmt_close($driverStatusStmt);
 
 $driverStatus = strtolower(trim((string) ($driverStatusRow['driver_status'] ?? '')));
 if ($driverStatus !== 'active') {
@@ -40,18 +33,13 @@ function escapeHtml(string $value): string
 }
 
 $driverPoints = 0;
-$pointsStmt = mysqli_prepare($dbConn, 'SELECT COALESCE(SUM(points_change), 0) AS total_points FROM DRIVER_GREEN_POINT_LOG WHERE driver_id = ?');
-if ($pointsStmt) {
-    mysqli_stmt_bind_param($pointsStmt, 'i', $driverIdInt);
-    mysqli_stmt_execute($pointsStmt);
-    $pointsResult = mysqli_stmt_get_result($pointsStmt);
-    if ($pointsResult && ($pointsRow = mysqli_fetch_assoc($pointsResult))) {
-        $driverPoints = (int) ($pointsRow['total_points'] ?? 0);
-    }
-    if ($pointsResult) {
-        mysqli_free_result($pointsResult);
-    }
-    mysqli_stmt_close($pointsStmt);
+$pointsSql = "SELECT COALESCE(SUM(points_change), 0) AS total_points FROM DRIVER_GREEN_POINT_LOG WHERE driver_id = '" . $driverIdSafe . "'";
+$pointsResult = mysqli_query($dbConn, $pointsSql);
+if ($pointsResult && ($pointsRow = mysqli_fetch_array($pointsResult))) {
+    $driverPoints = (int) ($pointsRow['total_points'] ?? 0);
+}
+if ($pointsResult) {
+    mysqli_free_result($pointsResult);
 }
 
 $redeemId = isset($_POST['redeem_id']) ? trim((string) $_POST['redeem_id']) : '';
@@ -62,22 +50,16 @@ if ($redeemId !== '') {
         die("window.location.href='redemption.php';</script>");
     }
 
-    mysqli_begin_transaction($dbConn);
+    $rewardIdSafe = mysqli_real_escape_string($dbConn, (string) $rewardIdInt);
+    mysqli_query($dbConn, "START TRANSACTION");
     $rollback = false;
     $errorMessage = '';
 
-    $rewardStmt = mysqli_prepare($dbConn, 'SELECT reward_id, reward_name, points_required, stock FROM REWARD WHERE reward_id = ? LIMIT 1 FOR UPDATE');
-    if ($rewardStmt) {
-        mysqli_stmt_bind_param($rewardStmt, 'i', $rewardIdInt);
-        mysqli_stmt_execute($rewardStmt);
-        $rewardResult = mysqli_stmt_get_result($rewardStmt);
-        $rewardRow = $rewardResult ? mysqli_fetch_assoc($rewardResult) : null;
-        if ($rewardResult) {
-            mysqli_free_result($rewardResult);
-        }
-        mysqli_stmt_close($rewardStmt);
-    } else {
-        $rewardRow = null;
+    $rewardSql = "SELECT reward_id, reward_name, points_required, stock FROM REWARD WHERE reward_id = '" . $rewardIdSafe . "' LIMIT 1 FOR UPDATE";
+    $rewardResult = mysqli_query($dbConn, $rewardSql);
+    $rewardRow = $rewardResult ? mysqli_fetch_array($rewardResult) : null;
+    if ($rewardResult) {
+        mysqli_free_result($rewardResult);
     }
 
     if (!$rewardRow) {
@@ -92,31 +74,22 @@ if ($redeemId !== '') {
             $rollback = true;
             $errorMessage = 'This reward is out of stock.';
         } else {
-            $pointStmt = mysqli_prepare($dbConn, 'SELECT COALESCE(SUM(points_change), 0) AS total_points FROM DRIVER_GREEN_POINT_LOG WHERE driver_id = ? FOR UPDATE');
+            $pointSql = "SELECT COALESCE(SUM(points_change), 0) AS total_points FROM DRIVER_GREEN_POINT_LOG WHERE driver_id = '" . $driverIdSafe . "' FOR UPDATE";
+            $pointResult = mysqli_query($dbConn, $pointSql);
             $currentPoints = 0;
-            if ($pointStmt) {
-                mysqli_stmt_bind_param($pointStmt, 'i', $driverIdInt);
-                mysqli_stmt_execute($pointStmt);
-                $pointResult = mysqli_stmt_get_result($pointStmt);
-                if ($pointResult && ($pointRow = mysqli_fetch_assoc($pointResult))) {
-                    $currentPoints = (int) ($pointRow['total_points'] ?? 0);
-                }
-                if ($pointResult) {
-                    mysqli_free_result($pointResult);
-                }
-                mysqli_stmt_close($pointStmt);
+            if ($pointResult && ($pointRow = mysqli_fetch_array($pointResult))) {
+                $currentPoints = (int) ($pointRow['total_points'] ?? 0);
+            }
+            if ($pointResult) {
+                mysqli_free_result($pointResult);
             }
 
             if ($currentPoints < $pointsRequired) {
                 $rollback = true;
                 $errorMessage = 'Not enough points to redeem this reward.';
             } else {
-                $redeemStmt = mysqli_prepare($dbConn, 'INSERT INTO DRIVER_REDEMPTION (driver_id, reward_id) VALUES (?, ?)');
-                if ($redeemStmt) {
-                    mysqli_stmt_bind_param($redeemStmt, 'ii', $driverIdInt, $rewardIdInt);
-                    mysqli_stmt_execute($redeemStmt);
-                    mysqli_stmt_close($redeemStmt);
-                } else {
+                $redeemSql = "INSERT INTO DRIVER_REDEMPTION (driver_id, reward_id) VALUES ('" . $driverIdSafe . "', '" . $rewardIdSafe . "')";
+                if (!mysqli_query($dbConn, $redeemSql)) {
                     $rollback = true;
                     $errorMessage = 'Unable to record redemption.';
                 }
@@ -126,31 +99,19 @@ if ($redeemId !== '') {
                     if (strlen($sourceLabel) > 50) {
                         $sourceLabel = substr($sourceLabel, 0, 50);
                     }
-
-                    $logStmt = mysqli_prepare($dbConn, 'INSERT INTO DRIVER_GREEN_POINT_LOG (driver_id, points_change, source) VALUES (?, ?, ?)');
-                    if ($logStmt) {
-                        $negativePoints = -1 * $pointsRequired;
-                        mysqli_stmt_bind_param($logStmt, 'iis', $driverIdInt, $negativePoints, $sourceLabel);
-                        mysqli_stmt_execute($logStmt);
-                        mysqli_stmt_close($logStmt);
-                    } else {
+                    $sourceSafe = mysqli_real_escape_string($dbConn, $sourceLabel);
+                    $negativePoints = -1 * $pointsRequired;
+                    $logSql = "INSERT INTO DRIVER_GREEN_POINT_LOG (driver_id, points_change, source) VALUES ('" . $driverIdSafe . "', '" . $negativePoints . "', '" . $sourceSafe . "')";
+                    if (!mysqli_query($dbConn, $logSql)) {
                         $rollback = true;
                         $errorMessage = 'Unable to update points.';
                     }
                 }
 
                 if (!$rollback) {
-                    $stockStmt = mysqli_prepare($dbConn, 'UPDATE REWARD SET stock = stock - 1 WHERE reward_id = ? AND stock > 0');
-                    if ($stockStmt) {
-                        mysqli_stmt_bind_param($stockStmt, 'i', $rewardIdInt);
-                        mysqli_stmt_execute($stockStmt);
-                        $affected = mysqli_stmt_affected_rows($stockStmt);
-                        mysqli_stmt_close($stockStmt);
-                        if ($affected <= 0) {
-                            $rollback = true;
-                            $errorMessage = 'Unable to update stock.';
-                        }
-                    } else {
+                    $stockSql = "UPDATE REWARD SET stock = stock - 1 WHERE reward_id = '" . $rewardIdSafe . "' AND stock > 0";
+                    $ok = mysqli_query($dbConn, $stockSql);
+                    if (!$ok || mysqli_affected_rows($dbConn) <= 0) {
                         $rollback = true;
                         $errorMessage = 'Unable to update stock.';
                     }
@@ -160,13 +121,13 @@ if ($redeemId !== '') {
     }
 
     if ($rollback) {
-        mysqli_rollback($dbConn);
+        mysqli_query($dbConn, "ROLLBACK");
         $errorMessage = $errorMessage !== '' ? $errorMessage : 'Redemption failed.';
         echo "<script>alert('" . escapeHtml($errorMessage) . "');";
         die("window.location.href='redemption.php';</script>");
     }
 
-    mysqli_commit($dbConn);
+    mysqli_query($dbConn, "COMMIT");
     echo "<script>alert('Redemption successful!');";
     die("window.location.href='redemption.php';</script>");
 }
@@ -175,25 +136,25 @@ $rewardRows = [];
 $rewardSql = "SELECT reward_id, reward_name, points_required, category, stock FROM REWARD WHERE stock > 0 ORDER BY points_required ASC, reward_name ASC";
 $rewardResult = mysqli_query($dbConn, $rewardSql);
 if ($rewardResult) {
-    while ($row = mysqli_fetch_assoc($rewardResult)) {
+    while ($row = mysqli_fetch_array($rewardResult)) {
         $rewardRows[] = $row;
     }
     mysqli_free_result($rewardResult);
 }
 
 $historyRows = [];
-$historyStmt = mysqli_prepare($dbConn, 'SELECT r.reward_name, r.points_required, dr.redeemed_at FROM DRIVER_REDEMPTION dr JOIN REWARD r ON dr.reward_id = r.reward_id WHERE dr.driver_id = ? ORDER BY dr.redeemed_at DESC LIMIT 10');
-if ($historyStmt) {
-    mysqli_stmt_bind_param($historyStmt, 'i', $driverIdInt);
-    mysqli_stmt_execute($historyStmt);
-    $historyResult = mysqli_stmt_get_result($historyStmt);
-    if ($historyResult) {
-        while ($row = mysqli_fetch_assoc($historyResult)) {
-            $historyRows[] = $row;
-        }
-        mysqli_free_result($historyResult);
+$historySql = "SELECT r.reward_name, r.points_required, dr.redeemed_at
+               FROM DRIVER_REDEMPTION dr
+               JOIN REWARD r ON dr.reward_id = r.reward_id
+               WHERE dr.driver_id = '" . $driverIdSafe . "'
+               ORDER BY dr.redeemed_at DESC
+               LIMIT 10";
+$historyResult = mysqli_query($dbConn, $historySql);
+if ($historyResult) {
+    while ($row = mysqli_fetch_array($historyResult)) {
+        $historyRows[] = $row;
     }
-    mysqli_stmt_close($historyStmt);
+    mysqli_free_result($historyResult);
 }
 ?>
 <!DOCTYPE html>

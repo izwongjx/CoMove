@@ -10,21 +10,17 @@ if ($role !== 'driver' || $driverId === '') {
     die("window.location.href='../../auth/login/login.php';</script>");
 }
 
-$driverStatusStmt = mysqli_prepare($dbConn, 'SELECT driver_status FROM DRIVER WHERE driver_id = ? LIMIT 1');
-if (!$driverStatusStmt) {
+$driverIdSafe = mysqli_real_escape_string($dbConn, $driverId);
+
+$driverStatusSql = "SELECT driver_status FROM DRIVER WHERE driver_id = '" . $driverIdSafe . "' LIMIT 1";
+$driverStatusResult = mysqli_query($dbConn, $driverStatusSql);
+if (!$driverStatusResult) {
     echo "<script>alert('Unable to verify your account right now.');";
     die("window.location.href='../../auth/login/login.php';</script>");
 }
 
-$driverIdInt = (int) $driverId;
-mysqli_stmt_bind_param($driverStatusStmt, 'i', $driverIdInt);
-mysqli_stmt_execute($driverStatusStmt);
-$driverStatusResult = mysqli_stmt_get_result($driverStatusStmt);
-$driverStatusRow = $driverStatusResult ? mysqli_fetch_assoc($driverStatusResult) : null;
-if ($driverStatusResult) {
-    mysqli_free_result($driverStatusResult);
-}
-mysqli_stmt_close($driverStatusStmt);
+$driverStatusRow = mysqli_fetch_array($driverStatusResult);
+mysqli_free_result($driverStatusResult);
 
 $driverStatus = strtolower(trim((string) ($driverStatusRow['driver_status'] ?? '')));
 if ($driverStatus !== 'active') {
@@ -33,8 +29,6 @@ if ($driverStatus !== 'active') {
     echo "<script>alert('This driver account is currently banned. Please contact an admin.');";
     die("window.location.href='../../auth/login/login.php';</script>");
 }
-
-$driverIdSafe = mysqli_real_escape_string($dbConn, $driverId);
 
 $viewTripId = isset($_GET['view']) ? trim((string) $_GET['view']) : '';
 $deleteTripId = isset($_GET['delete']) ? trim((string) $_GET['delete']) : '';
@@ -155,11 +149,11 @@ if ($deleteTripId !== '') {
                         LIMIT 1";
             $tripResult = mysqli_query($dbConn, $tripSql);
 
-            if ($tripResult && ($tripRow = mysqli_fetch_assoc($tripResult))) {
+            if ($tripResult && ($tripRow = mysqli_fetch_array($tripResult))) {
                 $booked = 0;
                 $bookedSql = "SELECT SUM(seats_requested) AS booked FROM RIDE_REQUEST WHERE trip_id = '" . $viewTripSafe . "' AND request_status = 'approved'";
                 $bookedResult = mysqli_query($dbConn, $bookedSql);
-                if ($bookedResult && ($bookedRow = mysqli_fetch_assoc($bookedResult))) {
+                if ($bookedResult && ($bookedRow = mysqli_fetch_array($bookedResult))) {
                     $booked = isset($bookedRow['booked']) ? (int) $bookedRow['booked'] : 0;
                 }
                 if ($bookedResult) {
@@ -220,7 +214,7 @@ if ($deleteTripId !== '') {
                           $hasPassenger = false;
 
                           if ($passengerResult) {
-                              while ($passengerRow = mysqli_fetch_assoc($passengerResult)) {
+                              while ($passengerRow = mysqli_fetch_array($passengerResult)) {
                                   $hasPassenger = true;
                                   $name = isset($passengerRow['name']) ? (string) $passengerRow['name'] : '';
                                   $initials = 'NA';
@@ -304,13 +298,13 @@ if ($deleteTripId !== '') {
                     </thead>
                     <tbody>
                     <?php
-                    while ($row = mysqli_fetch_assoc($listResult)) {
+                    while ($row = mysqli_fetch_array($listResult)) {
                         $tripId = (string) $row['trip_id'];
                         $tripIdSafe = mysqli_real_escape_string($dbConn, $tripId);
                         $booked = 0;
                         $bookedSql = "SELECT SUM(seats_requested) AS booked FROM RIDE_REQUEST WHERE trip_id = '" . $tripIdSafe . "' AND request_status = 'approved'";
                         $bookedResult = mysqli_query($dbConn, $bookedSql);
-                        if ($bookedResult && ($bookedRow = mysqli_fetch_assoc($bookedResult))) {
+                        if ($bookedResult && ($bookedRow = mysqli_fetch_array($bookedResult))) {
                             $booked = isset($bookedRow['booked']) ? (int) $bookedRow['booked'] : 0;
                         }
                         if ($bookedResult) {
