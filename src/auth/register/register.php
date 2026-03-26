@@ -157,7 +157,7 @@ if ($role === 'rider') {
     $_SESSION['user_id'] = $riderId;
 
     echo "<script>alert('Registration completed successfully!');";
-    echo "window.location.href='../../roles/rider/dashboard.html';</script>";
+    echo "window.location.href='../../roles/rider/dashboard.php';</script>";
     exit;
 }
 
@@ -220,5 +220,5 @@ $_SESSION['role'] = 'driver';
 $_SESSION['user_id'] = $driverId;
 
 echo "<script>alert('Registration completed successfully!');";
-echo "window.location.href='../../roles/driver/dashboard.html';</script>";
+echo "window.location.href='../../roles/driver/dashboard.php';</script>";
 ?>
