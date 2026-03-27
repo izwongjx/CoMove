@@ -322,7 +322,7 @@ if ($deleteTripId !== '') {
                         echo "<td data-label='Date Time'>" . escapeHtml((string) $row['departure_time']) . "</td>";
                         echo "<td data-label='Location'>" . escapeHtml((string) $row['start_location']) . " -> " . escapeHtml((string) $row['end_location']) . "</td>";
                         echo "<td data-label='Estimated Duration'>" . escapeHtml($estimatedText) . "</td>";
-                        echo "<td data-label='Total Price'>$" . number_format((float) $row['total_amount'], 2) . "</td>";
+                        echo "<td data-label='Total Price'>RM" . number_format((float) $row['total_amount'], 2) . "</td>";
                         echo "<td data-label='Available Place'>" . $availableSeats . "/" . $totalSeats . "</td>";
                         echo "<td data-label='Action' class='rides-action-cell'>";
                         echo "<a href='my-rides.php?view=" . escapeHtml($tripId) . "' class='driver-btn driver-btn-small driver-btn-muted'>View</a>";
