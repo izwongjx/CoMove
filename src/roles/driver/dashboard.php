@@ -108,7 +108,7 @@ $sql_requests = "SELECT rr.request_id, rr.amount_paid, rr.payment_method,
                 JOIN trip t ON rr.trip_id = t.trip_id
                 WHERE t.driver_id = ? 
                   AND rr.request_status = 'pending'
-                  AND t.trip_status IN ('ongoing')
+                  AND t.trip_status = 'scheduled'
                 ORDER BY t.departure_time ASC";
 
 $stmt_requests = mysqli_prepare($dbConn, $sql_requests);
@@ -139,7 +139,8 @@ $vehicle = mysqli_fetch_assoc($result_vehicle);
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EcoRide - Driver Dashboard</title>
+  <title>CoMove - Driver Dashboard</title>
+  <link rel="icon" type="image/svg+xml" href="../../public-assets/icons/site-icon.svg">
   <link rel="stylesheet" href="../../public-assets/style.css">
   <link rel="stylesheet" href="dashboard.css">
 </head>
@@ -147,7 +148,7 @@ $vehicle = mysqli_fetch_assoc($result_vehicle);
 <body>
   <nav class="mainNav">
     <div class="insideNav">
-      <a href="dashboard.php" class="logo">ECO<span>RIDE</span></a>
+      <a href="dashboard.php" class="logo">CO<span>MOVE</span></a>
       <div class="navContents">
         <a href="dashboard.php" class="currentNav"><img src="../../public-assets/icons/home.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true">
           Dashboard</a>
@@ -360,13 +361,10 @@ $vehicle = mysqli_fetch_assoc($result_vehicle);
                     <button type="submit" class="accept">Accept</button>
                   </form>
                 </div>
-
               </div>
             <?php endforeach; ?>
-
           </div>
         <?php endif; ?>
-
       </div>
     </div>
 

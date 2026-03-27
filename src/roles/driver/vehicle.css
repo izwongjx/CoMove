@@ -407,3 +407,24 @@
   background-color: #c4f547;
   color: black;
 }
+
+
+/* for nav bar */
+@media (max-width: 767px){
+  .navContents{
+    display: none;
+  }
+}
+
+@media (max-width: 767px){
+  .insideNav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.driver-bottom-nav {
+  background: var(--forest);
+  border-color: rgba(255, 255, 255, 0.1);
+}

@@ -50,7 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EcoRide - Driver Profile</title>
+  <title>CoMove - Driver Profile</title>
+  <link rel="icon" type="image/svg+xml" href="../../public-assets/icons/site-icon.svg">
   <link rel="stylesheet" href="../../public-assets/style.css">
   <link rel="stylesheet" href="profile.css">
 </head>
@@ -58,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
 <body>
   <nav class="mainNav">
       <div class="insideNav">
-        <a href="dashboard.php" class="logo">ECO<span>RIDE</span></a>
+        <a href="dashboard.php" class="logo">CO<span>MOVE</span></a>
         <div class="navContents">
           <a href="dashboard.php" class="navContent"><img src="../../public-assets/icons/home.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Dashboard</a>
           <a href="my-rides.php" class="navContent"><img src="../../public-assets/icons/car.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> My Rides</a>
@@ -80,10 +81,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
         <input type="text" name="name" 
                value="<?php echo htmlspecialchars($driver['name'] ?? ''); ?>" 
                placeholder="Full Name" required>
-
-        <input type="email" name="email" 
-               value="<?php echo htmlspecialchars($driver['email'] ?? ''); ?>" 
-               placeholder="Email Address" required>
 
         <input type="text" name="phone_number" 
                value="<?php echo htmlspecialchars($driver['phone_number'] ?? ''); ?>" 

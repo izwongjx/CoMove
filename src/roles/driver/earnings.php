@@ -84,7 +84,8 @@ while($row = mysqli_fetch_assoc($result_history)){
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EcoRide - Driver Earnings</title>
+  <title>CoMove - Driver Earnings</title>
+  <link rel="icon" type="image/svg+xml" href="../../public-assets/icons/site-icon.svg">
   <link rel="stylesheet" href="../../public-assets/style.css">
   <link rel="stylesheet" href="earnings.css">
 </head>
@@ -92,7 +93,7 @@ while($row = mysqli_fetch_assoc($result_history)){
 <body>
   <nav class="mainNav">
       <div class="insideNav">
-        <a href="dashboard.php" class="logo">ECO<span>RIDE</span></a>
+        <a href="dashboard.php" class="logo">CO<span>MOVE</span></a>
         <div class="navContents">
           <a href="dashboard.php" class="navContent"><img src="../../public-assets/icons/home.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> Dashboard</a>
           <a href="my-rides.php" class="navContent"><img src="../../public-assets/icons/car.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true"> My Rides</a>
