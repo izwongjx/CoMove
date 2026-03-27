@@ -216,15 +216,17 @@ function ensureDriverValueNotExists(mysqli $dbConn, string $column, string $valu
 }
 
 $role = strtolower(trim(isset($_POST['role']) ? (string) $_POST['role'] : ''));
-$password = mysqli_real_escape_string($dbConn, isset($_POST['password']) ? (string) $_POST['password'] : '');
-$confirmPassword = mysqli_real_escape_string($dbConn, isset($_POST['confirmPassword']) ? (string) $_POST['confirmPassword'] : '');
+$passwordRaw = isset($_POST['password']) ? (string) $_POST['password'] : '';
+$confirmPasswordRaw = isset($_POST['confirmPassword']) ? (string) $_POST['confirmPassword'] : '';
+$password = mysqli_real_escape_string($dbConn, $passwordRaw);
+$confirmPassword = mysqli_real_escape_string($dbConn, $confirmPasswordRaw);
 $otpCode = mysqli_real_escape_string($dbConn, isset($_POST['otp_code']) ? trim((string) $_POST['otp_code']) : '');
 
 if ($role !== 'rider' && $role !== 'driver') {
     failBack('Invalid register request.');
 }
 
-if ($password !== $confirmPassword) {
+if ($passwordRaw !== $confirmPasswordRaw) {
     failBack('Password and confirmed password not same!');
 }
 
@@ -242,7 +244,7 @@ if ($role === 'rider') {
         $profilePhoto = getDefaultProfilePhoto($dbConn);
     }
 
-    if ($name === '' || $email === '' || $phone === '' || $password === '') {
+    if ($name === '' || $email === '' || $phone === '' || $passwordRaw === '') {
         failBack('Please fill all required fields!');
     }
 
@@ -256,10 +258,9 @@ if ($role === 'rider') {
     $profilePhotoSql = $profilePhoto === null ? "NULL" : "'" . $profilePhoto . "'";
 
     $createdAtSql = "NOW()";
-    // TODO: re-enable password hashing when ready (example: md5($password) or password_hash)
-    // $hashedPassword = md5($password);
+    $hashedPassword = mysqli_real_escape_string($dbConn, md5($passwordRaw));
     $sql = "Insert into RIDER (name, email, password, phone_number, profile_photo, created_at, rider_status) VALUES ('" .
-        $name . "','" . $email . "','" . $password . "','" . $phone . "'," . $profilePhotoSql . "," . $createdAtSql . ",'active')";
+        $name . "','" . $email . "','" . $hashedPassword . "','" . $phone . "'," . $profilePhotoSql . "," . $createdAtSql . ",'active')";
     mysqli_query($dbConn, $sql);
 
     if (mysqli_affected_rows($dbConn) <= 0) {
@@ -305,7 +306,7 @@ if (
     $name === '' ||
     $email === '' ||
     $phoneNumber === '' ||
-    $password === '' ||
+    $passwordRaw === '' ||
     $nricNumber === '' ||
     $licenseExpiryDate === '' ||
     $plateNumber === ''
@@ -334,10 +335,9 @@ if ($profilePhoto === null) {
 $profilePhotoSql = $profilePhoto === null ? "NULL" : "'" . $profilePhoto . "'";
 
 $createdAtSql = "NOW()";
-// TODO: re-enable password hashing when ready (example: md5($password) or password_hash)
-// $hashedPassword = md5($password);
+$hashedPassword = mysqli_real_escape_string($dbConn, md5($passwordRaw));
 $sql = "Insert into DRIVER (name, email, password, phone_number, profile_photo, created_at, driver_status, nric_number, nric_front_image, nric_back_image, license_front_image, license_back_image, license_expiry_date, vehicle_model, plate_number, color) VALUES ('" .
-    $name . "','" . $email . "','" . $password . "','" . $phoneNumber . "'," . $profilePhotoSql . "," . $createdAtSql . ",'pending','" . $nricNumber . "','" . $nricFrontImage . "','" . $nricBackImage . "','" . $licenseFrontImage . "','" . $licenseBackImage . "','" . $licenseExpiryDate . "','" . $vehicleModel . "','" . $plateNumber . "','" . $color . "')";
+    $name . "','" . $email . "','" . $hashedPassword . "','" . $phoneNumber . "'," . $profilePhotoSql . "," . $createdAtSql . ",'pending','" . $nricNumber . "','" . $nricFrontImage . "','" . $nricBackImage . "','" . $licenseFrontImage . "','" . $licenseBackImage . "','" . $licenseExpiryDate . "','" . $vehicleModel . "','" . $plateNumber . "','" . $color . "')";
 mysqli_query($dbConn, $sql);
 
 if (mysqli_affected_rows($dbConn) <= 0) {

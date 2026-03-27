@@ -18,7 +18,7 @@ VALUES (TRUE);
 
 -- Admin
 INSERT INTO ADMIN (admin_id, name, email, password, created_at) VALUES
-(1, 'System Admin', 'admin@comove.local', 'Admin@123', '2026-03-01 09:00:00');
+(1, 'System Admin', 'admin@comove.local', '0e7517141fb53f21ee439b355b5a1d0a', '2026-03-01 09:00:00');
 
 -- Drivers (1-3)
 INSERT INTO DRIVER (
@@ -26,29 +26,29 @@ INSERT INTO DRIVER (
     nric_number, nric_front_image, nric_back_image, license_front_image, license_back_image, license_expiry_date,
     vehicle_model, plate_number, color
 ) VALUES
-(1, 'Driver', 'driver@mail.apu.edu.my', 'Driver@123', '012-1111222', @profile_photo, '2026-03-02 10:00:00', 1, 'active',
+(1, 'Driver', 'driver@mail.apu.edu.my', 'd5a658db5e6d22bfebbf6b6e6805c716', '012-1111222', @profile_photo, '2026-03-02 10:00:00', 1, 'active',
  '900101101234', @nric_front, @nric_front, @license_front, @license_front, '2028-12-31', 'Toyota Vios', 'WXY1234', 'Silver'),
-(2, 'Daniel Lim', 'daniel.lim@mail.apu.edu.my', 'Driver@123', '012-3333444', @profile_photo, '2026-03-02 11:00:00', 1, 'active',
+(2, 'Daniel Lim', 'daniel.lim@mail.apu.edu.my', 'd5a658db5e6d22bfebbf6b6e6805c716', '012-3333444', @profile_photo, '2026-03-02 11:00:00', 1, 'active',
  '900202105678', @nric_front, @nric_front, @license_front, @license_front, '2029-06-30', 'Perodua Alza', 'BHG9876', 'White'),
-(3, 'TP082975', 'tp082975@mail.apu.edu.my', 'Driver@123', '012-5555666', @profile_photo, '2026-03-02 11:30:00', 1, 'active',
+(3, 'TP082975', 'tp082975@mail.apu.edu.my', 'd5a658db5e6d22bfebbf6b6e6805c716', '012-5555666', @profile_photo, '2026-03-02 11:30:00', 1, 'active',
  '900303109999', @nric_front, @nric_front, @license_front, @license_front, '2029-12-31', 'Honda City', 'VAX7788', 'Blue'),
-(4, 'Haziq Omar', 'haziq.omar@mail.apu.edu.my', 'Driver@123', '012-7777888', @profile_photo, '2026-03-04 09:20:00', 1, 'active',
+(4, 'Haziq Omar', 'haziq.omar@mail.apu.edu.my', 'd5a658db5e6d22bfebbf6b6e6805c716', '012-7777888', @profile_photo, '2026-03-04 09:20:00', 1, 'active',
  '900404101010', @nric_front, @nric_front, @license_front, @license_front, '2030-05-31', 'Perodua Bezza', 'JQK5555', 'Grey'),
-(5, 'Sharon Ng', 'sharon.ng@mail.apu.edu.my', 'Driver@123', '012-9999000', @profile_photo, '2026-03-04 10:05:00', 1, 'active',
+(5, 'Sharon Ng', 'sharon.ng@mail.apu.edu.my', 'd5a658db5e6d22bfebbf6b6e6805c716', '012-9999000', @profile_photo, '2026-03-04 10:05:00', 1, 'active',
  '900505202020', @nric_front, @nric_front, @license_front, @license_front, '2031-01-31', 'Honda HR-V', 'PKL2468', 'Red');
 
 -- Riders
 INSERT INTO RIDER (
     rider_id, name, email, password, phone_number, profile_photo, created_at, rider_status
 ) VALUES
-(1, 'Rider', 'rider@mail.apu.edu.my', 'Rider@123', '016-2222333', @profile_photo, '2026-03-03 09:15:00', 'active'),
-(2, 'Marcus Lim', 'marcus.lim@mail.apu.edu.my', 'Rider@123', '016-4444555', @profile_photo, '2026-03-03 09:20:00', 'active'),
-(3, 'Nur Aina', 'nur.aina@mail.apu.edu.my', 'Rider@123', '016-6666777', @profile_photo, '2026-03-03 09:25:00', 'active'),
-(4, 'Jason Lee', 'jason.lee@mail.apu.edu.my', 'Rider@123', '016-8888999', @profile_photo, '2026-03-03 09:30:00', 'active'),
-(5, 'TP082977', 'tp082977@mail.apu.edu.my', 'Rider@123', '016-1234567', @profile_photo, '2026-03-03 09:35:00', 'active'),
-(6, 'Samantha Khoo', 'samantha.khoo@mail.apu.edu.my', 'Rider@123', '016-1010101', @profile_photo, '2026-03-04 10:10:00', 'active'),
-(7, 'Arif Zulkifli', 'arif.zulkifli@mail.apu.edu.my', 'Rider@123', '016-2020202', @profile_photo, '2026-03-04 10:20:00', 'active'),
-(8, 'Mei Lin', 'mei.lin@mail.apu.edu.my', 'Rider@123', '016-3030303', @profile_photo, '2026-03-04 10:30:00', 'active');
+(1, 'Rider', 'rider@mail.apu.edu.my', 'be8b9b5b17c5202129e66656d0b111ad', '016-2222333', @profile_photo, '2026-03-03 09:15:00', 'active'),
+(2, 'Marcus Lim', 'marcus.lim@mail.apu.edu.my', 'be8b9b5b17c5202129e66656d0b111ad', '016-4444555', @profile_photo, '2026-03-03 09:20:00', 'active'),
+(3, 'Nur Aina', 'nur.aina@mail.apu.edu.my', 'be8b9b5b17c5202129e66656d0b111ad', '016-6666777', @profile_photo, '2026-03-03 09:25:00', 'active'),
+(4, 'Jason Lee', 'jason.lee@mail.apu.edu.my', 'be8b9b5b17c5202129e66656d0b111ad', '016-8888999', @profile_photo, '2026-03-03 09:30:00', 'active'),
+(5, 'TP082977', 'tp082977@mail.apu.edu.my', 'be8b9b5b17c5202129e66656d0b111ad', '016-1234567', @profile_photo, '2026-03-03 09:35:00', 'active'),
+(6, 'Samantha Khoo', 'samantha.khoo@mail.apu.edu.my', 'be8b9b5b17c5202129e66656d0b111ad', '016-1010101', @profile_photo, '2026-03-04 10:10:00', 'active'),
+(7, 'Arif Zulkifli', 'arif.zulkifli@mail.apu.edu.my', 'be8b9b5b17c5202129e66656d0b111ad', '016-2020202', @profile_photo, '2026-03-04 10:20:00', 'active'),
+(8, 'Mei Lin', 'mei.lin@mail.apu.edu.my', 'be8b9b5b17c5202129e66656d0b111ad', '016-3030303', @profile_photo, '2026-03-04 10:30:00', 'active');
 
 -- Trips (more trips per driver, APU-centric locations)
 INSERT INTO TRIP (

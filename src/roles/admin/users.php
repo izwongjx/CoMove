@@ -92,6 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = strtolower(trim((string) ($_POST['email'] ?? '')));
         $phone = trim((string) ($_POST['phone'] ?? ''));
         $password = (string) ($_POST['password'] ?? '');
+        $passwordHash = $password !== '' ? md5($password) : '';
         $status = strtolower(trim((string) ($_POST['status'] ?? ($role === 'driver' ? 'pending' : 'active'))));
 
         if ($name === '' || $email === '' || $phone === '' || $password === '') {
@@ -103,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif ($role === 'rider') {
             $stmt = mysqli_prepare($dbConn, 'INSERT INTO RIDER (name, email, password, phone_number, rider_status) VALUES (?, ?, ?, ?, ?)');
             if ($stmt) {
-                mysqli_stmt_bind_param($stmt, 'sssss', $name, $email, $password, $phone, $status);
+                mysqli_stmt_bind_param($stmt, 'sssss', $name, $email, $passwordHash, $phone, $status);
                 $userMessage = mysqli_stmt_execute($stmt) ? 'Rider created successfully.' : 'Unable to create rider. Please check for duplicate email values.';
                 mysqli_stmt_close($stmt);
             } else {
@@ -132,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 );
 
                 if ($stmt) {
-                    mysqli_stmt_bind_param($stmt, 'ssssissssssssss', $name, $email, $password, $phone, $approvedBy, $status, $nricNumber, $placeholderImage, $placeholderImage, $placeholderImage, $placeholderImage, $licenseExpiryDate, $vehicleModel, $plateNumber, $color);
+                    mysqli_stmt_bind_param($stmt, 'ssssissssssssss', $name, $email, $passwordHash, $phone, $approvedBy, $status, $nricNumber, $placeholderImage, $placeholderImage, $placeholderImage, $placeholderImage, $licenseExpiryDate, $vehicleModel, $plateNumber, $color);
                     $userMessage = mysqli_stmt_execute($stmt) ? 'Driver created successfully.' : 'Unable to create driver. Please check for duplicate email, NRIC or plate values.';
                     mysqli_stmt_close($stmt);
                 } else {
@@ -154,6 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = strtolower(trim((string) ($_POST['email'] ?? '')));
         $phone = trim((string) ($_POST['phone'] ?? ''));
         $password = (string) ($_POST['password'] ?? '');
+        $passwordHash = $password !== '' ? md5($password) : '';
         $status = strtolower(trim((string) ($_POST['status'] ?? '')));
 
         if ($targetId <= 0 || $name === '' || $email === '' || $phone === '') {
@@ -170,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($stmt) {
                 if ($password !== '') {
-                    mysqli_stmt_bind_param($stmt, 'sssssi', $name, $email, $phone, $status, $password, $targetId);
+                    mysqli_stmt_bind_param($stmt, 'sssssi', $name, $email, $phone, $status, $passwordHash, $targetId);
                 } else {
                     mysqli_stmt_bind_param($stmt, 'ssssi', $name, $email, $phone, $status, $targetId);
                 }
@@ -203,7 +205,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 if ($stmt) {
                     if ($password !== '') {
-                        mysqli_stmt_bind_param($stmt, 'sssssisssssi', $name, $email, $phone, $status, $password, $approvedBy, $nricNumber, $licenseExpiryDate, $vehicleModel, $plateNumber, $color, $targetId);
+                        mysqli_stmt_bind_param($stmt, 'sssssisssssi', $name, $email, $phone, $status, $passwordHash, $approvedBy, $nricNumber, $licenseExpiryDate, $vehicleModel, $plateNumber, $color, $targetId);
                     } else {
                         mysqli_stmt_bind_param($stmt, 'ssssisssssi', $name, $email, $phone, $status, $approvedBy, $nricNumber, $licenseExpiryDate, $vehicleModel, $plateNumber, $color, $targetId);
                     }
@@ -346,9 +348,9 @@ $editUser = null;
 
 if ($editId > 0 && in_array($editRole, ['rider', 'driver'], true)) {
     if ($editRole === 'rider') {
-        $editUser = adminFetchOne($dbConn, 'SELECT rider_id AS id, name, email, phone_number AS phone, rider_status AS status FROM RIDER WHERE rider_id = ?', 'i', [$editId]);
+        $editUser = adminFetchOne($dbConn, 'SELECT rider_id AS id, name, email, phone_number AS phone, rider_status AS status, password FROM RIDER WHERE rider_id = ?', 'i', [$editId]);
     } else {
-        $editUser = adminFetchOne($dbConn, 'SELECT driver_id AS id, name, email, phone_number AS phone, driver_status AS status, nric_number, license_expiry_date, vehicle_model, plate_number, color FROM DRIVER WHERE driver_id = ?', 'i', [$editId]);
+        $editUser = adminFetchOne($dbConn, 'SELECT driver_id AS id, name, email, phone_number AS phone, driver_status AS status, password, nric_number, license_expiry_date, vehicle_model, plate_number, color FROM DRIVER WHERE driver_id = ?', 'i', [$editId]);
     }
 }
 ?>
@@ -442,6 +444,9 @@ if ($editId > 0 && in_array($editRole, ['rider', 'driver'], true)) {
             <div class="form-row">
               <div class="form-group"><label class="form-label">New Password</label><input class="form-input" type="text" name="password" placeholder="Leave blank to keep current password"></div>
               <div class="form-group"><label class="form-label">Role</label><input class="form-input" value="<?php echo adminEscape(ucfirst($editRole)); ?>" disabled></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Current Password (Hashed)</label><input class="form-input" value="<?php echo adminEscape($editUser['password'] ?? ''); ?>" readonly></div>
             </div>
 
             <?php if ($editRole === 'driver') { ?>

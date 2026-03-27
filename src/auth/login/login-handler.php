@@ -22,7 +22,8 @@ $statusColumn = $role === 'driver' ? 'driver_status' : 'rider_status';
 // Rider and driver login stays separate so admin status changes immediately affect access.
 $emailSafe = mysqli_real_escape_string($dbConn, $email);
 $passwordSafe = mysqli_real_escape_string($dbConn, $password);
-$sql = "SELECT * FROM " . $tableName . " WHERE email = '" . $emailSafe . "' AND password = '" . $passwordSafe . "' LIMIT 1";
+$hashedPassword = mysqli_real_escape_string($dbConn, md5($password));
+$sql = "SELECT * FROM " . $tableName . " WHERE email = '" . $emailSafe . "' AND (password = '" . $hashedPassword . "' OR password = '" . $passwordSafe . "') LIMIT 1";
 $result = mysqli_query($dbConn, $sql);
 
 if (!$result || mysqli_num_rows($result) <= 0) {
