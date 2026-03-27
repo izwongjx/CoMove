@@ -11,20 +11,13 @@ if ($email === '' || $password === '') {
     die("window.history.go(-1);</script>");
 }
 
-$sql = "SELECT * FROM ADMIN WHERE email = ? AND password = ? LIMIT 1";
-$stmt = mysqli_prepare($dbConn, $sql);
-
-if (!$stmt) {
-    echo "<script>alert('Login service is unavailable right now. Please try again.');";
-    die("window.history.go(-1);</script>");
-}
-
-mysqli_stmt_bind_param($stmt, 'ss', $email, $password);
-mysqli_stmt_execute($stmt);
-$result = mysqli_stmt_get_result($stmt);
+$emailSafe = mysqli_real_escape_string($dbConn, $email);
+$passwordSafe = mysqli_real_escape_string($dbConn, $password);
+$hashedPassword = mysqli_real_escape_string($dbConn, md5($password));
+$sql = "SELECT * FROM ADMIN WHERE email = '" . $emailSafe . "' AND (password = '" . $hashedPassword . "' OR password = '" . $passwordSafe . "') LIMIT 1";
+$result = mysqli_query($dbConn, $sql);
 
 if (!$result || mysqli_num_rows($result) <= 0) {
-    mysqli_stmt_close($stmt);
     echo "<script>alert('Wrong email / password! Please try again.');";
     die("window.history.go(-1);</script>");
 }
@@ -37,7 +30,6 @@ if ($row = mysqli_fetch_array($result)) {
 }
 
 mysqli_free_result($result);
-mysqli_stmt_close($stmt);
 
 $safeName = isset($_SESSION['user']) ? str_replace("'", "\\'", (string) $_SESSION['user']) : 'Admin';
 echo "<script>alert('Welcome back! " . $safeName . "');";

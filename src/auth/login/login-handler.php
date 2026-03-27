@@ -15,14 +15,15 @@ if ($email === '' || $password === '' || ($role !== 'rider' && $role !== 'driver
 $tableName = $role === 'driver' ? 'DRIVER' : 'RIDER';
 $idColumn = $role === 'driver' ? 'driver_id' : 'rider_id';
 $dashboardPath = $role === 'driver'
-    ? '../../roles/driver/dashboard.html'
+    ? '../../roles/driver/dashboard.php'
     : '../../roles/comove-rider-v4/comove-rider/dashboard.php';
 $statusColumn = $role === 'driver' ? 'driver_status' : 'rider_status';
 
 // Rider and driver login stays separate so admin status changes immediately affect access.
 $emailSafe = mysqli_real_escape_string($dbConn, $email);
 $passwordSafe = mysqli_real_escape_string($dbConn, $password);
-$sql = "SELECT * FROM " . $tableName . " WHERE email = '" . $emailSafe . "' AND password = '" . $passwordSafe . "' LIMIT 1";
+$hashedPassword = mysqli_real_escape_string($dbConn, md5($password));
+$sql = "SELECT * FROM " . $tableName . " WHERE email = '" . $emailSafe . "' AND (password = '" . $hashedPassword . "' OR password = '" . $passwordSafe . "') LIMIT 1";
 $result = mysqli_query($dbConn, $sql);
 
 if (!$result || mysqli_num_rows($result) <= 0) {
@@ -34,10 +35,13 @@ if ($row = mysqli_fetch_array($result)) {
     $status = strtolower(trim((string) ($row[$statusColumn] ?? 'active')));
     if ($status !== 'active') {
         mysqli_free_result($result);
-        mysqli_stmt_close($stmt);
         session_unset();
         session_destroy();
-        echo "<script>alert('This account is currently banned. Please contact an admin.');";
+        if ($role === 'driver' && $status === 'pending') {
+            echo "<script>alert('Your driver account is pending admin approval. Please wait for approval before logging in.');";
+        } else {
+            echo "<script>alert('This account is currently banned. Please contact an admin.');";
+        }
         die("window.history.go(-1);</script>");
     }
 

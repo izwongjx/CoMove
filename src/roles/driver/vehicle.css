@@ -257,6 +257,173 @@
   color: black;
 }
 
+/* update vehicle popup */
+/* -------- MODAL OVERLAY -------- */
+.modal {
+  display: none;              /* hidden by default */
+  position: fixed;            /* stays in place even when you scroll */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* dark transparent backdrop */
+  z-index: 1000;              /* sits on top of everything */
+  justify-content: center;    /* centres the box horizontally */
+  align-items: center;        /* centres the box vertically */
+}
+
+/* the white box inside the overlay */
+.modal-content {
+  background: white;
+  padding: 32px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 480px;
+  position: relative;
+}
+
+/* the × close button */
+.close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: 22px;
+  cursor: pointer;
+  color: #555;
+}
+
+.close:hover {
+  color: black;
+}
+
+/* the heading inside the modal */
+.offerRideHeading {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+/* input fields inside modal */
+.modal-content input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* save button inside modal */
+.createTrip {
+  width: 100%;
+  padding: 14px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+.createTrip:hover {
+  background-color: #c4f547;
+  color: black;
+}
+
+/* pop up for edit vehicle  */
+
+/* -------- MODAL OVERLAY -------- */
+.modal {
+  display: none;              /* hidden by default */
+  position: fixed;            /* stays in place even when you scroll */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* dark transparent backdrop */
+  z-index: 1000;              /* sits on top of everything */
+  justify-content: center;    /* centres the box horizontally */
+  align-items: center;        /* centres the box vertically */
+}
+
+/* the white box inside the overlay */
+.modal-content {
+  background: white;
+  padding: 32px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 480px;
+  position: relative;
+}
+
+/* the × close button */
+.close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: 22px;
+  cursor: pointer;
+  color: #555;
+}
+
+.close:hover {
+  color: black;
+}
+
+/* the heading inside the modal */
+.offerRideHeading {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+/* input fields inside modal */
+.modal-content input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* save button inside modal */
+.createTrip {
+  width: 100%;
+  padding: 14px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+.createTrip:hover {
+  background-color: #c4f547;
+  color: black;
+}
+
+
+/* for nav bar */
+@media (max-width: 767px){
+  .navContents{
+    display: none;
+  }
+}
+
+@media (max-width: 767px){
+  .insideNav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
 .driver-bottom-nav {
   background: var(--forest);
   border-color: rgba(255, 255, 255, 0.1);

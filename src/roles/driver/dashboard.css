@@ -157,17 +157,20 @@
 
 /* this is the pop up */
 .modal {
-  display: none;
+  display: none;        
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(0,0,0,0.5);
-  display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+}
+
+.uploadProofForm input[type="file"] {
+  display: none;
 }
 
 .modal-content {
@@ -486,9 +489,6 @@
   font-family:'Trebuchet MS';
 }
 
-.uploadProofForm input[type="file"] {
-  display: none; 
-}
 
 .uploadProofForm button {
   padding: 6px 10px;
@@ -513,7 +513,6 @@
   color: black;
   border: none;
   border-radius: 6px;
-  cursor: not-allowed;
   font-weight: 800;
 }
 
@@ -627,9 +626,15 @@
   gap: 12px;
 }
 
+.acceptReject form {
+  flex: 1;
+}
+
 .acceptReject button{
+  width: 100%;
   flex: 1;            
-  padding: 10px 0;
+  padding: 15px 0;
+  margin-left: 5px;
   font-size: 0.95rem;
   font-weight: 600;
   border: none;

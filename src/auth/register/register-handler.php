@@ -5,11 +5,13 @@ date_default_timezone_set('asia/kuala_lumpur');
 
 function failBack(string $message): void
 {
-    echo "<script>alert('" . $message . "');";
-    die("window.history.go(-1);</script>");
+    $safeMessage = str_replace("'", "\\'", $message);
+    echo "<script>alert('" . $safeMessage . "');";
+    echo "window.history.go(-1);</script>";
+    exit;
 }
 
-function readUpload(mysqli $dbConn, string $fieldName, bool $required): ?string
+function readUpload(mysqli $dbConn, string $fieldName, bool $required, int $maxBytes = 614400): ?string
 {
     if (!isset($_FILES[$fieldName]) || !is_array($_FILES[$fieldName])) {
         if ($required) {
@@ -35,12 +37,107 @@ function readUpload(mysqli $dbConn, string $fieldName, bool $required): ?string
         failBack('Invalid uploaded file.');
     }
 
-    $rawContent = file_get_contents((string) $file['tmp_name']);
+    // Get file info and compress if it's an image
+    $fileInfo = @getimagesize($file['tmp_name']);
+    $fileSize = filesize($file['tmp_name']);
+
+    // Compress images larger than 200KB
+    if ($fileInfo !== false && $fileSize > 200 * 1024) {
+        $compressedContent = compressImage($file['tmp_name'], $fileInfo['mime']);
+        if ($compressedContent !== false) {
+            $rawContent = $compressedContent;
+        } else {
+            $rawContent = file_get_contents((string) $file['tmp_name']);
+        }
+    } else {
+        $rawContent = file_get_contents((string) $file['tmp_name']);
+    }
+
     if ($rawContent === false) {
         failBack('Unable to read uploaded file.');
     }
 
+    if (strlen($rawContent) > $maxBytes) {
+        $maxKb = (int) floor($maxBytes / 1024);
+        failBack('Image size too big. Please upload <= ' . $maxKb . 'KB.');
+    }
+
     return mysqli_real_escape_string($dbConn, $rawContent);
+}
+
+function compressImage($sourcePath, $mimeType, $maxWidth = 1024, $quality = 70)
+{
+    // Create image resource based on mime type
+    switch ($mimeType) {
+        case 'image/jpeg':
+            $image = imagecreatefromjpeg($sourcePath);
+            break;
+        case 'image/png':
+            $image = imagecreatefrompng($sourcePath);
+            // Preserve alpha channel for PNG
+            imagealphablending($image, true);
+            imagesavealpha($image, true);
+            break;
+        case 'image/gif':
+            $image = imagecreatefromgif($sourcePath);
+            break;
+        default:
+            return false;
+    }
+
+    if (!$image) {
+        return false;
+    }
+
+    // Get original dimensions
+    $origWidth = imagesx($image);
+    $origHeight = imagesy($image);
+
+    // Calculate new dimensions
+    if ($origWidth > $maxWidth) {
+        $newWidth = $maxWidth;
+        $newHeight = (int) floor($origHeight * ($maxWidth / $origWidth));
+    } else {
+        $newWidth = $origWidth;
+        $newHeight = $origHeight;
+    }
+
+    // Create new image
+    $newImage = imagecreatetruecolor($newWidth, $newHeight);
+
+    // Handle transparency for PNG
+    if ($mimeType === 'image/png') {
+        imagealphablending($newImage, false);
+        imagesavealpha($newImage, true);
+        $transparent = imagecolorallocatealpha($newImage, 255, 255, 255, 127);
+        imagefilledrectangle($newImage, 0, 0, $newWidth, $newHeight, $transparent);
+    }
+
+    // Resize
+    imagecopyresampled($newImage, $image, 0, 0, 0, 0, $newWidth, $newHeight, $origWidth, $origHeight);
+
+    // Compress to memory
+    ob_start();
+    switch ($mimeType) {
+        case 'image/jpeg':
+            imagejpeg($newImage, null, $quality);
+            break;
+        case 'image/png':
+            // PNG quality: 0-9 (0 = no compression, 9 = max compression)
+            $pngQuality = (int) floor((100 - $quality) / 11.11); // Convert 70% to ~6
+            imagepng($newImage, null, $pngQuality);
+            break;
+        case 'image/gif':
+            imagegif($newImage, null);
+            break;
+    }
+    $compressedContent = ob_get_clean();
+
+    // Clean up
+    imagedestroy($image);
+    imagedestroy($newImage);
+
+    return $compressedContent;
 }
 
 function getDefaultProfilePhoto(mysqli $dbConn): ?string
@@ -98,16 +195,38 @@ function ensureEmailNotExists(mysqli $dbConn, string $tableName, string $email):
     }
 }
 
+function ensureDriverValueNotExists(mysqli $dbConn, string $column, string $value, string $message): void
+{
+    if ($value === '') {
+        return;
+    }
+
+    $valueSafe = mysqli_real_escape_string($dbConn, $value);
+    $sql = "SELECT 1 FROM DRIVER WHERE " . $column . " = '" . $valueSafe . "' LIMIT 1";
+    $result = mysqli_query($dbConn, $sql);
+
+    if ($result && mysqli_num_rows($result) > 0) {
+        mysqli_free_result($result);
+        failBack($message);
+    }
+
+    if ($result) {
+        mysqli_free_result($result);
+    }
+}
+
 $role = strtolower(trim(isset($_POST['role']) ? (string) $_POST['role'] : ''));
-$password = mysqli_real_escape_string($dbConn, isset($_POST['password']) ? (string) $_POST['password'] : '');
-$confirmPassword = mysqli_real_escape_string($dbConn, isset($_POST['confirmPassword']) ? (string) $_POST['confirmPassword'] : '');
+$passwordRaw = isset($_POST['password']) ? (string) $_POST['password'] : '';
+$confirmPasswordRaw = isset($_POST['confirmPassword']) ? (string) $_POST['confirmPassword'] : '';
+$password = mysqli_real_escape_string($dbConn, $passwordRaw);
+$confirmPassword = mysqli_real_escape_string($dbConn, $confirmPasswordRaw);
 $otpCode = mysqli_real_escape_string($dbConn, isset($_POST['otp_code']) ? trim((string) $_POST['otp_code']) : '');
 
 if ($role !== 'rider' && $role !== 'driver') {
     failBack('Invalid register request.');
 }
 
-if ($password !== $confirmPassword) {
+if ($passwordRaw !== $confirmPasswordRaw) {
     failBack('Password and confirmed password not same!');
 }
 
@@ -125,7 +244,7 @@ if ($role === 'rider') {
         $profilePhoto = getDefaultProfilePhoto($dbConn);
     }
 
-    if ($name === '' || $email === '' || $phone === '' || $password === '') {
+    if ($name === '' || $email === '' || $phone === '' || $passwordRaw === '') {
         failBack('Please fill all required fields!');
     }
 
@@ -139,10 +258,9 @@ if ($role === 'rider') {
     $profilePhotoSql = $profilePhoto === null ? "NULL" : "'" . $profilePhoto . "'";
 
     $createdAtSql = "NOW()";
-    // TODO: re-enable password hashing when ready (example: md5($password) or password_hash)
-    // $hashedPassword = md5($password);
+    $hashedPassword = mysqli_real_escape_string($dbConn, md5($passwordRaw));
     $sql = "Insert into RIDER (name, email, password, phone_number, profile_photo, created_at, rider_status) VALUES ('" .
-        $name . "','" . $email . "','" . $password . "','" . $phone . "'," . $profilePhotoSql . "," . $createdAtSql . ",'active')";
+        $name . "','" . $email . "','" . $hashedPassword . "','" . $phone . "'," . $profilePhotoSql . "," . $createdAtSql . ",'active')";
     mysqli_query($dbConn, $sql);
 
     if (mysqli_affected_rows($dbConn) <= 0) {
@@ -188,7 +306,7 @@ if (
     $name === '' ||
     $email === '' ||
     $phoneNumber === '' ||
-    $password === '' ||
+    $passwordRaw === '' ||
     $nricNumber === '' ||
     $licenseExpiryDate === '' ||
     $plateNumber === ''
@@ -201,6 +319,8 @@ if (!isApuEmail($email)) {
 }
 
 ensureEmailNotExists($dbConn, 'DRIVER', $email);
+ensureDriverValueNotExists($dbConn, 'nric_number', $nricNumber, 'This IC/NRIC is already registered.');
+ensureDriverValueNotExists($dbConn, 'plate_number', $plateNumber, 'This plate number is already registered.');
 ensureValidOtp($dbConn, $email, $otpCode);
 
 $nricFrontImage = readUpload($dbConn, 'nric_front_image', true);
@@ -215,10 +335,9 @@ if ($profilePhoto === null) {
 $profilePhotoSql = $profilePhoto === null ? "NULL" : "'" . $profilePhoto . "'";
 
 $createdAtSql = "NOW()";
-// TODO: re-enable password hashing when ready (example: md5($password) or password_hash)
-// $hashedPassword = md5($password);
-$sql = "Insert into DRIVER (name, email, password, phone_number, profile_photo, created_at, driver_status, nric_number, nric_front_image, nric_back_image, lisence_front_image, lisence_back_image, lisence_expiry_date, vehicle_model, plate_number, color) VALUES ('" .
-    $name . "','" . $email . "','" . $password . "','" . $phoneNumber . "'," . $profilePhotoSql . "," . $createdAtSql . ",'pending','" . $nricNumber . "','" . $nricFrontImage . "','" . $nricBackImage . "','" . $licenseFrontImage . "','" . $licenseBackImage . "','" . $licenseExpiryDate . "','" . $vehicleModel . "','" . $plateNumber . "','" . $color . "')";
+$hashedPassword = mysqli_real_escape_string($dbConn, md5($passwordRaw));
+$sql = "Insert into DRIVER (name, email, password, phone_number, profile_photo, created_at, driver_status, nric_number, nric_front_image, nric_back_image, license_front_image, license_back_image, license_expiry_date, vehicle_model, plate_number, color) VALUES ('" .
+    $name . "','" . $email . "','" . $hashedPassword . "','" . $phoneNumber . "'," . $profilePhotoSql . "," . $createdAtSql . ",'pending','" . $nricNumber . "','" . $nricFrontImage . "','" . $nricBackImage . "','" . $licenseFrontImage . "','" . $licenseBackImage . "','" . $licenseExpiryDate . "','" . $vehicleModel . "','" . $plateNumber . "','" . $color . "')";
 mysqli_query($dbConn, $sql);
 
 if (mysqli_affected_rows($dbConn) <= 0) {
@@ -233,5 +352,5 @@ $_SESSION['role'] = 'driver';
 $_SESSION['user_id'] = $driverId;
 
 echo "<script>alert('Registration completed successfully!');";
-echo "window.location.href='../../roles/driver/dashboard.html';</script>";
+echo "window.location.href='../login/login.php';</script>";
 ?>

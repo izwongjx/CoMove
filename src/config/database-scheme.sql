@@ -87,7 +87,7 @@ CREATE TABLE RIDE_REQUEST (
     requested_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     amount_paid DECIMAL(10,2),
     payment_method VARCHAR(20),
-    proof_of_payment MEDIUMBLOB,
+    proof_of_payment VARCHAR(255),
     gained_point FLOAT,
     FOREIGN KEY (trip_id) REFERENCES TRIP(trip_id),
     FOREIGN KEY (rider_id) REFERENCES RIDER(rider_id)
@@ -164,7 +164,7 @@ CREATE TABLE GREEN_POINT_CONFIG (
 -- System Config
 -- =====================
 CREATE TABLE SYSTEM_CONFIG (
-    driver_registration BOOLEAN COMMENT 'TRUE = registration open, FALSE = closed',
+    driver_registration BOOLEAN COMMENT 'TRUE = registration open, FALSE = closed'
 );
 
 -- =====================

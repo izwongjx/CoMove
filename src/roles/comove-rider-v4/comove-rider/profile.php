@@ -21,7 +21,7 @@
         <a href="profile.php" class="nav-item active"><img src="icons/user.svg" width="16" height="16" class="icon-img" alt=""> Profile</a>
       </div>
       <div class="nav-actions">
-        <a href="../../index.php" class="nav-logout-btn"><img src="icons/log-out.svg" width="16" height="16" class="icon-img" alt=""> Log out</a>
+        <a href="../../../../index.php" class="nav-logout-btn"><img src="icons/log-out.svg" width="16" height="16" class="icon-img" alt=""> Log out</a>
       </div>
     </div>
   </nav>

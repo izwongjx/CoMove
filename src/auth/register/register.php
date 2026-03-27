@@ -3,8 +3,8 @@ include "../../config/conn.php";
 
 $driverRegistration = 1;
 $systemResult = mysqli_query($dbConn, 'SELECT driver_registration FROM SYSTEM_CONFIG LIMIT 1');
-if ($systemResult && ($systemRow = mysqli_fetch_array($systemResult))) {
-    $driverRegistration = (int) $systemRow['driver_registration'];
+if ($systemResult && ($systemRow = mysqli_fetch_assoc($systemResult))) {
+  $driverRegistration = (int) $systemRow['driver_registration'];
 }
 if ($systemResult) {
   mysqli_free_result($systemResult);
