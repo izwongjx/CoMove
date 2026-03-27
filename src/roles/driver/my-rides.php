@@ -183,7 +183,7 @@ if ($deleteTripId !== '') {
                           <tr><th>Pickup</th><td><?php echo escapeHtml((string) $tripRow['start_location']); ?></td></tr>
                           <tr><th>Dropoff</th><td><?php echo escapeHtml((string) $tripRow['end_location']); ?></td></tr>
                           <tr><th>Estimated Duration</th><td><?php echo escapeHtml($estimatedText); ?></td></tr>
-                          <tr><th>Total Price</th><td><?php echo '$' . number_format((float) $tripRow['total_amount'], 2); ?></td></tr>
+                          <tr><th>Total Price</th><td><?php echo 'RM' . number_format((float) $tripRow['total_amount'], 2); ?></td></tr>
                           <tr><th>Available Place</th><td><?php echo $availableSeats . '/' . $totalSeats; ?></td></tr>
                         </tbody>
                       </table>

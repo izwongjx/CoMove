@@ -45,7 +45,7 @@ INSERT INTO RIDER (
 (2, 'Marcus Lim', 'marcus.lim@mail.apu.edu.my', 'Rider@123', '016-4444555', @profile_photo, '2026-03-03 09:20:00', 'active'),
 (3, 'Nur Aina', 'nur.aina@mail.apu.edu.my', 'Rider@123', '016-6666777', @profile_photo, '2026-03-03 09:25:00', 'active'),
 (4, 'Jason Lee', 'jason.lee@mail.apu.edu.my', 'Rider@123', '016-8888999', @profile_photo, '2026-03-03 09:30:00', 'active'),
-(5, 'TP082975', 'tp082975r@mail.apu.edu.my', 'Rider@123', '016-1234567', @profile_photo, '2026-03-03 09:35:00', 'active'),
+(5, 'TP082977', 'tp082977@mail.apu.edu.my', 'Rider@123', '016-1234567', @profile_photo, '2026-03-03 09:35:00', 'active'),
 (6, 'Samantha Khoo', 'samantha.khoo@mail.apu.edu.my', 'Rider@123', '016-1010101', @profile_photo, '2026-03-04 10:10:00', 'active'),
 (7, 'Arif Zulkifli', 'arif.zulkifli@mail.apu.edu.my', 'Rider@123', '016-2020202', @profile_photo, '2026-03-04 10:20:00', 'active'),
 (8, 'Mei Lin', 'mei.lin@mail.apu.edu.my', 'Rider@123', '016-3030303', @profile_photo, '2026-03-04 10:30:00', 'active');
@@ -108,16 +108,16 @@ INSERT INTO RIDE_REQUEST (
 
 -- Rewards
 INSERT INTO REWARD (reward_id, reward_pic, reward_name, points_required, category, stock) VALUES
-(1, NULL, 'Coffee Voucher', 20, 'Food', 50),
-(2, NULL, 'Parking Coupon', 15, 'Transport', 30),
-(3, NULL, 'RM20 Fuel Voucher', 30, 'Fuel', 25),
-(4, NULL, 'CoMove Windbreaker', 80, 'Merch', 10),
-(5, NULL, 'Car Wash Coupon', 25, 'Transport', 40),
-(6, NULL, 'Cafe Snack Voucher', 18, 'Food', 60),
-(7, NULL, 'RM10 Grab Voucher', 25, 'Food', 45),
-(8, NULL, 'Phone Holder', 12, 'Merch', 35),
-(9, NULL, 'RM30 Fuel Voucher', 45, 'Fuel', 20),
-(10, NULL, 'CoMove Tote Bag', 22, 'Merch', 50);
+(1, NULL, 'APU Cafeteria Coffee Voucher', 20, 'Food', 50),
+(2, NULL, 'APU Campus Parking Coupon', 15, 'Transport', 30),
+(3, NULL, 'APU Partner Fuel Voucher RM20', 30, 'Fuel', 25),
+(4, NULL, 'APU CoMove Windbreaker', 80, 'Merch', 10),
+(5, NULL, 'APU Shuttle Ride Coupon', 25, 'Transport', 40),
+(6, NULL, 'APU Cafeteria Snack Voucher', 18, 'Food', 60),
+(7, NULL, 'APU Student Grab Voucher RM10', 25, 'Food', 45),
+(8, NULL, 'APU Phone Holder', 12, 'Merch', 35),
+(9, NULL, 'APU Partner Fuel Voucher RM30', 45, 'Fuel', 20),
+(10, NULL, 'APU CoMove Tote Bag', 22, 'Merch', 50);
 
 -- Redemptions
 INSERT INTO RIDER_REDEMPTION (redemption_id, rider_id, reward_id, redeemed_at) VALUES
@@ -145,7 +145,8 @@ INSERT INTO RIDER_GREEN_POINT_LOG (log_id, rider_id, points_change, source, crea
 (7, 1, -25, 'Reward Redemption', '2026-03-20 14:05:00'),
 (8, 6, 3, 'Trip 14', '2026-03-21 08:40:00'),
 (9, 8, 4, 'Trip 16', '2026-03-21 19:20:00'),
-(10, 2, 5, 'Trip 18', '2026-03-17 20:10:00');
+(10, 2, 5, 'Trip 18', '2026-03-17 20:10:00'),
+(11, 1, 40, 'APU Green Day Bonus', '2026-03-24 09:00:00');
 
 INSERT INTO DRIVER_GREEN_POINT_LOG (log_id, driver_id, points_change, source, created_at) VALUES
 (1, 1, 10, 'Trip 1', '2026-03-20 12:05:00'),

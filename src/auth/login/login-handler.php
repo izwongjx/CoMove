@@ -34,10 +34,13 @@ if ($row = mysqli_fetch_array($result)) {
     $status = strtolower(trim((string) ($row[$statusColumn] ?? 'active')));
     if ($status !== 'active') {
         mysqli_free_result($result);
-        mysqli_stmt_close($stmt);
         session_unset();
         session_destroy();
-        echo "<script>alert('This account is currently banned. Please contact an admin.');";
+        if ($role === 'driver' && $status === 'pending') {
+            echo "<script>alert('Your driver account is pending admin approval. Please wait for approval before logging in.');";
+        } else {
+            echo "<script>alert('This account is currently banned. Please contact an admin.');";
+        }
         die("window.history.go(-1);</script>");
     }
 
