@@ -15,7 +15,7 @@ if ($email === '' || $password === '' || ($role !== 'rider' && $role !== 'driver
 $tableName = $role === 'driver' ? 'DRIVER' : 'RIDER';
 $idColumn = $role === 'driver' ? 'driver_id' : 'rider_id';
 $dashboardPath = $role === 'driver'
-    ? '../../roles/driver/dashboard.html'
+    ? '../../roles/driver/dashboard.php'
     : '../../roles/comove-rider-v4/comove-rider/dashboard.php';
 $statusColumn = $role === 'driver' ? 'driver_status' : 'rider_status';
 
