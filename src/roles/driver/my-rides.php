@@ -112,7 +112,7 @@ if ($deleteTripId !== '') {
 <body>
   <nav class="mainNav">
     <div class="insideNav">
-      <a href="dashboard.php" class="logo">ECO<span>RIDE</span></a>
+      <a href="dashboard.php" class="logo">CO<span>MOVE</span></a>
       <div class="navContents">
         <a href="dashboard.php" class="navContent"><img src="../../public-assets/icons/home.svg" width="16" height="16" class="icon-img" alt="" aria-hidden="true">
           Dashboard</a>
