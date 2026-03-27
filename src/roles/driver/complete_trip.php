@@ -21,6 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     mysqli_stmt_execute($stmt_complete);
 
     
+    $sql_req_points = "UPDATE ride_request SET gained_point = ? WHERE trip_id = ?";
+        $stmt_req_points = mysqli_prepare($dbConn, $sql_req_points);
+        mysqli_stmt_bind_param($stmt_req_points, 'ii', $points, $trip_id);
+        mysqli_stmt_execute($stmt_req_points);
+
     $source = "Trip " . $trip_id;
     $SQL_POINTS = "INSERT INTO driver_green_point_log (driver_id, points_change, source) VALUES (?, ?, ?)";
 

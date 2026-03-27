@@ -274,13 +274,18 @@ $vehicle = mysqli_fetch_assoc($result_vehicle);
 
                   <!-- upload proof form for each passenger -->
                     <form action="upload_proof.php" method="POST" enctype="multipart/form-data" class="uploadProofForm">
+  
                       <input type="hidden" name="request_id" value="<?php echo $passenger['request_id']; ?>">
+                      
                       <input type="file" name="proof" accept="image/*"
-                            id="proof_<?php echo $passenger['request_id']; ?>" style="display:none" required>
+                            id="proof_<?php echo $passenger['request_id']; ?>" style="display:none" required
+                            >
+                            
                       <button type="button"
                             onclick="document.getElementById('proof_<?php echo $passenger['request_id']; ?>').click()">
                         UPLOAD PROOF
                       </button>
+                      
                     </form>
 
                 </div>
@@ -412,10 +417,3 @@ $vehicle = mysqli_fetch_assoc($result_vehicle);
 </body>
 
 </html>
-
-
-
-
-
-
-
