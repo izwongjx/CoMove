@@ -15,11 +15,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $sql_multiplier = "SELECT multiplier_value FROM green_point_config LIMIT 1";
     $result_multiplier = mysqli_query($dbConn, $sql_multiplier);
     $row_multiplier = mysqli_fetch_assoc($result_multiplier);
-    $multiplier = $row_multiplier['multiplier_value']; // e.g. 1, 2, etc.
+    $multiplier = isset($row_multiplier['multiplier_value']) ? (float) $row_multiplier['multiplier_value'] : 1.0; // e.g. 1, 2, etc.
 
     // calculate points ---
-    $driver_points = 10;                        
-    $rider_points = 10 * $multiplier;          
+    $driver_points = 10;
+    $rider_points = 10 * $multiplier;
 
     // trip mark completed
     $sql_complete = "UPDATE trip SET trip_status = 'completed', gained_point = ? WHERE trip_id = ? AND driver_id = ?";
@@ -28,9 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     mysqli_stmt_execute($stmt_complete);
 
     // add point for ride_request
-    $sql_req_points = "UPDATE ride_request SET gained_point = ? WHERE trip_id = ?";
+    $sql_req_points = "UPDATE ride_request SET gained_point = ? WHERE trip_id = ? AND request_status = 'approved'";
     $stmt_req_points = mysqli_prepare($dbConn, $sql_req_points);
-    mysqli_stmt_bind_param($stmt_req_points, 'ii', $rider_points, $trip_id);
+    mysqli_stmt_bind_param($stmt_req_points, 'di', $rider_points, $trip_id);
     mysqli_stmt_execute($stmt_req_points);
 
     // add points for driver
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     mysqli_stmt_execute($stmt_driver_log);
 
     // add points for riders
-    $sql_riders = "SELECT rider_id FROM ride_request WHERE trip_id = ? AND request_status = 'accepted'";
+    $sql_riders = "SELECT rider_id FROM ride_request WHERE trip_id = ? AND request_status = 'approved'";
     $stmt_riders = mysqli_prepare($dbConn, $sql_riders);
     mysqli_stmt_bind_param($stmt_riders, 'i', $trip_id);
     mysqli_stmt_execute($stmt_riders);
@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt_rider_log = mysqli_prepare($dbConn, $sql_rider_log);
 
     foreach ($riders as $rider_id) {
-        mysqli_stmt_bind_param($stmt_rider_log, 'iis', $rider_id, $rider_points, $source);
+        mysqli_stmt_bind_param($stmt_rider_log, 'ids', $rider_id, $rider_points, $source);
         mysqli_stmt_execute($stmt_rider_log);
     }
 
