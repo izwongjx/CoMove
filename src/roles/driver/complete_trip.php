@@ -47,21 +47,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     mysqli_stmt_execute($stmt_riders);
     $result_riders = mysqli_stmt_get_result($stmt_riders);
 
-    // reject pending requests
-    $sql_reject_pending = "UPDATE ride_request SET request_status = 'rejected' WHERE trip_id = ? AND request_status = 'pending'";
-    $stmt_reject_pending = mysqli_prepare($dbConn, $sql_reject_pending);
-    mysqli_stmt_bind_param($stmt_reject_pending, 'i', $trip_id);
-    mysqli_stmt_execute($stmt_reject_pending);
+    $riders = [];
+    while ($row = mysqli_fetch_assoc($result_riders)) {
+        $riders[] = $row['rider_id'];
+    }
 
     // insert into rider gp log
     $sql_rider_log = "INSERT INTO rider_green_point_log (rider_id, points_change, source) VALUES (?, ?, ?)";
     $stmt_rider_log = mysqli_prepare($dbConn, $sql_rider_log);
 
-    while ($rider = mysqli_fetch_assoc($result_riders)) {
-        $rider_id = $rider['rider_id'];
+    foreach ($riders as $rider_id) {
         mysqli_stmt_bind_param($stmt_rider_log, 'iis', $rider_id, $rider_points, $source);
         mysqli_stmt_execute($stmt_rider_log);
     }
+
+    // reject pending requests
+    $sql_reject_pending = "UPDATE ride_request SET request_status = 'rejected' WHERE trip_id = ? AND request_status = 'pending'";
+    $stmt_reject_pending = mysqli_prepare($dbConn, $sql_reject_pending);
+    mysqli_stmt_bind_param($stmt_reject_pending, 'i', $trip_id);
+    mysqli_stmt_execute($stmt_reject_pending);
 
     header('Location: dashboard.php?completed=1');
     exit(); 
