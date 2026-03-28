@@ -30,7 +30,7 @@ INSERT INTO DRIVER (
  '900101101234', @nric_front, @nric_front, @license_front, @license_front, '2028-12-31', 'Toyota Vios', 'WXY1234', 'Silver'),
 (2, 'Daniel Lim', 'daniel.lim@mail.apu.edu.my', 'd5a658db5e6d22bfebbf6b6e6805c716', '012-3333444', @profile_photo, '2026-03-02 11:00:00', 1, 'active',
  '900202105678', @nric_front, @nric_front, @license_front, @license_front, '2029-06-30', 'Perodua Alza', 'BHG9876', 'White'),
-(3, 'TP082975', 'tp082975@mail.apu.edu.my', 'd5a658db5e6d22bfebbf6b6e6805c716', '012-5555666', @profile_photo, '2026-03-02 11:30:00', 1, 'active',
+(3, 'TP082976', 'tp082976@mail.apu.edu.my', 'd5a658db5e6d22bfebbf6b6e6805c716', '012-5555666', @profile_photo, '2026-03-02 11:30:00', 1, 'active',
  '900303109999', @nric_front, @nric_front, @license_front, @license_front, '2029-12-31', 'Honda City', 'VAX7788', 'Blue'),
 (4, 'Haziq Omar', 'haziq.omar@mail.apu.edu.my', 'd5a658db5e6d22bfebbf6b6e6805c716', '012-7777888', @profile_photo, '2026-03-04 09:20:00', 1, 'active',
  '900404101010', @nric_front, @nric_front, @license_front, @license_front, '2030-05-31', 'Perodua Bezza', 'JQK5555', 'Grey'),
@@ -66,7 +66,7 @@ INSERT INTO TRIP (
 (10, 1, 'APU Residence', 'KLCC', '2026-03-16 18:00:00', 4, 50, 70.00, 8, 'completed'),
 (11, 1, 'APU Campus', 'IOI City Mall', '2026-03-19 17:45:00', 5, 35, 55.00, 6, 'completed'),
 (12, 1, 'APU Residence', 'Pavilion Kuala Lumpur', '2026-03-27 09:15:00', 4, 55, 80.00, 9, 'completed'),
-(13, 1, 'APU Campus', 'Sunway Pyramid', '2026-03-28 13:00:00', 6, 40, 75.00, 7, 'scheduled'),
+(13, 1, 'APU Campus', 'Sunway Pyramid', '2026-03-28 13:00:00', 6, 40, 75.00, 7, 'completed'),
 (14, 4, 'APU Campus', 'Sri Petaling LRT', '2026-03-21 08:10:00', 4, 25, 22.00, 3, 'completed'),
 (15, 4, 'APU Residence', 'Mid Valley Megamall', '2026-03-22 12:30:00', 4, 40, 48.00, 6, 'completed'),
 (16, 5, 'APU Campus', 'KLCC', '2026-03-21 18:20:00', 5, 45, 65.00, 8, 'completed'),
@@ -109,7 +109,10 @@ INSERT INTO RIDE_REQUEST (
 (25, 18, 2, 1, 'approved', '2026-03-16 17:10:00', 10.00, 'Card', 'C:/xampp/htdocs/APU-Comove/src/roles/driver/uploads/proof-25.png', 1),
 (26, 18, 1, 1, 'approved', '2026-03-16 17:12:00', 10.00, 'Cash', NULL, 1),
 (27, 12, 2, 1, 'approved', '2026-03-26 20:20:00', 20.00, 'Card', 'C:/xampp/htdocs/APU-Comove/src/roles/driver/uploads/proof-27.png', 1),
-(28, 13, 3, 1, 'approved', '2026-03-27 10:10:00', 12.50, 'Card', 'C:/xampp/htdocs/APU-Comove/src/roles/driver/uploads/proof-28.png', 1);
+(28, 13, 3, 1, 'approved', '2026-03-27 10:10:00', 12.50, 'Card', 'C:/xampp/htdocs/APU-Comove/src/roles/driver/uploads/proof-28.png', 1),
+(29, 19, 2, 1, 'approved', '2026-04-03 18:30:00', 16.25, 'Card', 'C:/xampp/htdocs/APU-Comove/src/roles/driver/uploads/proof-29.png', 1),
+(30, 19, 3, 1, 'pending',  '2026-04-04 10:15:00', 16.25, 'Cash', NULL, 0),
+(31, 19, 4, 2, 'pending',  '2026-04-04 11:45:00', 32.50, 'Card', 'C:/xampp/htdocs/APU-Comove/src/roles/driver/uploads/proof-31.png', 0);
 
 -- Rewards
 INSERT INTO REWARD (reward_id, reward_pic, reward_name, points_required, category, stock) VALUES
