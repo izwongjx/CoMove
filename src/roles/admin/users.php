@@ -491,9 +491,6 @@ if ($editId > 0 && in_array($editRole, ['rider', 'driver'], true)) {
               <div class="form-group"><label class="form-label">New Password</label><input class="form-input" type="text" name="password" placeholder="Leave blank to keep current password"></div>
               <div class="form-group"><label class="form-label">Role</label><input class="form-input" value="<?php echo adminEscape(ucfirst($editRole)); ?>" disabled></div>
             </div>
-            <div class="form-row">
-              <div class="form-group"><label class="form-label">Current Password (Hashed)</label><input class="form-input" value="<?php echo adminEscape($editUser['password'] ?? ''); ?>" readonly></div>
-            </div>
 
             <?php if ($editRole === 'driver') { ?>
               <div class="form-row">
