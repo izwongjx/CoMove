@@ -17,18 +17,58 @@ function adminUserAllowedStatuses(string $role): array
     return $role === 'driver' ? ['pending', 'active', 'banned', 'rejected'] : ['active', 'banned'];
 }
 
+function adminUserFieldExists(mysqli $dbConn, string $field, string $value, ?string $excludeRole = null, ?int $excludeId = null): bool
+{
+    $allowedFields = [
+        'email' => 'email',
+        'phone' => 'phone_number',
+    ];
+
+    if (!isset($allowedFields[$field]) || $value === '') {
+        return false;
+    }
+
+    $column = $allowedFields[$field];
+    $sql = sprintf(
+        "SELECT 1
+         FROM (
+             SELECT rider_id AS user_id, 'rider' AS user_role, %s AS field_value FROM RIDER
+             UNION ALL
+             SELECT driver_id AS user_id, 'driver' AS user_role, %s AS field_value FROM DRIVER
+         ) AS managed_users
+         WHERE field_value = ?
+           AND NOT (user_role = ? AND user_id = ?)
+         LIMIT 1",
+        $column,
+        $column
+    );
+
+    $role = $excludeRole ?? '';
+    $id = $excludeId ?? 0;
+    $stmt = mysqli_prepare($dbConn, $sql);
+
+    if (!$stmt) {
+        return false;
+    }
+
+    mysqli_stmt_bind_param($stmt, 'ssi', $value, $role, $id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_store_result($stmt);
+    $exists = mysqli_stmt_num_rows($stmt) > 0;
+    mysqli_stmt_close($stmt);
+
+    return $exists;
+}
+
 function adminDeleteRider(mysqli $dbConn, int $riderId): bool
 {
     mysqli_begin_transaction($dbConn);
 
     try {
         $steps = [
-            ['DELETE FROM RATING WHERE rider_id = ?', 'i', [$riderId]],
             ['DELETE FROM RIDER_REDEMPTION WHERE rider_id = ?', 'i', [$riderId]],
             ['DELETE FROM RIDER_GREEN_POINT_LOG WHERE rider_id = ?', 'i', [$riderId]],
-            ['DELETE FROM RIDER_SOCIAL_LINK WHERE rider_id = ?', 'i', [$riderId]],
             ['DELETE FROM RIDER_FRIEND WHERE rider_id = ? OR friend_rider_id = ?', 'ii', [$riderId, $riderId]],
-            ['DELETE FROM TRIP_SHARE WHERE rider_id = ?', 'i', [$riderId]],
             ['DELETE FROM RIDE_REQUEST WHERE rider_id = ?', 'i', [$riderId]],
             ['DELETE FROM RIDER WHERE rider_id = ?', 'i', [$riderId]],
         ];
@@ -53,8 +93,6 @@ function adminDeleteDriver(mysqli $dbConn, int $driverId): bool
 
     try {
         $tripScopedSteps = [
-            'DELETE FROM RATING WHERE trip_id IN (SELECT trip_id FROM (SELECT trip_id FROM TRIP WHERE driver_id = ?) AS trip_scope)',
-            'DELETE FROM TRIP_SHARE WHERE trip_id IN (SELECT trip_id FROM (SELECT trip_id FROM TRIP WHERE driver_id = ?) AS trip_scope)',
             'DELETE FROM RIDE_REQUEST WHERE trip_id IN (SELECT trip_id FROM (SELECT trip_id FROM TRIP WHERE driver_id = ?) AS trip_scope)',
         ];
 
@@ -101,17 +139,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $userError = 'Please enter a valid email address.';
         } elseif (!in_array($status, adminUserAllowedStatuses($role), true)) {
             $userError = 'Invalid user status selected.';
+        } elseif (adminUserFieldExists($dbConn, 'email', $email)) {
+            $userError = 'This email address is already in use.';
+        } elseif (adminUserFieldExists($dbConn, 'phone', $phone)) {
+            $userError = 'This phone number is already in use.';
         } elseif ($role === 'rider') {
             $stmt = mysqli_prepare($dbConn, 'INSERT INTO RIDER (name, email, password, phone_number, rider_status) VALUES (?, ?, ?, ?, ?)');
             if ($stmt) {
                 mysqli_stmt_bind_param($stmt, 'sssss', $name, $email, $passwordHash, $phone, $status);
-                $userMessage = mysqli_stmt_execute($stmt) ? 'Rider created successfully.' : 'Unable to create rider. Please check for duplicate email values.';
+                $userMessage = mysqli_stmt_execute($stmt) ? 'Rider created successfully.' : 'Unable to create rider. Please check for duplicate email or phone values.';
                 mysqli_stmt_close($stmt);
             } else {
                 $userError = 'Unable to prepare rider creation.';
             }
             if ($userMessage === '') {
-                $userError = $userError !== '' ? $userError : 'Unable to create rider. Please check for duplicate email values.';
+                $userError = $userError !== '' ? $userError : 'Unable to create rider. Please check for duplicate email or phone values.';
             }
         } elseif ($role === 'driver') {
             $nricNumber = trim((string) ($_POST['nric_number'] ?? ''));
@@ -134,13 +176,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 if ($stmt) {
                     mysqli_stmt_bind_param($stmt, 'ssssissssssssss', $name, $email, $passwordHash, $phone, $approvedBy, $status, $nricNumber, $placeholderImage, $placeholderImage, $placeholderImage, $placeholderImage, $licenseExpiryDate, $vehicleModel, $plateNumber, $color);
-                    $userMessage = mysqli_stmt_execute($stmt) ? 'Driver created successfully.' : 'Unable to create driver. Please check for duplicate email, NRIC or plate values.';
+                    $userMessage = mysqli_stmt_execute($stmt) ? 'Driver created successfully.' : 'Unable to create driver. Please check for duplicate email, phone, NRIC or plate values.';
                     mysqli_stmt_close($stmt);
                 } else {
                     $userError = 'Unable to prepare driver creation.';
                 }
                 if ($userMessage === '' && $userError === '') {
-                    $userError = 'Unable to create driver. Please check for duplicate email, NRIC or plate values.';
+                    $userError = 'Unable to create driver. Please check for duplicate email, phone, NRIC or plate values.';
                 }
             }
         } else {
@@ -164,6 +206,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $userError = 'Please enter a valid email address.';
         } elseif (!in_array($status, adminUserAllowedStatuses($role), true)) {
             $userError = 'Invalid status selected for this user.';
+        } elseif (adminUserFieldExists($dbConn, 'email', $email, $role, $targetId)) {
+            $userError = 'This email address is already in use.';
+        } elseif (adminUserFieldExists($dbConn, 'phone', $phone, $role, $targetId)) {
+            $userError = 'This phone number is already in use.';
         } elseif ($role === 'rider') {
             $sql = $password !== ''
                 ? 'UPDATE RIDER SET name = ?, email = ?, phone_number = ?, rider_status = ?, password = ? WHERE rider_id = ?'
@@ -183,7 +229,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
 
                 mysqli_stmt_close($stmt);
-                $userError = 'Unable to update rider. Please check for duplicate email values.';
+                $userError = 'Unable to update rider. Please check for duplicate email or phone values.';
             } else {
                 $userError = 'Unable to prepare rider update.';
             }
@@ -216,7 +262,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
 
                     mysqli_stmt_close($stmt);
-                    $userError = 'Unable to update driver. Please check for duplicate email, NRIC or plate values.';
+                    $userError = 'Unable to update driver. Please check for duplicate email, phone, NRIC or plate values.';
                 } else {
                     $userError = 'Unable to prepare driver update.';
                 }
