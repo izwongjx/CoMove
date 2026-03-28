@@ -54,24 +54,29 @@ INSERT INTO RIDER (
 INSERT INTO TRIP (
     trip_id, driver_id, start_location, end_location, departure_time, total_seats, estimated_duration, total_amount, gained_point, trip_status
 ) VALUES
-(1, 1, 'APU Campus (Technology Park Malaysia)', 'LRT Bukit Jalil', '2026-03-20 08:30:00', 4, 30, 40.00, 5, 'scheduled'),
-(2, 1, 'APU Residence', 'Sunway Pyramid', '2026-03-21 18:15:00', 6, 45, 90.00, 8, 'scheduled'),
-(3, 1, 'APU Campus', 'KL Sentral', '2026-03-22 09:00:00', 4, 50, 60.00, 8, 'scheduled'),
-(4, 2, 'TPM Gate', 'Pavilion Bukit Jalil', '2026-03-20 07:45:00', 4, 20, 24.00, 3, 'scheduled'),
-(5, 2, 'APU Campus', 'IOI City Mall', '2026-03-23 17:30:00', 5, 35, 55.00, 6, 'scheduled'),
-(6, 2, 'APU Residence', 'Mid Valley Megamall', '2026-03-25 10:30:00', 4, 40, 48.00, 6, 'scheduled'),
-(7, 3, 'APU Campus', 'Subang Jaya KTM', '2026-03-24 08:00:00', 4, 35, 36.00, 5, 'scheduled'),
-(8, 3, 'APU Residence', 'KLIA Transit (Putrajaya)', '2026-03-26 14:00:00', 6, 60, 120.00, 10, 'scheduled'),
+(1, 1, 'APU Campus (Technology Park Malaysia)', 'LRT Bukit Jalil', '2026-03-20 08:30:00', 4, 30, 40.00, 5, 'completed'),
+(2, 1, 'APU Residence', 'Sunway Pyramid', '2026-03-21 18:15:00', 6, 45, 90.00, 8, 'completed'),
+(3, 1, 'APU Campus', 'KL Sentral', '2026-03-22 09:00:00', 4, 50, 60.00, 8, 'completed'),
+(4, 2, 'TPM Gate', 'Pavilion Bukit Jalil', '2026-03-20 07:45:00', 4, 20, 24.00, 3, 'completed'),
+(5, 2, 'APU Campus', 'IOI City Mall', '2026-03-23 17:30:00', 5, 35, 55.00, 6, 'completed'),
+(6, 2, 'APU Residence', 'Mid Valley Megamall', '2026-03-25 10:30:00', 4, 40, 48.00, 6, 'completed'),
+(7, 3, 'APU Campus', 'Subang Jaya KTM', '2026-03-24 08:00:00', 4, 35, 36.00, 5, 'completed'),
+(8, 3, 'APU Residence', 'KLIA Transit (Putrajaya)', '2026-03-26 14:00:00', 6, 60, 120.00, 10, 'completed'),
 (9, 1, 'APU Campus', 'Mid Valley Megamall', '2026-03-15 08:10:00', 4, 40, 45.00, 6, 'completed'),
 (10, 1, 'APU Residence', 'KLCC', '2026-03-16 18:00:00', 4, 50, 70.00, 8, 'completed'),
 (11, 1, 'APU Campus', 'IOI City Mall', '2026-03-19 17:45:00', 5, 35, 55.00, 6, 'completed'),
-(12, 1, 'APU Residence', 'Pavilion Kuala Lumpur', '2026-03-27 09:15:00', 4, 55, 80.00, 9, 'scheduled'),
+(12, 1, 'APU Residence', 'Pavilion Kuala Lumpur', '2026-03-27 09:15:00', 4, 55, 80.00, 9, 'completed'),
 (13, 1, 'APU Campus', 'Sunway Pyramid', '2026-03-28 13:00:00', 6, 40, 75.00, 7, 'scheduled'),
-(14, 4, 'APU Campus', 'Sri Petaling LRT', '2026-03-21 08:10:00', 4, 25, 22.00, 3, 'scheduled'),
-(15, 4, 'APU Residence', 'Mid Valley Megamall', '2026-03-22 12:30:00', 4, 40, 48.00, 6, 'scheduled'),
-(16, 5, 'APU Campus', 'KLCC', '2026-03-21 18:20:00', 5, 45, 65.00, 8, 'scheduled'),
-(17, 5, 'APU Residence', 'Sunway Pyramid', '2026-03-23 09:00:00', 4, 40, 52.00, 6, 'scheduled'),
-(18, 2, 'APU Campus', 'Puchong IOI', '2026-03-17 18:00:00', 4, 35, 40.00, 5, 'completed');
+(14, 4, 'APU Campus', 'Sri Petaling LRT', '2026-03-21 08:10:00', 4, 25, 22.00, 3, 'completed'),
+(15, 4, 'APU Residence', 'Mid Valley Megamall', '2026-03-22 12:30:00', 4, 40, 48.00, 6, 'completed'),
+(16, 5, 'APU Campus', 'KLCC', '2026-03-21 18:20:00', 5, 45, 65.00, 8, 'completed'),
+(17, 5, 'APU Residence', 'Sunway Pyramid', '2026-03-23 09:00:00', 4, 40, 52.00, 6, 'completed'),
+(18, 2, 'APU Campus', 'Puchong IOI', '2026-03-17 18:00:00', 4, 35, 40.00, 5, 'completed'),
+(19, 1, 'APU Campus', 'Bukit Bintang', '2026-04-05 09:00:00', 4, 45, 65.00, 7, 'scheduled'),
+(20, 2, 'APU Residence', 'Bandar Sunway', '2026-05-03 08:30:00', 4, 35, 42.00, 5, 'scheduled'),
+(21, 3, 'APU Campus', 'Putrajaya Sentral', '2026-05-18 17:45:00', 5, 40, 58.00, 6, 'scheduled'),
+(22, 4, 'APU Campus', 'Cheras Leisure Mall', '2026-06-02 08:15:00', 4, 30, 38.00, 5, 'scheduled'),
+(23, 5, 'APU Residence', 'One Utama', '2026-06-20 10:00:00', 6, 60, 120.00, 10, 'scheduled');
 
 -- Ride Requests (interconnected)
 INSERT INTO RIDE_REQUEST (
