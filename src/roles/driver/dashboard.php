@@ -25,9 +25,7 @@ $sql_rides = "SELECT COUNT(*) AS total_rides FROM trip WHERE driver_id = ? AND t
 $stmt_rides = mysqli_prepare($dbConn, $sql_rides);
 
 // now it puts the value into the ? to prevent sql injection
-mysqli_stmt_bind_param($stmt_rides, 'i', 
-  $driver_id
-);
+mysqli_stmt_bind_param($stmt_rides, 'i', $driver_id);
 
 // execute the statement
 mysqli_stmt_execute($stmt_rides);
@@ -65,6 +63,7 @@ $sql_auto = "UPDATE trip SET trip_status = 'ongoing' WHERE driver_id = ? AND tri
 $stmt_auto = mysqli_prepare($dbConn, $sql_auto);
 mysqli_stmt_bind_param($stmt_auto, 'i', $driver_id);
 mysqli_stmt_execute($stmt_auto);
+
 
 
 // ---------------- QUERY 3: FETCH ONGOING TRIPS ---------------//
@@ -337,7 +336,7 @@ $vehicle = mysqli_fetch_assoc($result_vehicle);
 
                 <p class="reqFirstName"><?php echo htmlspecialchars($req['rider_name']); ?></p>
                 <p class="priceFirstName">RM <?php echo number_format($req['amount_paid'], 2); ?></p>
-
+              
                 <p class="time">
                   <?php echo date('D, g:i A', strtotime($req['departure_time'])); ?>
                 </p>

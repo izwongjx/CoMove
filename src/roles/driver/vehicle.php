@@ -2,7 +2,7 @@
   session_start();
   require_once '../../config/conn.php';
 
-  if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'driver') {
+  if (!htmlspeacial($_SESSION['user_id']) || $_SESSION['role'] !== 'driver') {
       header('Location: ../../../index.php');
       exit();
   }
@@ -37,7 +37,7 @@
 
 
 // update form
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && htmlspe($_POST['update_profile'])) {
     $name = $_POST['name'];
     $email = $_POST['email'];
     $phone = $_POST['phone_number'];
